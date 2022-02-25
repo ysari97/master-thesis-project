@@ -1,0 +1,26 @@
+AttributeName,Value,Type
+Nsim,1,int
+NN,1,int
+T,12,int
+H,240,int
+Nobj,3,int
+Nvar,230,int
+warmup,0,int
+initMonth,1,int
+KGU_param.initCond,673917419.4,float
+ITT_param.initCond,3644646452,float
+KA_param.initCond,1.23874E+11,float
+CB_param.initCond,22393561032,float
+KGL_param.initCond,62840000,float
+inflowTOT00,1308.3372,float
+p_param.tPolicy,4,int
+p_param.policyInput,7,int
+p_param.mIn,699000000.0; 5000000.0; 116054000000.0000; 32000000.0; 10950000.0000; 1; 0,np.array
+p_param.MIn,5883000000.00; 1178000000.00; 180798000000.0000; 51704000000.00000; 62840000.00; 12; 11213.5790,np.array
+p_param.policyOutput,5,int
+p_param.mOut,0; 0; 0; 0; 0,np.array
+p_param.MOut,7338.28210; 2894.4600; 11539.93658041603; 15859.69558599696; 4445.967529173009,np.array
+p_param.policyStr,11,int
+irr_param.num_irr,8,int
+irr_param.mParam,0.000001; 0.000001; 0.000001; 0.000001; 0.000001; 0.000001; 0.000001; 0.000001,np.array
+irr_param.MParam,4500.0; 2500.0; 1700.0; 1400.0; 3400.0; 9500.0; 9500.0; 11000.0,np.array
