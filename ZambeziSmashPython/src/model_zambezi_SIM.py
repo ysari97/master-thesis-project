@@ -252,12 +252,6 @@ class model_zambezi:
 
         self.PolicySim = policy_sim # To keep the name of the policy with which the simulatin is run
 
-    def getNobj(self):
-        return self.Nobj
-    
-    def getNvar(self):
-        return self.Nvar
-
     def evaluate(self, var):
         """ Evaluate the KPI values based on the given input
         data and policy parameter configuration.
@@ -282,26 +276,10 @@ class model_zambezi:
 
         self.overarching_policy.assign_free_parameters(var)
 
-        if (self.Nsim < 2): # single simulation
-            J = self.simulate()
-            obj = J
         
-        else: # MC Simulation to be adjusted
-            Jhyd = np.empty() 
-            Jenv = np.empty()  
-            Jirr_def = np.empty()  
-
-            for _ in range(self.Nsim):
-                J = self.simulate()
-                Jhyd = np.append(Jhyd, J[0])
-                Jenv = np.append(Jenv, J[1])
-                Jirr_def = np.append(Jirr_def, J[2])
-
-            # objectives aggregation (average of Jhyd + worst 1st percentile for Jenv, Jirr)
-            obj = np.append(obj, np.mean(Jhyd))
-            obj = np.append(obj, np.percentile(Jenv, 99))
-            obj = np.append(obj, np.percentile(Jirr_def, 99))
-
+        J = self.simulate()
+        obj = J
+       
         objectives.write(str(obj[0]) + ' ' + str(obj[1]) + ' ' + str(obj[2]))
         objectives.close()
 
@@ -328,12 +306,15 @@ class model_zambezi:
         rDelta = open("../storage_release/three_policy_simulation/rDelta_"+self.PolicySim+".txt", 'w+')
         irrigation = open("../storage_release/three_policy_simulation/irr_"+self.PolicySim+".txt", 'w+')
 
-        mass_balance_ReservoirSim = dict()
+        mass_balance_ReservoirSim = dict() # to open the environments to write reservoir related physical quantities
         qturb_ReservoirSim = dict()
 
         for reservoir in ['cb', 'itt', 'ka', 'kgu', 'kgl']:
             qturb_ReservoirSim[reservoir] = open("../storage_release/three_policy_simulation/qturb_"+reservoir+"_"+self.PolicySim+".txt", 'w+')
             mass_balance_ReservoirSim[reservoir] = open("../storage_release/three_policy_simulation/"+reservoir+"_"+self.PolicySim+".txt", 'w+')
+
+        
+        #### CONSIDER FORMULATING BELOW PART AS AN APPEND LOGIC
 
         ## INITIALIZATION: storage (s), level (h), decision (u), release(r) (Hydropower) : np.array
         s_kgu = np.full(self.H + 1, -999)  
@@ -341,8 +322,7 @@ class model_zambezi:
         s_ka = np.full(self.H + 1, -999) 
         s_cb = np.full(self.H + 1, -999)
         s_kgl = np.full(self.H + 1, -999)
-        #s_kgu, s_itt, s_ka, s_cb, s_kgl = tuple(5 * [np.full(self.H+1, -999)])
-        # print(s_kgu)
+        
         h_kgu = np.full(self.H + 1, -999)
         h_itt = np.full(self.H + 1, -999)
         h_ka = np.full(self.H + 1, -999)

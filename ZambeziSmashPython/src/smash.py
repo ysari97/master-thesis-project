@@ -27,7 +27,7 @@ class Policy:
         """
 
         if type == "ncRBF":
-            self.functions[name] = ncRBF(n_inputs, n_outputs, kwargs['n_structures'])
+            self.functions[name] = ncRBF(n_inputs, n_outputs, kwargs)
         
         elif type == "user_specified":
             class_name = kwargs['class_name']
@@ -38,79 +38,52 @@ class Policy:
             pass
 
         self.approximator_names.append(name)
-        # self.all_parameters = np.append
     
     def assign_free_parameters(self, full_array):
         beginning = 0
         for name in self.approximator_names:
-            end = beginning + self.functions[name].getFreeParameterNumber()
-            self.functions[name].setParameters(full_array[beginning:end])
+            end = beginning + self.functions[name].get_free_parameter_number()
+            self.functions[name].set_parameters(full_array[beginning:end])
             beginning = end
+
+    def get_total_parameter_count(self):
+        return sum([x.get_free_parameter_number() \
+            for x in self.functions.values()])
+
 
 class abstract_approximator: # formerly abstract_approximator
 
-    def __init__(self):
+    def __init__(self, argument_dictionary):
+        # Will be removed at the end!!!
         # function input/output normalization
-        self.input_max, self.output_max, \
-        self.input_min, self.output_min = tuple(4*[np.empty(0)])
-       
-        # function input/output standardization
-        self.input_mean, self.output_mean, \
-        self.input_std, self.output_std = tuple(4*[np.empty(0)])
+        self.input_max = argument_dictionary["max_input"]
+        self.output_max = argument_dictionary["max_output"]
+        self.input_min = argument_dictionary["min_input"]
+        self.output_min = argument_dictionary["min_output"]
 
     def get_output(input):
         pass
 
-    def getInputNumber(self):
-        return self.M
-    
-    def getOutputNumber(self):
-        return self.K
-
-    def getFreeParameterNumber(self):
+    def get_free_parameter_number(self):
         pass
     
-    def get_StdOutput(self, pInput):
+    def get_output_std(self, pInput):
 
-        x = self.standardizeVector( pInput, self.input_mean, self.input_std )
-        z = self.get_output( x ) 
-        y = self.deStandardizeVector( z, self.output_mean, self.output_std )
+        x = self.standardize_vector(pInput, self.input_mean, self.input_std)
+        z = self.get_output(x)
+        y = self.destandardize_vector(z, self.output_mean, self.output_std)
         return y 
     
-    def get_NormOutput(self, pInput):
+    def get_output_norm(self, pInput):
 
-        x = self.normalizeVector( pInput, self.input_min, self.input_max )
-        z = self.get_output( x ) 
-        y = self.deNormalizeVector( z, self.output_min, self.output_max )
+        x = self.normalize_vector(pInput, self.input_min, self.input_max)
+        z = self.get_output(x) 
+        y = self.denormalize_vector(z, self.output_min, self.output_max)
 
         return y 
-    
-    def setMaxInput(self, pV):
-        self.input_max = pV
-
-    def setMaxOutput(self, pV):
-        self.output_max = pV
-
-    def setMinInput(self, pV):
-        self.input_min = pV
-
-    def setMinOutput(self, pV):
-        self.output_min = pV
-
-    def setMeanInput(self, pV):
-        self.input_mean = pV
-        
-    def setMeanOutput(self, pV):
-        self.output_mean = pV    
-
-    def setStdInput(self, pV):
-        self.input_std = pV
-        
-    def setStdOutput(self, pV):
-        self.output_std = pV
 
     @staticmethod
-    def normalizeVector(X, m, M):
+    def normalize_vector(X, m, M):
         """Normalize an input vector (X) between a minimum (m) and
         maximum (m) value given per element.
 
@@ -131,13 +104,13 @@ class abstract_approximator: # formerly abstract_approximator
 
         Y = np.empty(0)
         for i in range(X.size):
-            z = ( X[i] - m[i] ) / ( M[i] - m[i] )
+            z = (X[i] - m[i]) / (M[i] - m[i])
             Y = np.append(Y, z)
 
         return Y
 
     @staticmethod
-    def deNormalizeVector(X, m, M):
+    def denormalize_vector(X, m, M):
         """Retrieves a normalized vector back with respect to a minimum (m) and
         maximum (m) value given per element.
 
@@ -158,13 +131,13 @@ class abstract_approximator: # formerly abstract_approximator
 
         Y = np.empty(0)
         for i in range(X.size):
-            z = X[i]*( M[i] - m[i] ) + m[i]
+            z = X[i] * (M[i] - m[i]) + m[i]
             Y = np.append(Y, z)
 
         return Y
 
     @staticmethod
-    def standardizeVector(X, m, s):
+    def standardize_vector(X, m, s):
         """Standardize an input vector (X) with a minimum (m) and
         standard (s) value given per element.
 
@@ -191,7 +164,7 @@ class abstract_approximator: # formerly abstract_approximator
         return Y
 
     @staticmethod
-    def deStandardizeVector(X, m, s):
+    def destandardize_vector(X, m, s):
         """Retrieve back a vector that was standardized with respect to
         a minimum (m) and standard (s) value given per element.
 
@@ -224,44 +197,36 @@ class RBFparams:
 
 class ncRBF(abstract_approximator):
 
-    def __init__(self, pM, pK, pN):
+    def __init__(self, n_inputs, n_outputs, argument_dictionary):
         # function input/output normalization
-        abstract_approximator.__init__(self)
-        self.M = pM
-        self.K = pK
-        self.N = pN
+        abstract_approximator.__init__(self,argument_dictionary)
+        self.n_inputs = n_inputs
+        self.n_outputs = n_outputs
+        self.RBF_count = argument_dictionary["n_structures"]
         self.lin_param = np.empty(0)
         self.param = list()
 
-    def setParameters(self, pTheta):
+    def set_parameters(self, pTheta):
         
-        cParam = RBFparams()
- 
         count = 0
+        self.lin_param = pTheta[:self.n_outputs]
+        count += self.n_outputs
 
-        for k in range(self.K):
-            self.lin_param = np.append(self.lin_param, pTheta[count])
-            
-            count += 1
-
-        for i in range(self.N):
-            for j in range(self.M):
+        for i in range(self.RBF_count):
+            cParam = RBFparams()
+            for j in range(self.n_inputs):
                 cParam.c = np.append(cParam.c, pTheta[count])
                 cParam.b = np.append(cParam.b, pTheta[count+1])
 
                 count = count + 2
 
-            for k in range(self.K):
+            for k in range(self.n_outputs):
                 cParam.w = np.append(cParam.w, pTheta[count])
 
                 count += 1
             self.param.append(cParam)
-            cParam = RBFparams()
 
-    def clearParameters(self):
-
-        for i in range(len(self.param)):
-            self.param[i] = RBFparams()
+    def clear_parameters(self):
 
         self.param = list()
         self.lin_param = np.empty(0)
@@ -270,13 +235,12 @@ class ncRBF(abstract_approximator):
 
         # RBF
         phi = np.empty(0)
-        bf, num, den = tuple(3 * [float()])
-        for j in range(self.N):
+        for j in range(self.RBF_count):
             bf = 0
-            for i in range(self.M):
+            for i in range(self.n_inputs):
                 
-                num = (input[i] - self.param[j].c[i])*(input[i] - self.param[j].c[i])
-                den = (self.param[j].b[i]*self.param[j].b[i])
+                num = (input[i] - self.param[j].c[i])**2
+                den = (self.param[j].b[i]**2)
                 
                 if(den < pow(10,-6)):
                     den = pow(10,-6)
@@ -287,11 +251,10 @@ class ncRBF(abstract_approximator):
         
         # output
         y = np.empty(0)
-        o = float()
 
-        for k in range(self.K):
+        for k in range(self.n_outputs):
             o = self.lin_param[k]
-            for i in range(self.N):
+            for i in range(self.RBF_count):
                 
                 o = o + self.param[i].w[k]*phi[i]
             
@@ -304,8 +267,7 @@ class ncRBF(abstract_approximator):
         
         return y
 
-    def getFreeParameterNumber(self):
-        return self.K + self.N * (self.M * 2 + self.K)
-        
-    def setMaxInput(self, pV):
-        super().setMaxInput(pV)
+    def get_free_parameter_number(self):
+        return self.n_outputs + self.RBF_count *\
+            (self.n_inputs * 2 + self.n_outputs)
+

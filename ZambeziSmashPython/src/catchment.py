@@ -1,22 +1,12 @@
 # Catchement class
 
-from utils import utils, myFile
+import numpy as np
 
-class catchment_param:
-    def __init__(self) -> None:
-        self.CM = int(0)
-        self.inflow_file = myFile() # myFile type from utils!
+class Catchment:
 
+   def __init__(self, name):
+        # Explanation placeholder
+        self.name = name
 
-class catchment:
-    def __init__(self, pCM):
-        cModel = pCM.CM
-        self.inflow = utils.loadVector(pCM.inflow_file.filename, pCM.inflow_file.row)
-
-        if cModel == 0:
-            self.inflow = utils.loadVector(pCM.inflow_file.filename, pCM.inflow_file.row)
-
-    def getInflow(self, pt):
-
-        q = float(self.inflow[pt])
-        return q
+        data_directory = "../data/"
+        self.inflow = np.loadtxt(f"{data_directory}Inflow{name}.txt")

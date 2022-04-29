@@ -250,12 +250,6 @@ class model_zambezi:
         # Load Minimum Environmental Flow requirement in the Zambezi Delta for the months of February and March
         self.qDelta = utils.loadVector("../data/MEF_Delta.txt", self.T) # [m^3/sec]
 
-    def getNobj(self):
-        return self.Nobj
-    
-    def getNvar(self):
-        return self.Nvar
-
     def evaluate(self, var):
         """ Evaluate the KPI values based on the given input
         data and policy parameter configuration.
