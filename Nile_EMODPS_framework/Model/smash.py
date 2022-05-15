@@ -8,7 +8,6 @@
 # REMAINING TASKS: i) Documentation ii) ANN code translation
 
 import numpy as np
-from alternative_policy_structures import irrigation_policy
 
 class Policy:
     """

@@ -114,12 +114,12 @@ class ModelNile:
         self.overarching_policy.assign_free_parameters(parameter_vector)
         self.simulate()
         
-        objective_values = list()
-        objective_values.append(np.mean(self.total_env_deficit))
-        objective_values.append(np.mean(self.total_irr_deficit))
-        objective_values.append(np.mean(self.total_hydro_deficit))
+        # objective_values = list()
+        # objective_values.append(np.mean(self.total_env_deficit))
+        # objective_values.append(np.mean(self.total_irr_deficit))
+        # objective_values.append(np.mean(self.total_hydro_deficit))
 
-        return objective_values
+        # return objective_values
 
     def simulate(self):
         """ Mathematical simulation over the specified simulation
