@@ -114,12 +114,16 @@ class ModelNile:
         self.overarching_policy.assign_free_parameters(parameter_vector)
         self.simulate()
         
-        # objective_values = list()
-        # objective_values.append(np.mean(self.total_env_deficit))
-        # objective_values.append(np.mean(self.total_irr_deficit))
-        # objective_values.append(np.mean(self.total_hydro_deficit))
+        egypt_agg_def = np.sum(self.irr_districts["Egypt"].normalised_deficit)
+        sudan_irr_districts = [value for key, value in self.irr_districts.items()\
+            if key not in {"Egypt"}]
+        sudan_agg_def = 0
+        for district in sudan_irr_districts:
+            sudan_agg_def += np.sum(district.normalised_deficit)
+        ethiopia_agg_hydro = np.sum(\
+            self.reservoirs["GERD"].actual_hydropower_production)
 
-        # return objective_values
+        return egypt_agg_def, sudan_agg_def, ethiopia_agg_hydro
 
     def simulate(self):
         """ Mathematical simulation over the specified simulation
@@ -238,51 +242,36 @@ class ModelNile:
 
             # Calculation of objectives:
 
-            # Irrigation deficits
-            # total_deficit = 0
-            # for district in self.irr_districts.values():
-            #     district.squared_deficit = np.append(district.squared_deficit,
-            #         self.squared_deficit_from_target(district.received_flow[-1],
-            #             district.demand[moy-1]))
+            # Irrigation demand deficits
+
+            for district in self.irr_districts.values():
+                district.squared_deficit = np.append(district.squared_deficit,
+                    self.squared_deficit_from_target(district.received_flow[-1],
+                        district.demand[t]))
                 
-            #     district.normalised_deficit = np.append(district.normalised_deficit,
-            #         self.squared_deficit_normalised(district.squared_deficit[-1],
-            #             district.demand[moy-1]))
-                
-            #     total_deficit += district.squared_deficit[-1]
+                district.normalised_deficit = np.append(district.normalised_deficit,
+                    self.squared_deficit_normalised(district.squared_deficit[-1],
+                        district.demand[t]))
 
             # self.total_irr_deficit = np.append(self.total_irr_deficit, total_deficit)
 
             # Hydropower objectives
-            # total_deficit = 0
-            # for reservoir in self.reservoirs.values():
-            #     hydropower_production = 0
-            #     for plant in reservoir.hydropower_plants:
-            #         production = plant.calculate_hydropower_production(
-            #             reservoir.release_vector[-1], reservoir.level_vector[-1],
-            #             nu_of_days)
-            #         hydropower_production += production
 
-            #     reservoir.actual_hydropower_production = np.append(
-            #         reservoir.actual_hydropower_production, hydropower_production
-            #     )
-            #     reservoir.hydropower_deficit = np.append(
-            #         reservoir.hydropower_deficit, max(0,
-            #         reservoir.target_hydropower_production[-1] - hydropower_production)
-            #     )
-                
-            #     total_deficit += reservoir.hydropower_deficit[-1]
+            for reservoir in self.reservoirs.values():
+                hydropower_production = 0
+                for plant in reservoir.hydropower_plants:
+                    production = plant.calculate_hydropower_production(
+                        reservoir.release_vector[-1], reservoir.level_vector[-1],
+                        nu_of_days)
+                    hydropower_production += production
 
-            # self.total_hydro_deficit = np.append(self.total_hydro_deficit, total_deficit)
+                reservoir.actual_hydropower_production = np.append(
+                    reservoir.actual_hydropower_production, hydropower_production
+                )
 
-            # Environmental flow objective
-            # flow_delta = self.reservoirs["cahorabassa"].release_vector[-1] - \
-            #         self.irr_districts["7"].received_flow[-1] - \
-            #         self.irr_districts["8"].received_flow[-1] + \
-            #         self.catchments["Shire"].inflow[t] - \
-            #         self.irr_districts["9"].received_flow[-1]
-            # self.total_env_deficit = np.append(self.total_env_deficit,
-            #     self.squared_deficit_from_target(flow_delta, self.qDelta[moy-1]))
+            if t == self.GERD_filling_time:
+                self.reservoirs["GERD"].filling_schedule = None
+
             
     @staticmethod
     def squared_deficit_from_target(realisation, target):
@@ -299,6 +288,14 @@ class ModelNile:
         """
         if target == 0: return 0
         else: return sq_deficit/pow(target, 2)
+
+    def set_GERD_filling_schedule(self, duration):
+        target_storage = 50e9
+        difference = target_storage - self.reservoirs["GERD"].storage_vector[0]
+        secondly_diff = difference / (duration*365*24*3600)
+        weights = self.catchments["BlueNile"].inflow[:12]
+        self.reservoirs["GERD"].filling_schedule = \
+            (weights * 12 * secondly_diff) / weights.sum()
 
     def reset_parameters(self):
 

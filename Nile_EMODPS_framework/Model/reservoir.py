@@ -1,6 +1,8 @@
 # Reservoir class
 
+from functools import cached_property
 import numpy as np
+from sympy import memoize_property
 
 class Reservoir:
     """
@@ -80,39 +82,33 @@ class Reservoir:
         self.hydropower_plants = list()
         self.actual_hydropower_production = np.empty(0)
         self.hydropower_deficit = np.empty(0)
+        self.filling_schedule = None
 
     def read_hydropower_target(self):
         self.target_hydropower_production = \
             np.loadtxt(f"..NileData/{self.name}prod.txt")
     
     def storage_to_level(self, s):
-        # interpolation when lsto_rel exists
-        if(self.level_to_storage_rel.size>0):
-            h = self.interp_lin(self.level_to_storage_rel[1],
-                self.level_to_storage_rel[0],s)
-        # approximating with volume and cross section
-        else:
-            h = s/self.average_cross_section
+
+        h = np.interp(s, self.level_to_storage_rel[1],
+                self.level_to_storage_rel[0])
         return h
 
     def level_to_storage(self, h):
         # interpolation when lsto_rel exists
         if(self.level_to_storage_rel.size>0):
-            s = self.interp_lin(self.level_to_storage_rel[0],
-                self.level_to_storage_rel[1],h)
+            s = np.interp(h, self.level_to_storage_rel[0],
+                self.level_to_storage_rel[1])
         # approximating with volume and cross section
         else:
             s = h*self.average_cross_section
         return s
 
     def level_to_surface(self, h):
-        # interpolation when lsur_rel exists
-        if(self.level_to_surface_rel.size>0):
-            a = self.interp_lin(self.level_to_surface_rel[0],
-                self.level_to_surface_rel[1],h)
-        # approximating with volume and cross section
-        else:
-            a = self.average_cross_section
+    
+        a = np.interp(h, self.level_to_surface_rel[0],
+                self.level_to_surface_rel[1])
+
         return a
 
     def integration(self, nu_of_days, policy_release_decision,
@@ -140,6 +136,12 @@ class Reservoir:
         current_storage = self.storage_vector[-1]
         in_month_releases = np.empty(0)
 
+        if self.filling_schedule is not None:
+            releasable_excess = max(0, net_secondly_inflow - \
+                self.filling_schedule[current_month-1])
+        else:
+            releasable_excess = 1e12 # Big M 
+
         for _ in np.arange(0, total_seconds, integ_step):
             level = self.storage_to_level(current_storage)
             surface = self.level_to_surface(level)
@@ -148,26 +150,15 @@ class Reservoir:
                 (1000 * (total_seconds/integ_step)))
 
             # Calculate min/max possible releases to compare with the policy
-            # decision. Kafue Gorge Lower reservoir needs a special treatment
-            try:
-                min_possible_release = self.interp_lin(self.rating_curve[0],
-                    self.rating_curve[1], level)
-                max_possible_release = self.interp_lin(self.rating_curve[0],
-                    self.rating_curve[2], level)
-            except IndexError:
-                # Calculate min/max release from 3 data points (usually
-                # hypothetical for currently non-existent dams)
-                min_possible_release = 0
-                
-                if current_storage <= self.rating_curve[0]:
-                    max_possible_release = 0
-                elif (current_storage > self.rating_curve[0]) and \
-                    (current_storage <= self.rating_curve[1]):
-                    max_possible_release = current_storage - \
-                        self.rating_curve[0] / integ_step
-                else:
-                    max_possible_release = self.rating_curve[2]
+            # decision.
 
+            min_possible_release = np.interp(level, self.rating_curve[0],
+                self.rating_curve[1])
+            max_possible_release = np.interp(level, self.rating_curve[0],
+                self.rating_curve[2])
+            
+            max_possible_release = min(max_possible_release,releasable_excess)
+            
             secondly_release = min(max_possible_release,
                 max(min_possible_release, policy_release_decision))
             in_month_releases = np.append(in_month_releases, secondly_release)
@@ -186,47 +177,4 @@ class Reservoir:
         # Record level  based on storage for time t:
         self.level_vector = np.append(self.level_vector,
             self.storage_to_level(self.storage_vector[-1]))
-        
-    @staticmethod
-    def interp_lin(X, Y, x):
-        """Takes two vectors and a number. Based on the relative position
-        of the number in the first vector, returns a number that has the
-        equivalent relative position in the second vector.
 
-        Parameters
-        ----------
-        X : np.array
-            The array/vector that defines the axis for the input
-        Y : np.array
-            The array/vector that defines the axis for the output
-        x : float
-            The input for which an extrapolation is seeked
-
-        Returns
-        -------
-        y : float
-            Inter/Extrapolated output 
-        """
-        dim = X.size - 1
-
-        # extreme cases (x<X(0) or x>X(end): extrapolation
-        if(x <= X[0]):
-            y = (Y[1] - Y[0]) / (X[1] - X[0]) * (x - X[0]) + Y[0] 
-            return y
-        
-        elif(x >= X[dim]):
-            y = Y[dim] + (Y[dim] - Y[dim-1]) / (X[dim] - X[dim-1]) * \
-                (x - X[dim])
-            return y
-        
-        # otherwise
-        # [ x - X(A) ] / [ X(B) - x ] = [ y - Y(A) ] / [ Y(B) - y ]
-        # y = [ Y(B)*x - X(A)*Y(B) + X(B)*Y(A) - x*Y(A) ] / [X(B) - X(A)]
-        else:
-            for index, item in enumerate(X):
-                if x == item:
-                    return Y[index]
-                elif x < item:
-                    a = (Y[index] - Y[index-1]) / (X[index] - X[index-1])
-                    y = Y[index] - a*(X[index]-x)
-                    return y

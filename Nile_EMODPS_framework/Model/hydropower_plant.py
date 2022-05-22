@@ -24,7 +24,7 @@ class HydropowerPlant:
         hours_in_a_day = 24
         W_MW_conversion = 1e-6
         turbine_flow = min(actual_release, self.max_turbine_flow)
-        head = reservoir_level - self.head_start_level
+        head = max(0,reservoir_level - self.head_start_level)
         power_in_MW = min(self.max_capacity, turbine_flow * head * m3_to_kg_factor *\
             gravitational_constant * self.efficiency * W_MW_conversion)
         hydropower_production = power_in_MW * nu_of_days * hours_in_a_day  #MWh
