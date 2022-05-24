@@ -53,15 +53,23 @@ if __name__ == '__main__':
 
     ema_logging.log_to_stderr(ema_logging.INFO)
 
+    NFE_count = 100000
+    epsilon_list = [1e2,1e1,1e-2,1e2,1e1,1e3]
+
     before = datetime.now()
 
     with MultiprocessingEvaluator(em_model) as evaluator:
-        results, convergence = evaluator.optimize(nfe=100000, searchover='levers', logging_freq=5,
-        epsilons=[1e2,1e1,1e-2,1e2,1e1,1e3], convergence=convergence_metrics)
+        results, convergence = evaluator.optimize(nfe=NFE_count, searchover='levers', logging_freq=5,
+        epsilons=epsilon_list, convergence=convergence_metrics)
 
     after = datetime.now()
 
-    print(after-before)
-
     pickle.dump(results, open("baseline_results.p", "wb"))
     pickle.dump(convergence, open("baseline_convergence.p", "wb"))
+
+    f = open("time_counter.txt", "w")
+    f.write(f"It took {after-before} time to do {NFE_count} NFEs with epsilons: {epsilon_list}")
+    f.close()
+
+
+    
