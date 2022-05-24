@@ -166,15 +166,7 @@ class Reservoir:
             surface = self.level_to_surface(level)
             
             evaporation = surface * (self.evap_rates[current_month-1]/ \
-                (1000 * (total_seconds/integ_step)))
-
-            # Calculate min/max possible releases to compare with the policy
-            # decision.
-
-            # min_possible_release = np.interp(level, self.rating_curve[0],
-            #     self.rating_curve[1])
-            # max_possible_release = np.interp(level, self.rating_curve[0],
-            #     self.rating_curve[2])
+                (100 * (total_seconds/integ_step)))
 
             min_possible_release, max_possible_release = self.level_to_minmax(level)
             

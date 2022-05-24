@@ -1,17 +1,20 @@
 # Multi-objective Multi-reservoir Control Policy Optimisation Model
 
-## Case of Zambezi River Basin
+## Case of Nile River Basin
 
-This repository concerns the implementation of the evolutionary multi-objective direct policy search (EMODPS) framework on the hydrologic system of Zambezi River Basin. The model code was originally written in C++ by Jazmin Zatarain Salazar and ... within the scope of the [DAFNE project](https://cordis.europa.eu/project/id/690268). Adaptation of the source code to Python was done by Yasin Sari during his internship at the TPM AI Lab between August - December 2021.
+<!-- This repository concerns the implementation of the evolutionary multi-objective direct policy search (EMODPS) framework on the hydrologic system of Zambezi River Basin. The model code was originally written in C++ by Jazmin Zatarain Salazar and ... within the scope of the [DAFNE project](https://cordis.europa.eu/project/id/690268). Adaptation of the source code to Python was done by Yasin Sari during his internship at the TPM AI Lab between August - December 2021. -->
 
-The model includes 5 currently existent reservoirs in the Zambezi River Basin-- namely Itezhi-Itezhi, Kafue Gorge Upper, Kafue Gorge Lower, Kariba and Cahora Bassa (see Figure 1). Releases from these reservoirs are aimed to be optimised with respect to three objectives which are irrigation demand deficit, hydropower production and environmental flow deficit.
+<!-- The model includes 5 currently existent reservoirs in the Zambezi River Basin-- namely Itezhi-Itezhi, Kafue Gorge Upper, Kafue Gorge Lower, Kariba and Cahora Bassa (see Figure 1). Releases from these reservoirs are aimed to be optimised with respect to three objectives which are irrigation demand deficit, hydropower production and environmental flow deficit. -->
 
-![image info](ReadmeImages/DAFNE_ReservoirsLayout.png)
-<figcaption align = "center"><b>Figure 1 - Overview of the modelled system</b></figcaption>
+![image info](ReadmeImages/topological.png)
+<figcaption align = "center"><b>Figure 1 - Topological overview of the modelled system</b></figcaption>
 
-Following the EMODPS methodology, release decisions are made by using a closed loop control policy that returns the decisions conditioned on dynamic inputs. Candidate control policies are initialised as highly parametrised general function approximators such as radial basis functions (RBF) and artificial neural networks (ANN). The aim of the optimisation module is to find the values for the parameters of the release policies for near pareto optimal solutions. Simulation module allows user to obtain the performance metrics and physical quantities of the system by running it with previously optimised policy functions.
+![image info](ReadmeImages/gis_map.png)
+<figcaption align = "center"><b>Figure 1 - GIS map of the modelled system</b></figcaption>
 
-## Repository Structure
+<!-- Following the EMODPS methodology, release decisions are made by using a closed loop control policy that returns the decisions conditioned on dynamic inputs. Candidate control policies are initialised as highly parametrised general function approximators such as radial basis functions (RBF) and artificial neural networks (ANN). The aim of the optimisation module is to find the values for the parameters of the release policies for near pareto optimal solutions. Simulation module allows user to obtain the performance metrics and physical quantities of the system by running it with previously optimised policy functions. -->
+
+<!-- ## Repository Structure
 
 ```
 .
@@ -45,4 +48,4 @@ Following the EMODPS methodology, release decisions are made by using a closed l
 
 ## New Features
 
-The main addition to the C++ version of the framework is the novel script called `smash.py` (SMASH standing for Smart Direct Policy Search). This file contains the classes that provide the user with the functionality to create stylised policy functions. Type of a policy function can be either one of the built-in function approximators such as RBF and ANN or a type that is completely specified by the user with the given schema as guidance. The main benefit of the `Policy` class in this file is that it assembles the parameters of the policy functions that are used in various places of the model logic and only then communicates a vector of all parameters to the optimisation engine.
+The main addition to the C++ version of the framework is the novel script called `smash.py` (SMASH standing for Smart Direct Policy Search). This file contains the classes that provide the user with the functionality to create stylised policy functions. Type of a policy function can be either one of the built-in function approximators such as RBF and ANN or a type that is completely specified by the user with the given schema as guidance. The main benefit of the `Policy` class in this file is that it assembles the parameters of the policy functions that are used in various places of the model logic and only then communicates a vector of all parameters to the optimisation engine. -->

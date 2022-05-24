@@ -3,7 +3,7 @@ import pickle
 import pandas as pd
 
 def generate_input_data(nile_model, myseed = 123, wh_set = "Baseline",
-                        sim_horizon = 20, yearly_demand_growth_rate=0.05, GERD_filling=5):
+                        sim_horizon = 20, yearly_demand_growth_rate=0.02, GERD_filling=5):
     # streamflow + demand
     data_directory = "../StochasticDataGenerationInputs/"
 

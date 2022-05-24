@@ -8,6 +8,7 @@ import pickle
 from ema_workbench import (RealParameter, ScalarOutcome, Constant,
                            Model)
 from ema_workbench import MultiprocessingEvaluator, SequentialEvaluator, ema_logging
+from ema_workbench.em_framework.optimization import HyperVolume, EpsilonProgress
 
 from data_generation import generate_input_data
 from wrapper import model_wrapper
@@ -42,19 +43,25 @@ if __name__ == '__main__':
 
     #specify outcomes
     em_model.outcomes = [ScalarOutcome('egypt_irr', ScalarOutcome.MINIMIZE),
+                    ScalarOutcome('egypt_90', ScalarOutcome.MINIMIZE),
+                    ScalarOutcome('egypt_low_had', ScalarOutcome.MINIMIZE),
                     ScalarOutcome('sudan_irr', ScalarOutcome.MINIMIZE),
+                    ScalarOutcome('sudan_90', ScalarOutcome.MINIMIZE),
                     ScalarOutcome('ethiopia_hydro', ScalarOutcome.MAXIMIZE)]
+
+    convergence_metrics = [EpsilonProgress()]
 
     ema_logging.log_to_stderr(ema_logging.INFO)
 
     before = datetime.now()
 
     with MultiprocessingEvaluator(em_model) as evaluator:
-        results = evaluator.optimize(nfe=100, searchover='levers', logging_freq=1,
-        epsilons=[0.1,]*len(em_model.outcomes))
+        results, convergence = evaluator.optimize(nfe=100, searchover='levers', logging_freq=1,
+        epsilons=[1e2,1e1,1e-2,1e2,1e1,1e3], convergence=convergence_metrics)
 
     after = datetime.now()
 
     print(after-before)
 
-    pickle.dump( results, open( "baseline_results.p", "wb" ) )
+    pickle.dump(results, open("baseline_results.p", "wb"))
+    pickle.dump(convergence, open("baseline_convergence.p", "wb"))
