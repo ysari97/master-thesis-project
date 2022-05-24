@@ -56,7 +56,7 @@ if __name__ == '__main__':
     before = datetime.now()
 
     with MultiprocessingEvaluator(em_model) as evaluator:
-        results, convergence = evaluator.optimize(nfe=100, searchover='levers', logging_freq=1,
+        results, convergence = evaluator.optimize(nfe=100000, searchover='levers', logging_freq=5,
         epsilons=[1e2,1e1,1e-2,1e2,1e1,1e3], convergence=convergence_metrics)
 
     after = datetime.now()
