@@ -71,14 +71,7 @@ class ModelNile:
             self.reservoirs[name] = new_reservoir
         
         # Delete dataframe from memory after initialization
-        del self.reservoir_parameters 
-        
-        # Defining the objectives of the problem:
-
-        # Initialize the vectors to hold objective deficits:
-        self.total_env_deficit = np.empty(0)
-        self.total_irr_deficit = np.empty(0)
-        self.total_hydro_deficit = np.empty(0)
+        del self.reservoir_parameters
 
         # Below the policy object (from the SMASH library) is generated
         self.overarching_policy = Policy()
@@ -114,16 +107,26 @@ class ModelNile:
         self.overarching_policy.assign_free_parameters(parameter_vector)
         self.simulate()
         
-        egypt_agg_def = np.sum(self.irr_districts["Egypt"].normalised_deficit)
+        egypt_agg_def = np.sum(self.irr_districts["Egypt"].deficit)
+        egypt_90_perc_worst = np.percentile(self.irr_districts["Egypt"].deficit,
+                                            90, interpolation = "closest_observation")
+        egypt_freq_low_HAD = np.sum(self.reservoirs["HAD"].level_vector < 147) / \
+            len(self.reservoirs["HAD"].level_vector)
+        
         sudan_irr_districts = [value for key, value in self.irr_districts.items()\
             if key not in {"Egypt"}]
-        sudan_agg_def = 0
+        sudan_agg_def_vector = np.repeat(0.0, self.simulation_horizon)
         for district in sudan_irr_districts:
-            sudan_agg_def += np.sum(district.normalised_deficit)
+            sudan_agg_def_vector += district.deficit
+        sudan_agg_def = np.sum(sudan_agg_def_vector)
+        sudan_90_perc_worst = np.percentile(sudan_agg_def_vector, 90,
+                                            interpolation = "closest_observation")
+        
         ethiopia_agg_hydro = np.sum(\
             self.reservoirs["GERD"].actual_hydropower_production)
 
-        return egypt_agg_def, sudan_agg_def, ethiopia_agg_hydro
+        return egypt_agg_def, egypt_90_perc_worst, egypt_freq_low_HAD, \
+            sudan_agg_def, sudan_90_perc_worst, ethiopia_agg_hydro
 
     def simulate(self):
         """ Mathematical simulation over the specified simulation
@@ -173,7 +176,7 @@ class ModelNile:
                 moy, self.integration_interval)
 
             USSennar_input = self.reservoirs["Roseires"].release_vector[-1] +\
-                self.catchments["RoseiresToAbuNaama"].inflow[t],
+                self.catchments["RoseiresToAbuNaama"].inflow[t]
         
             self.irr_districts["USSennar"].received_flow = np.append(
                 self.irr_districts["USSennar"].received_flow,
@@ -218,7 +221,7 @@ class ModelNile:
             del Taminiat_leftover[0]
 
             # Delayed reach of water to Hassanab:
-            if t in [0,1]: Hassanab_input = {0:3000, 1:3000}[t]
+            if t == 0: Hassanab_input = 1500
             else: Hassanab_input = Taminiat_leftover[0] + \
                 self.catchments["Atbara"].inflow[t-1]
             
@@ -245,15 +248,9 @@ class ModelNile:
             # Irrigation demand deficits
 
             for district in self.irr_districts.values():
-                district.squared_deficit = np.append(district.squared_deficit,
-                    self.squared_deficit_from_target(district.received_flow[-1],
+                district.deficit = np.append(district.deficit,
+                    self.deficit_from_target(district.received_flow[-1],
                         district.demand[t]))
-                
-                district.normalised_deficit = np.append(district.normalised_deficit,
-                    self.squared_deficit_normalised(district.squared_deficit[-1],
-                        district.demand[t]))
-
-            # self.total_irr_deficit = np.append(self.total_irr_deficit, total_deficit)
 
             # Hydropower objectives
 
@@ -269,10 +266,17 @@ class ModelNile:
                     reservoir.actual_hydropower_production, hydropower_production
                 )
 
-            if t == self.GERD_filling_time:
+            if t == (self.GERD_filling_time*12):
                 self.reservoirs["GERD"].filling_schedule = None
 
-            
+    @staticmethod
+    def deficit_from_target(realisation, target):
+        """
+        Calculates the deficit given the realisation of an
+        objective and the target
+        """
+        return max(0, target-realisation)
+
     @staticmethod
     def squared_deficit_from_target(realisation, target):
         """
@@ -309,16 +313,10 @@ class ModelNile:
                 setattr(reservoir, var, np.empty(0))
 
         for irr_district in self.irr_districts.values():
-            attributes = ["received_flow", "squared_deficit",
-                "normalised_deficit"]
+            attributes = ["received_flow", "deficit"]
             for var in attributes:
                 setattr(irr_district, var, np.empty(0))
 
-        # Reset the vectors that hold objective deficits:
-        self.total_env_deficit = np.empty(0)
-        self.total_irr_deficit = np.empty(0)
-        self.total_hydro_deficit = np.empty(0)
-        
     def read_settings_file(self, filepath):
 
         model_parameters = pd.read_excel(filepath, sheet_name="ModelParameters")
@@ -331,8 +329,7 @@ class ModelNile:
 
         self.reservoir_parameters = pd.read_excel(filepath,
             sheet_name="Reservoirs")
-        # self.reservoir_parameters["Reservoir Name"] = pd.Series(map(str.lower,
-        #     self.reservoir_parameters["Reservoir Name"]))
+        
         self.reservoir_parameters.set_index("Reservoir Name", inplace=True)
 
         self.policies = list()

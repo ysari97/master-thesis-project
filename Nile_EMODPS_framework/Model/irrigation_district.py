@@ -28,5 +28,6 @@ class IrrigationDistrict:
         data_directory = "../Niledata/"
         self.demand = np.loadtxt(f"{data_directory}IrrDemand{name}.txt")
         self.received_flow = np.empty(0)
+        self.deficit = np.empty(0)
         self.squared_deficit = np.empty(0)
         self.normalised_deficit = np.empty(0)

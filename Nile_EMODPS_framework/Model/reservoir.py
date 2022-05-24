@@ -83,16 +83,23 @@ class Reservoir:
         self.actual_hydropower_production = np.empty(0)
         self.hydropower_deficit = np.empty(0)
         self.filling_schedule = None
+        # Basic memorization implementation
+        self.level_to_surface_memo = dict()
+        self.storage_to_level_memo = dict()
+        self.level_to_minmax_memo = dict()
 
     def read_hydropower_target(self):
         self.target_hydropower_production = \
             np.loadtxt(f"..NileData/{self.name}prod.txt")
     
     def storage_to_level(self, s):
-
-        h = np.interp(s, self.level_to_storage_rel[1],
+        rounded_s = s - (s%1000)
+        if rounded_s not in self.storage_to_level_memo:
+            self.storage_to_level_memo[rounded_s] = \
+                np.interp(rounded_s, self.level_to_storage_rel[1],
                 self.level_to_storage_rel[0])
-        return h
+
+        return self.storage_to_level_memo[rounded_s]
 
     def level_to_storage(self, h):
         # interpolation when lsto_rel exists
@@ -105,11 +112,23 @@ class Reservoir:
         return s
 
     def level_to_surface(self, h):
-    
-        a = np.interp(h, self.level_to_surface_rel[0],
+        rounded_h = round(h,2)
+        if rounded_h not in self.level_to_surface_memo:
+            self.level_to_surface_memo[rounded_h] = \
+                np.interp(rounded_h, self.level_to_surface_rel[0],
                 self.level_to_surface_rel[1])
 
-        return a
+        return self.level_to_surface_memo[rounded_h]
+
+    def level_to_minmax(self, h):
+        rounded_h = round(h,2)
+        if rounded_h not in self.level_to_minmax_memo:
+            self.level_to_minmax_memo[rounded_h] = \
+                (np.interp(rounded_h, self.rating_curve[0],
+                self.rating_curve[1]), np.interp(rounded_h, \
+                self.rating_curve[0],self.rating_curve[2]))
+
+        return self.level_to_minmax_memo[rounded_h]
 
     def integration(self, nu_of_days, policy_release_decision,
         net_secondly_inflow, current_month, integration_interval):
@@ -152,10 +171,12 @@ class Reservoir:
             # Calculate min/max possible releases to compare with the policy
             # decision.
 
-            min_possible_release = np.interp(level, self.rating_curve[0],
-                self.rating_curve[1])
-            max_possible_release = np.interp(level, self.rating_curve[0],
-                self.rating_curve[2])
+            # min_possible_release = np.interp(level, self.rating_curve[0],
+            #     self.rating_curve[1])
+            # max_possible_release = np.interp(level, self.rating_curve[0],
+            #     self.rating_curve[2])
+
+            min_possible_release, max_possible_release = self.level_to_minmax(level)
             
             max_possible_release = min(max_possible_release,releasable_excess)
             

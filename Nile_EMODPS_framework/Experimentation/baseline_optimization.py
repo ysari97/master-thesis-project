@@ -18,7 +18,7 @@ import os
 import sys
 
 my_path = sys.path[0]
-while my_path[-1] != "/":
+while (my_path[-1] != "/") and (my_path[-1] != "\\"):
     my_path = my_path[:-1]
 
 sys.path.insert(1, my_path + "Model")

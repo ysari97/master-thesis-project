@@ -40,7 +40,7 @@ def generate_input_data(nile_model, myseed = 123, wh_set = "Baseline",
         for i in range(12):
             a.append(max(0,np.random.normal(atbara_dist.loc[i,"mean"], atbara_dist.loc[i,"std"])))
             m.append(np.random.triangular(mogren_dist.loc[i,"MinQ"], mogren_dist.loc[i,"MeanQ"], mogren_dist.loc[i,"MaxQ"]))
-            b.append(np.random.uniform(bluenile_dist.loc[i,"0"]*0.8, bluenile_dist.loc[i,"0"]*1.2))
+            b.append(np.random.uniform(bluenile_dist.loc[i,"0"]*0.7, bluenile_dist.loc[i,"0"]*1.3))
         atbara = np.append(atbara, a)
         mogren = np.append(mogren, m)
         bluenile = np.append(bluenile, b)
