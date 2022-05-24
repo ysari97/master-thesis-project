@@ -10,7 +10,7 @@
 <figcaption align = "center"><b>Figure 1 - Topological overview of the modelled system</b></figcaption>
 
 ![image info](ReadmeImages/gis_map.png)
-<figcaption align = "center"><b>Figure 1 - GIS map of the modelled system</b></figcaption>
+<figcaption align = "center"><b>Figure 2 - GIS map of the modelled system</b></figcaption>
 
 <!-- Following the EMODPS methodology, release decisions are made by using a closed loop control policy that returns the decisions conditioned on dynamic inputs. Candidate control policies are initialised as highly parametrised general function approximators such as radial basis functions (RBF) and artificial neural networks (ANN). The aim of the optimisation module is to find the values for the parameters of the release policies for near pareto optimal solutions. Simulation module allows user to obtain the performance metrics and physical quantities of the system by running it with previously optimised policy functions. -->
 
