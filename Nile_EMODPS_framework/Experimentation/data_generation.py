@@ -19,7 +19,10 @@ def generate_input_data(nile_model, myseed = 123, wh_set = "Baseline",
         district.demand = demand_vector
     
     # time for streamflow, start by getting the appropriate Wheeler (2018) set:
-    wh_data = pickle.load( open( f"{data_directory}{wh_set}_wheeler.p", "rb" ) )
+    wheeler_large = pd.read_csv(f"{data_directory}{wh_set}_wheeler.csv")
+    wh_data = [wheeler_large[i:i+600] for i in range(100)]
+    del wheeler_large
+    #wh_data = pickle.load( open( f"{data_directory}{wh_set}_wheeler.p", "rb" ) )
     np.random.seed(myseed)
     set_number = np.random.randint(1, 101)
     numbered_catchments = wh_data[set_number]

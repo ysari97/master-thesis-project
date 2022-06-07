@@ -8,7 +8,7 @@ import pickle
 from ema_workbench import (RealParameter, ScalarOutcome, Constant,
                            Model)
 from ema_workbench import MultiprocessingEvaluator, SequentialEvaluator, ema_logging
-from ema_workbench.em_framework.optimization import HyperVolume, EpsilonProgress
+from ema_workbench.em_framework.optimization import HyperVolume, EpsilonProgress, ArchiveLogger
 
 from data_generation import generate_input_data
 from wrapper import model_wrapper
@@ -28,10 +28,9 @@ from model_nile import ModelNile
 
 if __name__ == '__main__':
 
-
+    output_directory = "../Outputs/"
     model_object = ModelNile()
     model_object = generate_input_data(model_object, sim_horizon=20)
-
 
     parameter_count = model_object.overarching_policy.get_total_parameter_count()
 
@@ -49,7 +48,12 @@ if __name__ == '__main__':
                     ScalarOutcome('sudan_90', ScalarOutcome.MINIMIZE),
                     ScalarOutcome('ethiopia_hydro', ScalarOutcome.MAXIMIZE)]
 
-    convergence_metrics = [EpsilonProgress()]
+    convergence_metrics = [
+        EpsilonProgress(),
+        ArchiveLogger(f"{output_directory}archive_logs",
+            [lever.name for lever in em_model.levers],
+            [outcome.name for outcome in em_model.outcomes])
+        ]
 
     ema_logging.log_to_stderr(ema_logging.INFO)
 
@@ -60,16 +64,23 @@ if __name__ == '__main__':
 
     with MultiprocessingEvaluator(em_model) as evaluator:
         results, convergence = evaluator.optimize(nfe=NFE_count, searchover='levers', logging_freq=5,
-        epsilons=epsilon_list, convergence=convergence_metrics)
+        epsilons=epsilon_list, convergence_freq=500, convergence=convergence_metrics)
 
     after = datetime.now()
 
-    pickle.dump(results, open("baseline_results.p", "wb"))
-    pickle.dump(convergence, open("baseline_convergence.p", "wb"))
-
-    f = open("time_counter.txt", "w")
+    f = open(f"{output_directory}time_counter.txt", "w")
     f.write(f"It took {after-before} time to do {NFE_count} NFEs with epsilons: {epsilon_list}")
     f.close()
+
+    # pickle.dump(results, open("baseline_results.p", "wb"))
+    # pickle.dump(convergence, open("baseline_convergence.p", "wb"))
+
+    results.to_csv(f"{output_directory}baseline_results.csv")
+    convergence.to_csv(f"{output_directory}baseline_convergence.csv")
+
+    
+
+    
 
 
     
