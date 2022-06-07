@@ -2,8 +2,15 @@ import numpy as np
 import pickle
 import pandas as pd
 
-def generate_input_data(nile_model, myseed = 123, wh_set = "Baseline",
-                        sim_horizon = 20, yearly_demand_growth_rate=0.02, GERD_filling=5):
+
+def generate_input_data(
+    nile_model,
+    myseed=123,
+    wh_set="Baseline",
+    sim_horizon=20,
+    yearly_demand_growth_rate=0.02,
+    GERD_filling=5,
+):
     # streamflow + demand
     data_directory = "../StochasticDataGenerationInputs/"
 
@@ -14,19 +21,19 @@ def generate_input_data(nile_model, myseed = 123, wh_set = "Baseline",
         loop_counter = sim_horizon
         while loop_counter > 0:
             demand_vector = np.append(demand_vector, one_year)
-            one_year *= (1+yearly_demand_growth_rate)
+            one_year *= 1 + yearly_demand_growth_rate
             loop_counter -= 1
         district.demand = demand_vector
-    
+
     # time for streamflow, start by getting the appropriate Wheeler (2018) set:
     wheeler_large = pd.read_csv(f"{data_directory}{wh_set}_wheeler.csv")
-    wh_data = [wheeler_large[i:i+600] for i in range(100)]
+    wh_data = [wheeler_large[i : i + 600] for i in range(100)]
     del wheeler_large
-    #wh_data = pickle.load( open( f"{data_directory}{wh_set}_wheeler.p", "rb" ) )
+    # wh_data = pickle.load( open( f"{data_directory}{wh_set}_wheeler.p", "rb" ) )
     np.random.seed(myseed)
     set_number = np.random.randint(1, 101)
     numbered_catchments = wh_data[set_number]
-    numbered_catchments = numbered_catchments.iloc[49:(49+sim_horizon*12)]
+    numbered_catchments = numbered_catchments.iloc[49 : (49 + sim_horizon * 12)]
 
     # Focus on the major inflows (3 gaging stations)
     atbara_dist = pd.read_csv(f"{data_directory}atbara_distribution.csv")
@@ -41,15 +48,32 @@ def generate_input_data(nile_model, myseed = 123, wh_set = "Baseline",
         m = list()
         b = list()
         for i in range(12):
-            a.append(max(0,np.random.normal(atbara_dist.loc[i,"mean"], atbara_dist.loc[i,"std"])))
-            m.append(np.random.triangular(mogren_dist.loc[i,"MinQ"], mogren_dist.loc[i,"MeanQ"], mogren_dist.loc[i,"MaxQ"]))
-            b.append(np.random.uniform(bluenile_dist.loc[i,"0"]*0.7, bluenile_dist.loc[i,"0"]*1.3))
+            a.append(
+                max(
+                    0,
+                    np.random.normal(
+                        atbara_dist.loc[i, "mean"], atbara_dist.loc[i, "std"]
+                    ),
+                )
+            )
+            m.append(
+                np.random.triangular(
+                    mogren_dist.loc[i, "MinQ"],
+                    mogren_dist.loc[i, "MeanQ"],
+                    mogren_dist.loc[i, "MaxQ"],
+                )
+            )
+            b.append(
+                np.random.uniform(
+                    bluenile_dist.loc[i, "0"] * 0.7, bluenile_dist.loc[i, "0"] * 1.3
+                )
+            )
         atbara = np.append(atbara, a)
         mogren = np.append(mogren, m)
         bluenile = np.append(bluenile, b)
 
         loop_counter -= 1
-    inflow_dict = get_inflow_dict(numbered_catchments,atbara,mogren,bluenile)
+    inflow_dict = get_inflow_dict(numbered_catchments, atbara, mogren, bluenile)
     for catchment in nile_model.catchments.values():
         catchment.inflow = np.array(inflow_dict[catchment.name])
 
@@ -57,20 +81,25 @@ def generate_input_data(nile_model, myseed = 123, wh_set = "Baseline",
 
     return nile_model
 
+
 def get_inflow_dict(wh_df, atbara, mogren, bluenile):
-    
+
     output = dict()
-    output["Dinder"] = wh_df["340.Inflow"] + wh_df["635.Inflow"] + \
-        wh_df["1308.Inflow"]
-    output["Rahad"] = wh_df["243.Inflow"] + wh_df["519.Inflow"] + \
-        wh_df["524.Inflow"]
-    output["GERDToRoseires"] = wh_df["33.Inflow"] + wh_df["530.Inflow"] + \
-        wh_df["1374.Inflow"]
+    output["Dinder"] = wh_df["340.Inflow"] + wh_df["635.Inflow"] + wh_df["1308.Inflow"]
+    output["Rahad"] = wh_df["243.Inflow"] + wh_df["519.Inflow"] + wh_df["524.Inflow"]
+    output["GERDToRoseires"] = (
+        wh_df["33.Inflow"] + wh_df["530.Inflow"] + wh_df["1374.Inflow"]
+    )
     output["RoseiresToAbuNaama"] = wh_df["1309.Inflow"]
     output["SukiToSennar"] = wh_df["470.Inflow"]
-    output["WhiteNile"] = wh_df["1364.Inflow"] + wh_df["1338.Inflow"] + \
-        wh_df["1317.Inflow"] + wh_df["31.Inflow"] + mogren
+    output["WhiteNile"] = (
+        wh_df["1364.Inflow"]
+        + wh_df["1338.Inflow"]
+        + wh_df["1317.Inflow"]
+        + wh_df["31.Inflow"]
+        + mogren
+    )
     output["Atbara"] = atbara
     output["BlueNile"] = bluenile
-    
+
     return output

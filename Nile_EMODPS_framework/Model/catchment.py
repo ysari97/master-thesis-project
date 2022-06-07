@@ -1,10 +1,10 @@
-# Catchement class
+# Catchment class
 
 import numpy as np
 
-class Catchment:
 
-   def __init__(self, name):
+class Catchment:
+    def __init__(self, name):
         # Explanation placeholder
         self.name = name
 

@@ -2,6 +2,7 @@
 
 import numpy as np
 
+
 class IrrigationDistrict:
     """
     A class used to represent districts that demand irrigation

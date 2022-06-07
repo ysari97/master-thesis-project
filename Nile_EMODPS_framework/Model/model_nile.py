@@ -5,11 +5,12 @@ import numpy as np
 import pandas as pd
 
 # Importing classes to generate the model
-from reservoir import Reservoir
-from catchment import Catchment
-from irrigation_district import IrrigationDistrict
-from hydropower_plant import HydropowerPlant
-from smash import Policy
+from .reservoir import Reservoir
+from .catchment import Catchment
+from .irrigation_district import IrrigationDistrict
+from .hydropower_plant import HydropowerPlant
+from .smash import Policy
+
 
 class ModelNile:
     """
@@ -32,7 +33,7 @@ class ModelNile:
         """
 
         self.read_settings_file("../settings/settings_file_Nile.xlsx")
-    
+
         # Generating catchment and irrigation district objects
         self.catchments = dict()
         for name in self.catchment_names:
@@ -49,27 +50,31 @@ class ModelNile:
         self.reservoirs = dict()
         for name in self.reservoir_names:
             new_reservoir = Reservoir(name)
-            
+
             new_plant = HydropowerPlant(new_reservoir)
             new_reservoir.hydropower_plants.append(new_plant)
-            
+
             # Set initial storage values (based on excel settings)
-            initial_storage = float(self.reservoir_parameters.loc[name, \
-                "Initial Storage(m3)"])
-            new_reservoir.storage_vector = np.append\
-                (new_reservoir.storage_vector, initial_storage)
+            initial_storage = float(
+                self.reservoir_parameters.loc[name, "Initial Storage(m3)"]
+            )
+            new_reservoir.storage_vector = np.append(
+                new_reservoir.storage_vector, initial_storage
+            )
 
             # Set hydropower production parameters (based on excel settings)
-            variable_names_raw = self.reservoir_parameters.columns[-4:].\
-                values.tolist()
-        
+            variable_names_raw = self.reservoir_parameters.columns[-4:].values.tolist()
+
             for i, plant in enumerate(new_reservoir.hydropower_plants):
                 for variable in variable_names_raw:
-                    setattr(plant, variable.replace(" ", "_").lower(),
-                    eval(self.reservoir_parameters.loc[name,variable])[i])
-            
+                    setattr(
+                        plant,
+                        variable.replace(" ", "_").lower(),
+                        eval(self.reservoir_parameters.loc[name, variable])[i],
+                    )
+
             self.reservoirs[name] = new_reservoir
-        
+
         # Delete dataframe from memory after initialization
         del self.reservoir_parameters
 
@@ -85,6 +90,18 @@ class ModelNile:
         # As the policies are initialised, we can get rid of this list of
         # dictionaries to save memory space
         del self.policies
+
+    def __call__(self, *args, **kwargs):
+        input = [kwargs["v" + str(i)] for i in range(len(kwargs))]
+        (
+            egypt_irr,
+            egypt_90,
+            egypt_low_had,
+            sudan_irr,
+            sudan_90,
+            ethiopia_hydro,
+        ) = self.evaluate(np.array(input))
+        return egypt_irr, egypt_90, egypt_low_had, sudan_irr, sudan_90, ethiopia_hydro
 
     def evaluate(self, parameter_vector):
         """ Evaluate the KPI values based on the given input
@@ -106,27 +123,38 @@ class ModelNile:
         self.reset_parameters()
         self.overarching_policy.assign_free_parameters(parameter_vector)
         self.simulate()
-        
+
         egypt_agg_def = np.sum(self.irr_districts["Egypt"].deficit)
-        egypt_90_perc_worst = np.percentile(self.irr_districts["Egypt"].deficit,
-                                            90, interpolation = "closest_observation")
-        egypt_freq_low_HAD = np.sum(self.reservoirs["HAD"].level_vector < 147) / \
-            len(self.reservoirs["HAD"].level_vector)
-        
-        sudan_irr_districts = [value for key, value in self.irr_districts.items()\
-            if key not in {"Egypt"}]
+        egypt_90_perc_worst = np.percentile(
+            self.irr_districts["Egypt"].deficit, 90, interpolation="closest_observation"
+        )
+        egypt_freq_low_HAD = np.sum(self.reservoirs["HAD"].level_vector < 147) / len(
+            self.reservoirs["HAD"].level_vector
+        )
+
+        sudan_irr_districts = [
+            value for key, value in self.irr_districts.items() if key not in {"Egypt"}
+        ]
         sudan_agg_def_vector = np.repeat(0.0, self.simulation_horizon)
         for district in sudan_irr_districts:
             sudan_agg_def_vector += district.deficit
         sudan_agg_def = np.sum(sudan_agg_def_vector)
-        sudan_90_perc_worst = np.percentile(sudan_agg_def_vector, 90,
-                                            interpolation = "closest_observation")
-        
-        ethiopia_agg_hydro = np.sum(\
-            self.reservoirs["GERD"].actual_hydropower_production)
+        sudan_90_perc_worst = np.percentile(
+            sudan_agg_def_vector, 90, interpolation="closest_observation"
+        )
 
-        return egypt_agg_def, egypt_90_perc_worst, egypt_freq_low_HAD, \
-            sudan_agg_def, sudan_90_perc_worst, ethiopia_agg_hydro
+        ethiopia_agg_hydro = np.sum(
+            self.reservoirs["GERD"].actual_hydropower_production
+        )
+
+        return (
+            egypt_agg_def,
+            egypt_90_perc_worst,
+            egypt_freq_low_HAD,
+            sudan_agg_def,
+            sudan_90_perc_worst,
+            ethiopia_agg_hydro,
+        )
 
     def simulate(self):
         """ Mathematical simulation over the specified simulation
@@ -144,102 +172,142 @@ class ModelNile:
         Taminiat_leftover = [0.0, 0.0]
 
         for t in np.arange(self.simulation_horizon):
-            
-            moy = (self.init_month+t-1)%12+1 # Current month
-            nu_of_days = self.nu_of_days_per_month[moy-1]
+
+            moy = (self.init_month + t - 1) % 12 + 1  # Current month
+            nu_of_days = self.nu_of_days_per_month[moy - 1]
 
             # add the inputs for the function approximator (NN, RBF)
             # black-box policy. Watch out for verification if the below
             # sequence of reservoirs is the same as previous version
 
-            storages = [reservoir.storage_vector[t] for reservoir \
-                in self.reservoirs.values()]
+            storages = [
+                reservoir.storage_vector[t] for reservoir in self.reservoirs.values()
+            ]
             # In addition to storages, month of the year and total inflow
             # values are used by the policy function:
             input = storages + [moy, total_monthly_inflow]
 
-            uu = self.overarching_policy.functions["release"].\
-                get_output_norm(np.array(input)) # Policy function is called here!
-            
-            decision_dict = {reservoir.name: uu[index] \
-                for index, reservoir in enumerate(self.reservoirs.values())}
+            uu = self.overarching_policy.functions["release"].get_output_norm(
+                np.array(input)
+            )  # Policy function is called here!
+
+            decision_dict = {
+                reservoir.name: uu[index]
+                for index, reservoir in enumerate(self.reservoirs.values())
+            }
 
             # Integration of flows to storages
             self.reservoirs["GERD"].integration(
-                nu_of_days, decision_dict["GERD"],
-                self.catchments["BlueNile"].inflow[t], moy, self.integration_interval)
-            
-            self.reservoirs["Roseires"].integration(
-                nu_of_days, decision_dict["Roseires"],
-                self.catchments["GERDToRoseires"].inflow[t] + \
-                self.reservoirs["GERD"].release_vector[-1],
-                moy, self.integration_interval)
+                nu_of_days,
+                decision_dict["GERD"],
+                self.catchments["BlueNile"].inflow[t],
+                moy,
+                self.integration_interval,
+            )
 
-            USSennar_input = self.reservoirs["Roseires"].release_vector[-1] +\
-                self.catchments["RoseiresToAbuNaama"].inflow[t]
-        
+            self.reservoirs["Roseires"].integration(
+                nu_of_days,
+                decision_dict["Roseires"],
+                self.catchments["GERDToRoseires"].inflow[t]
+                + self.reservoirs["GERD"].release_vector[-1],
+                moy,
+                self.integration_interval,
+            )
+
+            USSennar_input = (
+                self.reservoirs["Roseires"].release_vector[-1]
+                + self.catchments["RoseiresToAbuNaama"].inflow[t]
+            )
+
             self.irr_districts["USSennar"].received_flow = np.append(
                 self.irr_districts["USSennar"].received_flow,
-                min(USSennar_input,self.irr_districts["USSennar"].demand[t]))
+                min(USSennar_input, self.irr_districts["USSennar"].demand[t]),
+            )
 
-            USSennar_leftover = max(0, USSennar_input - \
-                self.irr_districts["USSennar"].received_flow[-1])
+            USSennar_leftover = max(
+                0, USSennar_input - self.irr_districts["USSennar"].received_flow[-1]
+            )
 
             self.reservoirs["Sennar"].integration(
-                nu_of_days, decision_dict["Sennar"],
+                nu_of_days,
+                decision_dict["Sennar"],
                 USSennar_leftover + self.catchments["SukiToSennar"].inflow[t],
-                moy, self.integration_interval)
+                moy,
+                self.integration_interval,
+            )
 
             Gezira_input = self.reservoirs["Sennar"].release_vector[-1]
 
             self.irr_districts["Gezira"].received_flow = np.append(
                 self.irr_districts["Gezira"].received_flow,
-                min(self.irr_districts["Gezira"].demand[t], Gezira_input))
+                min(self.irr_districts["Gezira"].demand[t], Gezira_input),
+            )
 
-            Gezira_leftover = max(0, Gezira_input - \
-                self.irr_districts["Gezira"].received_flow[-1])
+            Gezira_leftover = max(
+                0, Gezira_input - self.irr_districts["Gezira"].received_flow[-1]
+            )
 
-            DSSennar_input = Gezira_leftover + self.catchments["Dinder"].inflow[t] + \
-                    self.catchments["Rahad"].inflow[t]
+            DSSennar_input = (
+                Gezira_leftover
+                + self.catchments["Dinder"].inflow[t]
+                + self.catchments["Rahad"].inflow[t]
+            )
 
             self.irr_districts["DSSennar"].received_flow = np.append(
                 self.irr_districts["DSSennar"].received_flow,
-                min(DSSennar_input, self.irr_districts["USSennar"].demand[t]))
+                min(DSSennar_input, self.irr_districts["USSennar"].demand[t]),
+            )
 
-            DSSennar_leftover = max(0, DSSennar_input - \
-                self.irr_districts["DSSennar"].received_flow[-1])
+            DSSennar_leftover = max(
+                0, DSSennar_input - self.irr_districts["DSSennar"].received_flow[-1]
+            )
 
-            Taminiat_input = DSSennar_leftover + \
-                self.catchments["WhiteNile"].inflow[t]
+            Taminiat_input = DSSennar_leftover + self.catchments["WhiteNile"].inflow[t]
 
             self.irr_districts["Taminiat"].received_flow = np.append(
                 self.irr_districts["Taminiat"].received_flow,
-                min(Taminiat_input, self.irr_districts["Taminiat"].demand[t]))
+                min(Taminiat_input, self.irr_districts["Taminiat"].demand[t]),
+            )
 
-            Taminiat_leftover.append(max(0, Taminiat_input - \
-                self.irr_districts["Taminiat"].received_flow[-1]))
+            Taminiat_leftover.append(
+                max(
+                    0, Taminiat_input - self.irr_districts["Taminiat"].received_flow[-1]
+                )
+            )
             del Taminiat_leftover[0]
 
             # Delayed reach of water to Hassanab:
-            if t == 0: Hassanab_input = 1500
-            else: Hassanab_input = Taminiat_leftover[0] + \
-                self.catchments["Atbara"].inflow[t-1]
-            
+            if t == 0:
+                Hassanab_input = 1500
+            else:
+                Hassanab_input = (
+                    Taminiat_leftover[0] + self.catchments["Atbara"].inflow[t - 1]
+                )
+
             self.irr_districts["Hassanab"].received_flow = np.append(
                 self.irr_districts["Hassanab"].received_flow,
-                min(Hassanab_input, self.irr_districts["Hassanab"].demand[t]))
+                min(Hassanab_input, self.irr_districts["Hassanab"].demand[t]),
+            )
 
-            Hassanab_leftover = max(0, Hassanab_input - \
-                self.irr_districts["Hassanab"].received_flow[-1])
+            Hassanab_leftover = max(
+                0, Hassanab_input - self.irr_districts["Hassanab"].received_flow[-1]
+            )
 
             self.reservoirs["HAD"].integration(
-                nu_of_days, decision_dict["HAD"],
-                Hassanab_leftover, moy, self.integration_interval)
+                nu_of_days,
+                decision_dict["HAD"],
+                Hassanab_leftover,
+                moy,
+                self.integration_interval,
+            )
 
             self.irr_districts["Egypt"].received_flow = np.append(
                 self.irr_districts["Egypt"].received_flow,
-                min(self.reservoirs["HAD"].release_vector[-1],
-                    self.irr_districts["Egypt"].demand[t]))
+                min(
+                    self.reservoirs["HAD"].release_vector[-1],
+                    self.irr_districts["Egypt"].demand[t],
+                ),
+            )
 
             total_monthly_inflow = sum([x.inflow[t] for x in self.catchments.values()])
 
@@ -248,9 +316,12 @@ class ModelNile:
             # Irrigation demand deficits
 
             for district in self.irr_districts.values():
-                district.deficit = np.append(district.deficit,
-                    self.deficit_from_target(district.received_flow[-1],
-                        district.demand[t]))
+                district.deficit = np.append(
+                    district.deficit,
+                    self.deficit_from_target(
+                        district.received_flow[-1], district.demand[t]
+                    ),
+                )
 
             # Hydropower objectives
 
@@ -258,15 +329,17 @@ class ModelNile:
                 hydropower_production = 0
                 for plant in reservoir.hydropower_plants:
                     production = plant.calculate_hydropower_production(
-                        reservoir.release_vector[-1], reservoir.level_vector[-1],
-                        nu_of_days)
+                        reservoir.release_vector[-1],
+                        reservoir.level_vector[-1],
+                        nu_of_days,
+                    )
                     hydropower_production += production
 
                 reservoir.actual_hydropower_production = np.append(
                     reservoir.actual_hydropower_production, hydropower_production
                 )
 
-            if t == (self.GERD_filling_time*12):
+            if t == (self.GERD_filling_time * 12):
                 self.reservoirs["GERD"].filling_schedule = None
 
     @staticmethod
@@ -275,7 +348,7 @@ class ModelNile:
         Calculates the deficit given the realisation of an
         objective and the target
         """
-        return max(0, target-realisation)
+        return max(0, target - realisation)
 
     @staticmethod
     def squared_deficit_from_target(realisation, target):
@@ -283,23 +356,26 @@ class ModelNile:
         Calculates the square of a deficit given the realisation of an
         objective and the target
         """
-        return pow(max(0, target-realisation),2)
+        return pow(max(0, target - realisation), 2)
 
     @staticmethod
     def squared_deficit_normalised(sq_deficit, target):
         """
         Scales down a squared deficit with respect to the square of the target
         """
-        if target == 0: return 0
-        else: return sq_deficit/pow(target, 2)
+        if target == 0:
+            return 0
+        else:
+            return sq_deficit / pow(target, 2)
 
     def set_GERD_filling_schedule(self, duration):
         target_storage = 50e9
         difference = target_storage - self.reservoirs["GERD"].storage_vector[0]
-        secondly_diff = difference / (duration*365*24*3600)
+        secondly_diff = difference / (duration * 365 * 24 * 3600)
         weights = self.catchments["BlueNile"].inflow[:12]
-        self.reservoirs["GERD"].filling_schedule = \
-            (weights * 12 * secondly_diff) / weights.sum()
+        self.reservoirs["GERD"].filling_schedule = (
+            weights * 12 * secondly_diff
+        ) / weights.sum()
 
     def reset_parameters(self):
 
@@ -307,8 +383,13 @@ class ModelNile:
             # Leaving only the initial value in the storages
             reservoir.storage_vector = reservoir.storage_vector[:1]
             # Resetting all other vectors:
-            attributes = ["level_vector", "release_vector", "level_vector",
-                "actual_hydropower_production", "hydropower_deficit"]
+            attributes = [
+                "level_vector",
+                "release_vector",
+                "level_vector",
+                "actual_hydropower_production",
+                "hydropower_deficit",
+            ]
             for var in attributes:
                 setattr(reservoir, var, np.empty(0))
 
@@ -322,32 +403,36 @@ class ModelNile:
         model_parameters = pd.read_excel(filepath, sheet_name="ModelParameters")
         for _, row in model_parameters.iterrows():
             name = row["in Python"]
-            if row["Data Type"] == "str": value = row["Value"]
-            else: value = eval(str(row["Value"]))
-            if row["Data Type"] == "np.array": value = np.array(value)
+            if row["Data Type"] == "str":
+                value = row["Value"]
+            else:
+                value = eval(str(row["Value"]))
+            if row["Data Type"] == "np.array":
+                value = np.array(value)
             setattr(self, name, value)
 
-        self.reservoir_parameters = pd.read_excel(filepath,
-            sheet_name="Reservoirs")
-        
+        self.reservoir_parameters = pd.read_excel(filepath, sheet_name="Reservoirs")
+
         self.reservoir_parameters.set_index("Reservoir Name", inplace=True)
 
         self.policies = list()
         full_df = pd.read_excel(filepath, sheet_name="PolicyParameters")
-        splitpoints = list(full_df.loc[full_df["Parameter Name"] == "Name"]\
-            .index)
+        splitpoints = list(full_df.loc[full_df["Parameter Name"] == "Name"].index)
         for i in range(len(splitpoints)):
             try:
-                one_policy = full_df.iloc[splitpoints[i]:splitpoints[i+1],:]
+                one_policy = full_df.iloc[splitpoints[i] : splitpoints[i + 1], :]
             except IndexError:
-                one_policy = full_df.iloc[splitpoints[i]:,:]
+                one_policy = full_df.iloc[splitpoints[i] :, :]
             input_dict = dict()
-            
+
             for _, row in one_policy.iterrows():
                 key = row["in Python"]
-                if row["Data Type"] != "str": value = eval(str(row["Value"]))
-                else: value = row["Value"]
-                if row["Data Type"] == "np.array": value = np.array(value)
+                if row["Data Type"] != "str":
+                    value = eval(str(row["Value"]))
+                else:
+                    value = row["Value"]
+                if row["Data Type"] == "np.array":
+                    value = np.array(value)
                 input_dict[key] = value
 
             self.policies.append(input_dict)
