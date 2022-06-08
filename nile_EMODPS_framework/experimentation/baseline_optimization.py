@@ -1,7 +1,6 @@
 # Script for baseline optimization
 
 
-
 import numpy as np
 import os
 import pandas as pd
