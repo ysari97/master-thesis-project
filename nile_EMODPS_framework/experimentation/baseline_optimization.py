@@ -65,7 +65,6 @@ if __name__ == "__main__":
         results, convergence = evaluator.optimize(
             nfe=NFE_count,
             searchover="levers",
-            logging_freq=5,
             epsilons=epsilon_list,
             convergence_freq=500,
             convergence=convergence_metrics,
