@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     before = datetime.now()
 
-    with SequentialEvaluator(em_model) as evaluator:
+    with MultiprocessingEvaluator(em_model) as evaluator:
         results, convergence = evaluator.optimize(
             nfe=NFE_count,
             searchover="levers",
