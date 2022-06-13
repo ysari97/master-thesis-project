@@ -2,9 +2,8 @@ from functools import cached_property
 import numpy as np
 import os
 from scipy.constants import g
-from sympy import memoize_property
+# from sympy import memoize_property
 
-# Reservoir class
 dir_path = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
 data_directory = os.path.join(dir_path, "../NileData/")
 
@@ -169,23 +168,28 @@ class Reservoir:
         self.hydropower_deficit = np.empty(0)
         self.filling_schedule = None
         # Basic memorization implementation
-        self.level_to_surface_memo = dict()
-        self.storage_to_level_memo = dict()
-        self.level_to_minmax_memo = dict()
+        # self.level_to_surface_memo = dict()
+        # self.storage_to_level_memo = dict()
+        # self.level_to_minmax_memo = dict()
 
     def read_hydropower_target(self):
 
         fh = os.path.join(data_directory, f"{self.name}prod.txt")
         self.target_hydropower_production = np.loadtxt(fh)
 
-    def storage_to_level(self, s):
-        rounded_s = s - (s % 1000)
-        if rounded_s not in self.storage_to_level_memo:
-            self.storage_to_level_memo[rounded_s] = np.interp(
-                rounded_s, self.level_to_storage_rel[1], self.level_to_storage_rel[0]
-            )
+    # def storage_to_level(self, s):
+    #     rounded_s = s - (s % 1000)
+    #     if rounded_s not in self.storage_to_level_memo:
+    #         self.storage_to_level_memo[rounded_s] = np.interp(
+    #             rounded_s, self.level_to_storage_rel[1], self.level_to_storage_rel[0]
+    #         )
 
-        return self.storage_to_level_memo[rounded_s]
+    #     return self.storage_to_level_memo[rounded_s]
+
+    def storage_to_level(self, s):
+        return np.interp(
+                s, self.level_to_storage_rel[1], self.level_to_storage_rel[0]
+            )
 
     def level_to_storage(self, h):
         # interpolation when lsto_rel exists
@@ -196,24 +200,35 @@ class Reservoir:
             s = h * self.average_cross_section
         return s
 
+    # def level_to_surface(self, h):
+    #     rounded_h = round(h, 2)
+    #     if rounded_h not in self.level_to_surface_memo:
+    #         self.level_to_surface_memo[rounded_h] = np.interp(
+    #             rounded_h, self.level_to_surface_rel[0], self.level_to_surface_rel[1]
+    #         )
+
+    #     return self.level_to_surface_memo[rounded_h]
+
     def level_to_surface(self, h):
-        rounded_h = round(h, 2)
-        if rounded_h not in self.level_to_surface_memo:
-            self.level_to_surface_memo[rounded_h] = np.interp(
-                rounded_h, self.level_to_surface_rel[0], self.level_to_surface_rel[1]
+        return np.interp(
+                h, self.level_to_surface_rel[0], self.level_to_surface_rel[1]
             )
 
-        return self.level_to_surface_memo[rounded_h]
+    # def level_to_minmax(self, h):
+    #     rounded_h = round(h, 2)
+    #     if rounded_h not in self.level_to_minmax_memo:
+    #         self.level_to_minmax_memo[rounded_h] = (
+    #             np.interp(rounded_h, self.rating_curve[0], self.rating_curve[1]),
+    #             np.interp(rounded_h, self.rating_curve[0], self.rating_curve[2]),
+    #         )
+
+    #     return self.level_to_minmax_memo[rounded_h]
 
     def level_to_minmax(self, h):
-        rounded_h = round(h, 2)
-        if rounded_h not in self.level_to_minmax_memo:
-            self.level_to_minmax_memo[rounded_h] = (
-                np.interp(rounded_h, self.rating_curve[0], self.rating_curve[1]),
-                np.interp(rounded_h, self.rating_curve[0], self.rating_curve[2]),
+        return (
+                np.interp(h, self.rating_curve[0], self.rating_curve[1]),
+                np.interp(h, self.rating_curve[0], self.rating_curve[2]),
             )
-
-        return self.level_to_minmax_memo[rounded_h]
 
     def integration(
         self,

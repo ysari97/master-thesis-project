@@ -5,10 +5,6 @@ import numpy as np
 import pandas as pd
 
 # Importing classes to generate the model
-# from .reservoir import Reservoir
-# from .catchment import Catchment
-# from .irrigation_district import IrrigationDistrict
-# from .hydropower_plant import HydropowerPlant
 from .model_classes import Reservoir, Catchment, IrrigationDistrict, HydropowerPlant
 from .smash import Policy
 

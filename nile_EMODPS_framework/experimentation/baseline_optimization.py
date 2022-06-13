@@ -10,9 +10,8 @@ from datetime import datetime
 
 
 from ema_workbench import RealParameter, ScalarOutcome, Constant, Model
-from ema_workbench import MultiprocessingEvaluator, SequentialEvaluator, ema_logging
+from ema_workbench import MultiprocessingEvaluator, ema_logging
 from ema_workbench.em_framework.optimization import (
-    HyperVolume,
     EpsilonProgress,
     ArchiveLogger,
 )
@@ -56,7 +55,7 @@ if __name__ == "__main__":
         ),
     ]
 
-    NFE_count = 1000
+    NFE_count = 100
     epsilon_list = [1e2, 1e1, 1e-2, 1e2, 1e1, 1e3]
 
     before = datetime.now()
