@@ -55,14 +55,14 @@ if __name__ == "__main__":
         ),
     ]
 
-    NFE_count = 100
+    nfe = 50000
     epsilon_list = [1e2, 1e1, 1e-2, 1e2, 1e1, 1e3]
 
     before = datetime.now()
 
     with MultiprocessingEvaluator(em_model) as evaluator:
         results, convergence = evaluator.optimize(
-            nfe=NFE_count,
+            nfe=nfe,
             searchover="levers",
             epsilons=epsilon_list,
             convergence_freq=500,
@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
     with open(f"{output_directory}time_counter.txt", "w") as f:
         f.write(
-            f"It took {after-before} time to do {NFE_count} NFEs with epsilons: {epsilon_list}"
+            f"It took {after-before} time to do {nfe} NFEs with epsilons: {epsilon_list}"
         )
 
     results.to_csv(f"{output_directory}baseline_results.csv")
