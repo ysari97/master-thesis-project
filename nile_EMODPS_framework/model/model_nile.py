@@ -89,7 +89,7 @@ class ModelNile:
         del self.policies
 
     def __call__(self, *args, **kwargs):
-        input = [kwargs["v" + str(i)] for i in range(len(kwargs))]
+        input_parameters = [kwargs["v" + str(i)] for i in range(len(kwargs))]
         (
             egypt_irr,
             egypt_90,
@@ -97,7 +97,7 @@ class ModelNile:
             sudan_irr,
             sudan_90,
             ethiopia_hydro,
-        ) = self.evaluate(np.array(input))
+        ) = self.evaluate(np.array(input_parameters))
         return egypt_irr, egypt_90, egypt_low_had, sudan_irr, sudan_90, ethiopia_hydro
 
     def evaluate(self, parameter_vector):
@@ -417,9 +417,9 @@ class ModelNile:
         splitpoints = list(full_df.loc[full_df["Parameter Name"] == "Name"].index)
         for i in range(len(splitpoints)):
             try:
-                one_policy = full_df.iloc[splitpoints[i] : splitpoints[i + 1], :]
+                one_policy = full_df.iloc[splitpoints[i]: splitpoints[i + 1], :]
             except IndexError:
-                one_policy = full_df.iloc[splitpoints[i] :, :]
+                one_policy = full_df.iloc[splitpoints[i]:, :]
             input_dict = dict()
 
             for _, row in one_policy.iterrows():

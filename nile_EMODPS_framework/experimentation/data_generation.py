@@ -1,7 +1,5 @@
 import numpy as np
-import pickle
 import pandas as pd
-
 
 def generate_input_data(
     nile_model,
@@ -12,7 +10,7 @@ def generate_input_data(
     GERD_filling=5,
 ):
     # streamflow + demand
-    data_directory = "../StochasticDataGenerationInputs/"
+    data_directory = "../stochastic_data_generation_inputs/"
 
     # start with the demand
     for district in nile_model.irr_districts.values():

@@ -1,11 +1,10 @@
-from functools import cached_property
+
 import numpy as np
 import os
 from scipy.constants import g
-# from sympy import memoize_property
 
 dir_path = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
-data_directory = os.path.join(dir_path, "../NileData/")
+data_directory = os.path.join(dir_path, "../data/")
 
 
 class Catchment:

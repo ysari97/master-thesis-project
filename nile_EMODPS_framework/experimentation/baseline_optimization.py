@@ -17,15 +17,13 @@ from ema_workbench.em_framework.optimization import (
 )
 
 from data_generation import generate_input_data
-from wrapper import model_wrapper
 from nile_EMODPS_framework.model.model_nile import ModelNile
 
-# from model_nile import ModelNile
 
 if __name__ == "__main__":
     ema_logging.log_to_stderr(ema_logging.INFO)
 
-    output_directory = "../Outputs/"
+    output_directory = "../outputs/"
     nile_model = ModelNile()
     model_object = generate_input_data(nile_model, sim_horizon=20)
 
