@@ -30,7 +30,7 @@ class HydropowerPlant:
         self, actual_release, reservoir_level, nu_of_days
     ):
 
-        if self.release_share != None:
+        if self.release_share is not None:
             actual_release *= self.release_share
 
         m3_to_kg_factor = 1000
