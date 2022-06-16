@@ -78,6 +78,7 @@ class IrrigationDistrict:
         fh = os.path.join(data_directory, f"IrrDemand{name}.txt")
         self.demand = np.loadtxt(fh)
         self.received_flow = np.empty(0)
+        self.received_flow_raw = np.empty(0)
         self.deficit = np.empty(0)
         self.squared_deficit = np.empty(0)
         self.normalised_deficit = np.empty(0)
@@ -161,6 +162,7 @@ class Reservoir:
         self.target_hydropower_production = None  # To be set if obj exists
         self.storage_vector = np.empty(0)
         self.level_vector = np.empty(0)
+        self.inflow_vector = np.empty(0)
         self.release_vector = np.empty(0)
         self.hydropower_plants = list()
         self.actual_hydropower_production = np.empty(0)
@@ -261,6 +263,10 @@ class Reservoir:
         }
         integ_step = integration_step_possibilities[integration_interval]
 
+        self.inflow_vector= np.append(
+            self.inflow_vector,
+            net_secondly_inflow
+        )
         current_storage = self.storage_vector[-1]
         in_month_releases = np.empty(0)
 

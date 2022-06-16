@@ -216,6 +216,11 @@ class ModelNile:
                 + self.catchments["RoseiresToAbuNaama"].inflow[t]
             )
 
+            self.irr_districts["USSennar"].received_flow_raw = np.append(
+                self.irr_districts["USSennar"].received_flow_raw,
+                USSennar_input
+            )
+
             self.irr_districts["USSennar"].received_flow = np.append(
                 self.irr_districts["USSennar"].received_flow,
                 min(USSennar_input, self.irr_districts["USSennar"].demand[t]),
@@ -235,6 +240,11 @@ class ModelNile:
 
             Gezira_input = self.reservoirs["Sennar"].release_vector[-1]
 
+            self.irr_districts["Gezira"].received_flow_raw = np.append(
+                self.irr_districts["Gezira"].received_flow_raw,
+                Gezira_input
+            )
+
             self.irr_districts["Gezira"].received_flow = np.append(
                 self.irr_districts["Gezira"].received_flow,
                 min(self.irr_districts["Gezira"].demand[t], Gezira_input),
@@ -250,6 +260,11 @@ class ModelNile:
                 + self.catchments["Rahad"].inflow[t]
             )
 
+            self.irr_districts["DSSennar"].received_flow_raw = np.append(
+                self.irr_districts["DSSennar"].received_flow_raw,
+                DSSennar_input
+            )
+
             self.irr_districts["DSSennar"].received_flow = np.append(
                 self.irr_districts["DSSennar"].received_flow,
                 min(DSSennar_input, self.irr_districts["USSennar"].demand[t]),
@@ -260,6 +275,11 @@ class ModelNile:
             )
 
             Taminiat_input = DSSennar_leftover + self.catchments["WhiteNile"].inflow[t]
+
+            self.irr_districts["Taminiat"].received_flow_raw = np.append(
+                self.irr_districts["Taminiat"].received_flow_raw,
+                Taminiat_input
+            )
 
             self.irr_districts["Taminiat"].received_flow = np.append(
                 self.irr_districts["Taminiat"].received_flow,
@@ -281,6 +301,11 @@ class ModelNile:
                     Taminiat_leftover[0] + self.catchments["Atbara"].inflow[t - 1]
                 )
 
+            self.irr_districts["Hassanab"].received_flow_raw = np.append(
+                self.irr_districts["Hassanab"].received_flow_raw,
+                Hassanab_input
+            )
+
             self.irr_districts["Hassanab"].received_flow = np.append(
                 self.irr_districts["Hassanab"].received_flow,
                 min(Hassanab_input, self.irr_districts["Hassanab"].demand[t]),
@@ -296,6 +321,11 @@ class ModelNile:
                 Hassanab_leftover,
                 moy,
                 self.integration_interval,
+            )
+
+            self.irr_districts["Egypt"].received_flow_raw = np.append(
+                self.irr_districts["Egypt"].received_flow_raw,
+                self.reservoirs["HAD"].release_vector[-1],
             )
 
             self.irr_districts["Egypt"].received_flow = np.append(
