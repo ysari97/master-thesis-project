@@ -17,7 +17,11 @@ from ema_workbench.em_framework.optimization import (
 )
 
 from data_generation import generate_input_data
-from nile_EMODPS_framework.model.model_nile import ModelNile
+
+module_path = os.path.abspath(os.path.join('..'))
+if module_path not in sys.path:
+    sys.path.append(module_path)
+from model.model_nile import ModelNile
 
 
 if __name__ == "__main__":
