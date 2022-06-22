@@ -25,7 +25,7 @@ if __name__ == "__main__":
 
     output_directory = "../outputs/"
     nile_model = ModelNile()
-    model_object = generate_input_data(nile_model, sim_horizon=20)
+    nile_model = generate_input_data(nile_model, sim_horizon=20)
 
     parameter_count = nile_model.overarching_policy.get_total_parameter_count()
 

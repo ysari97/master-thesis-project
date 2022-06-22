@@ -263,7 +263,7 @@ class Reservoir:
         }
         integ_step = integration_step_possibilities[integration_interval]
 
-        self.inflow_vector= np.append(
+        self.inflow_vector = np.append(
             self.inflow_vector,
             net_secondly_inflow
         )

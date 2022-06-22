@@ -40,12 +40,14 @@ class HydroModelPlotter:
         linewidth=3,
         n_months=12,
         months=month_list,
-        figsize=(20, 6),
+        figsize=(12, 8),
+        landscape_figsize = (18, 8)
     ):
         self.hydro_model = hydro_model
         self.n_months = n_months
-        self.months = month_list
+        self.months = months
         self.figsize = figsize
+        self.landscape_figsize = landscape_figsize
         self.n_years = int(self.hydro_model.simulation_horizon / n_months)
 
         # formatting related variables
@@ -114,47 +116,91 @@ class HydroModelPlotter:
             "Level (masl)",
         )
 
-    def plot_levels_condensed(self, dam_name):
-        dam_level = self.hydro_model.reservoirs[dam_name].level_vector
-        dam_level = np.reshape(dam_level, (self.n_years, self.n_months))
-        avg = np.mean(dam_level, 0)
-        mini = np.min(dam_level, 0)
-        maxi = np.max(dam_level, 0)
+    # def plot_levels_condensed(self, dam_name):
+    #     dam_level = self.hydro_model.reservoirs[dam_name].level_vector
+    #     dam_level = np.reshape(dam_level, (self.n_years, self.n_months))
+    #     avg = np.mean(dam_level, 0)
+    #     mini = np.min(dam_level, 0)
+    #     maxi = np.max(dam_level, 0)
+    #
+    #     fig, ax = plt.subplots(figsize=self.figsize)
+    #     # setting up limits
+    #     ax.hlines(
+    #         y=self.hydro_model.reservoirs[dam_name].rating_curve[0, 0],
+    #         xmin=0,
+    #         xmax=self.n_months - 1,
+    #         linewidth=self.linewidth,
+    #         color=self.colors[-1],
+    #         linestyle=self.limit_linestyle,
+    #     )
+    #     ax.hlines(
+    #         y=self.hydro_model.reservoirs[dam_name].rating_curve[0, -1],
+    #         xmin=0,
+    #         xmax=self.n_months - 1,
+    #         linewidth=self.linewidth,
+    #         color=self.colors[-1],
+    #         linestyle=self.limit_linestyle,
+    #     )
+    #     ax.text(
+    #         10,
+    #         self.hydro_model.reservoirs[dam_name].rating_curve[0, 0],
+    #         "Min level",
+    #         bbox=dict(facecolor="gray", alpha=1),
+    #         color="white",
+    #         fontsize=8,
+    #     )
+    #     ax.text(
+    #         10,
+    #         self.hydro_model.reservoirs[dam_name].rating_curve[0, -1],
+    #         "Max level",
+    #         bbox=dict(facecolor="gray", alpha=1),
+    #         color="white",
+    #         fontsize=8,
+    #     )
+    #
+    #     # plotting min and max observations
+    #     ax.fill_between(
+    #         range(self.n_months), maxi, mini, alpha=0.5, color=self.colors[7]
+    #     )
+    #     # plotting the average
+    #     ax.plot(avg, color=self.colors[8], linewidth=5)
+    #
+    #     # setting up x and y axes, title
+    #     ax.set_xticks(np.arange(self.n_months)) #, self.months, rotation=30)
+    #     ax.set_ylabel(self.level_title)
+    #
+    #     plt.title(f"{dam_name} elevation summary per month")
+    #     plt.show()
+
+    def plot_condensed_figure(
+            self, vector, y_name, title,
+            hor_line_positions=[], text_on_horiz=[]
+    ):
+        vector = np.reshape(vector, (self.n_years, self.n_months))
+        avg = np.mean(vector, 0)
+        mini = np.min(vector, 0)
+        maxi = np.max(vector, 0)
 
         fig, ax = plt.subplots(figsize=self.figsize)
         # setting up limits
-        ax.hlines(
-            y=self.hydro_model.reservoirs[dam_name].rating_curve[0, 0],
-            xmin=0,
-            xmax=self.n_months - 1,
-            linewidth=self.linewidth,
-            color=self.colors[-1],
-            linestyle=self.limit_linestyle,
-        )
-        ax.hlines(
-            y=self.hydro_model.reservoirs[dam_name].rating_curve[0, -1],
-            xmin=0,
-            xmax=self.n_months - 1,
-            linewidth=self.linewidth,
-            color=self.colors[-1],
-            linestyle=self.limit_linestyle,
-        )
-        ax.text(
-            10,
-            self.hydro_model.reservoirs[dam_name].rating_curve[0, 0],
-            "Min level",
-            bbox=dict(facecolor="gray", alpha=1),
-            color="white",
-            fontsize=8,
-        )
-        ax.text(
-            10,
-            self.hydro_model.reservoirs[dam_name].rating_curve[0, -1],
-            "Max level",
-            bbox=dict(facecolor="gray", alpha=1),
-            color="white",
-            fontsize=8,
-        )
+        for i, h in enumerate(hor_line_positions):
+            ax.hlines(
+                y=h,
+                xmin=0,
+                xmax=self.n_months - 1,
+                linewidth=self.linewidth,
+                color=self.colors[-1],
+                linestyle=self.limit_linestyle,
+            )
+            if text_on_horiz[i] is not None:
+                ax.text(
+                    10,
+                    h,
+                    text_on_horiz[i],
+                    bbox=dict(facecolor="gray", alpha=1),
+                    color="white",
+                    fontsize=8,
+                )
 
         # plotting min and max observations
         ax.fill_between(
@@ -164,9 +210,140 @@ class HydroModelPlotter:
         ax.plot(avg, color=self.colors[8], linewidth=5)
 
         # setting up x and y axes, title
-        ax.set_xticks(np.arange(self.n_months)) #, self.months, rotation=30)
-        #ax.xlim([0, 11])
-        ax.set_ylabel(self.level_title)
+        ax.set_xticks(np.arange(self.n_months))  # , self.months, rotation=30)
+        ax.set_ylabel(y_name)
 
-        plt.title(f"{dam_name} elevation summary per month")
+        plt.title(title)
         plt.show()
+
+    def plot_separated_condensed_figure(
+            self, vector, y_name, title,
+            hor_line_positions=[], text_on_horiz=[],
+            separate_by=2
+    ):
+        new_vector = []
+        avg = []
+        mini = []
+        maxi = []
+        n_years_per_graph = int(self.n_years/separate_by)
+
+        for i in range(2):
+            new_vector.append(np.reshape(
+                vector[120 * i: 120 * (i+1)],
+                (n_years_per_graph, int(self.n_months))
+            ))
+            avg.append(np.mean(new_vector[i], 0))
+            mini.append(np.min(new_vector[i], 0))
+            maxi.append(np.max(new_vector[i], 0))
+
+        fig, (ax1, ax2) = plt.subplots(
+            ncols=2, sharex=True, sharey=True, figsize=self.landscape_figsize
+        )
+        # setting up limits
+        for j, ax in enumerate([ax1, ax2]):
+            for i, h in enumerate(hor_line_positions):
+                ax.hlines(
+                    y=h,
+                    xmin=0,
+                    xmax=self.n_months - 1,
+                    linewidth=self.linewidth,
+                    color=self.colors[-1],
+                    linestyle=self.limit_linestyle,
+                )
+
+                if text_on_horiz[i] is not None:
+                    ax.text(
+                        10,
+                        h,
+                        text_on_horiz[i],
+                        bbox=dict(facecolor="gray", alpha=1),
+                        color="white",
+                        fontsize=8,
+                    )
+
+            # plotting min and max observations
+            ax.fill_between(
+                range(self.n_months), maxi[j], mini[j], alpha=0.5, color=self.colors[7]
+            )
+            # plotting the average
+            ax.plot(avg[j], color=self.colors[8], linewidth=5)
+
+            # setting up x and y axes, title
+            ax.set_xticks(np.arange(self.n_months)) #rotation = 30
+            ax.set_xticklabels(self.months)
+            ax.set_ylabel(y_name)
+            ax.set_title(f"{title} for years {2022+j*10}-{2022+j*10+9}")
+
+        #plt.title(title)
+        fig.tight_layout()
+        plt.show()
+
+    def plot_condensed_inflow(self, dam_name, policy_name):
+        self.plot_condensed_figure(
+            self.hydro_model.reservoirs[dam_name].inflow_vector,
+            "Inflow [m3/sec]",
+            f"Average inflows to {dam_name} with {policy_name} policy",
+        )
+
+    def plot_condensed_inflow_separated(self, dam_name, policy_name):
+        self.plot_separated_condensed_figure(
+            self.hydro_model.reservoirs[dam_name].inflow_vector,
+            "Inflow [m3/sec]",
+            f"Average inflows to {dam_name} with {policy_name} policy",
+        )
+
+    def plot_condensed_release(self, dam_name, policy_name,):
+        hor_line_positions = [
+            self.hydro_model.reservoirs[dam_name].hydropower_plants[0].max_turbine_flow
+        ]
+        text_on_horiz = ["Turbined Release"]
+        self.plot_condensed_figure(
+            self.hydro_model.reservoirs[dam_name].release_vector,
+            "Release [m3/sec]",
+            f"Average release from {dam_name} with {policy_name} policy",
+            hor_line_positions,
+            text_on_horiz
+        )
+
+    def plot_condensed_release_separated(self, dam_name, policy_name):
+        hor_line_positions = [
+            self.hydro_model.reservoirs[dam_name].hydropower_plants[0].max_turbine_flow
+        ]
+        text_on_horiz = ["Turbined Release"]
+        self.plot_separated_condensed_figure(
+            self.hydro_model.reservoirs[dam_name].release_vector,
+            "Release [m3/sec]",
+            f"Average release from {dam_name} with {policy_name} policy",
+            hor_line_positions,
+            text_on_horiz
+        )
+
+    def plot_condensed_level(self, dam_name, policy_name,):
+        hor_line_positions = [
+            self.hydro_model.reservoirs[dam_name].rating_curve[0, 0],
+            self.hydro_model.reservoirs[dam_name].hydropower_plants[0].head_start_level,
+            self.hydro_model.reservoirs[dam_name].rating_curve[0, -1]
+        ]
+        text_on_horiz = ["Minimum Level", "Turbine Level", "Maximum Level"]
+        self.plot_condensed_figure(
+            self.hydro_model.reservoirs[dam_name].level_vector,
+            "Level [masl]",
+            f"Average level of {dam_name} under {policy_name} policy",
+            hor_line_positions,
+            text_on_horiz
+        )
+
+    def plot_condensed_level_separated(self, dam_name, policy_name):
+        hor_line_positions = [
+            self.hydro_model.reservoirs[dam_name].rating_curve[0, 0],
+            self.hydro_model.reservoirs[dam_name].hydropower_plants[0].head_start_level,
+            self.hydro_model.reservoirs[dam_name].rating_curve[0, -1]
+        ]
+        text_on_horiz = ["Minimum Level", "Turbine Level", "Maximum Level"]
+        self.plot_separated_condensed_figure(
+            self.hydro_model.reservoirs[dam_name].level_vector,
+            "Level [masl]",
+            f"Average level of {dam_name} under {policy_name} policy",
+            hor_line_positions,
+            text_on_horiz
+        )

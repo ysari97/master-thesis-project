@@ -75,7 +75,7 @@ def generate_input_data(
     for catchment in nile_model.catchments.values():
         catchment.inflow = np.array(inflow_dict[catchment.name])
 
-    nile_model.set_GERD_filling_schedule(GERD_filling)
+    # nile_model.set_GERD_filling_schedule(GERD_filling)
 
     return nile_model
 
