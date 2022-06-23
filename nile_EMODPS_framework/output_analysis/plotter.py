@@ -278,6 +278,14 @@ class HydroModelPlotter:
         fig.tight_layout()
         plt.show()
 
+    def plot_condensed_demand(self, irr_district, policy_name):
+        self.plot_condensed_figure(
+            self.hydro_model.irr_districts[irr_district].demand,
+            "Demand [m3/sec]",
+            f"Average demand in {irr_district} with {policy_name} policy",
+        )
+        
+        
     def plot_condensed_inflow(self, dam_name, policy_name):
         self.plot_condensed_figure(
             self.hydro_model.reservoirs[dam_name].inflow_vector,

@@ -8,6 +8,12 @@ def generate_input_data(
     sim_horizon=20,
     yearly_demand_growth_rate=0.02,
     GERD_filling=5,
+    blue_nile_mean_coef=1,
+    white_nile_mean_coef=1,
+    atbara_mean_coef=1,
+    blue_nile_dev_coef=1,
+    white_nile_dev_coef=1,
+    atbara_dev_coef=1
 ):
     # streamflow + demand
     data_directory = "../stochastic_data_generation_inputs/"
@@ -41,6 +47,8 @@ def generate_input_data(
     atbara = np.empty(0)
     mogren = np.empty(0)
     bluenile = np.empty(0)
+    bluenile_nominal_disperse = 0.3
+    bluenile_disperse = bluenile_nominal_disperse * blue_nile_dev_coef
     while loop_counter > 0:
         a = list()
         m = list()
@@ -50,20 +58,27 @@ def generate_input_data(
                 max(
                     0,
                     np.random.normal(
-                        atbara_dist.loc[i, "mean"], atbara_dist.loc[i, "std"]
+                        atbara_mean_coef * atbara_dist.loc[i, "mean"],
+                        atbara_dev_coef * atbara_dist.loc[i, "std"]
                     ),
                 )
             )
+            mogren_mean = white_nile_mean_coef * mogren_dist.loc[i, "MeanQ"]
+            mogren_min = white_nile_mean_coef * mogren_dist.loc[i, "MinQ"]
+            mogren_min = max(mogren_mean - (mogren_mean - mogren_min) * white_nile_dev_coef, 0)
+            mogren_max = white_nile_mean_coef * mogren_dist.loc[i, "MaxQ"]
+            mogren_max = mogren_mean + (mogren_max - mogren_mean) * white_nile_dev_coef
             m.append(
                 np.random.triangular(
-                    mogren_dist.loc[i, "MinQ"],
-                    mogren_dist.loc[i, "MeanQ"],
-                    mogren_dist.loc[i, "MaxQ"],
+                    mogren_min,
+                    mogren_mean,
+                    mogren_max,
                 )
             )
             b.append(
                 np.random.uniform(
-                    bluenile_dist.loc[i, "0"] * 0.7, bluenile_dist.loc[i, "0"] * 1.3
+                    blue_nile_mean_coef * bluenile_dist.loc[i, "0"] * (1-bluenile_disperse),
+                    blue_nile_mean_coef * bluenile_dist.loc[i, "0"] * (1-bluenile_disperse)
                 )
             )
         atbara = np.append(atbara, a)

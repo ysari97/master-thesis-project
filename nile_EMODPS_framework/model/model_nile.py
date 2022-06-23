@@ -7,9 +7,9 @@ import pandas as pd
 # Importing classes to generate the model
 from .model_classes import Reservoir, Catchment, IrrigationDistrict, HydropowerPlant
 from .smash import Policy
-# import sys
-# sys.path.append("..")
-# from experimentation.data_generation import generate_input_data
+import sys
+sys.path.append("..")
+from experimentation.data_generation import generate_input_data
 
 class ModelNile:
     """
@@ -91,7 +91,19 @@ class ModelNile:
         del self.policies
 
     def __call__(self, *args, **kwargs):
-        input_parameters = [kwargs["v" + str(i)] for i in range(len(kwargs))]
+        lever_count = self.overarching_policy.get_total_parameter_count()
+        input_parameters = [
+            kwargs["v" + str(i)] for i in range(lever_count)
+        ]
+        uncertainty_parameters = {
+            "yearly_demand_growth_rate": kwargs["yearly_demand_growth_rate"],
+            "blue_nile_mean_coef": kwargs["blue_nile_mean_coef"],
+            "white_nile_mean_coef": kwargs["white_nile_mean_coef"],
+            "atbara_mean_coef": kwargs["atbara_mean_coef"],
+            "blue_nile_dev_coef": kwargs["blue_nile_dev_coef"],
+            "white_nile_dev_coef": kwargs["white_nile_dev_coef"],
+            "atbara_dev_coef": kwargs["atbara_dev_coef"]
+        }
         (
             egypt_irr,
             egypt_90,
@@ -99,10 +111,10 @@ class ModelNile:
             sudan_irr,
             sudan_90,
             ethiopia_hydro,
-        ) = self.evaluate(np.array(input_parameters))
+        ) = self.evaluate(np.array(input_parameters), uncertainty_parameters)
         return egypt_irr, egypt_90, egypt_low_had, sudan_irr, sudan_90, ethiopia_hydro
 
-    def evaluate(self, parameter_vector):
+    def evaluate(self, parameter_vector, uncertainty_dict):
         """ Evaluate the KPI values based on the given input
         data and policy parameter configuration.
 
@@ -120,6 +132,7 @@ class ModelNile:
         """
 
         self.reset_parameters()
+        self = generate_input_data(self, **uncertainty_dict)
         self.overarching_policy.assign_free_parameters(parameter_vector)
         self.simulate()
 
@@ -427,7 +440,7 @@ class ModelNile:
             for var in attributes:
                 setattr(irr_district, var, np.empty(0))
 
-        # self = generate_input_data(self)
+
 
     def read_settings_file(self, filepath):
 
