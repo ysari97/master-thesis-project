@@ -76,4 +76,3 @@ if __name__ == "__main__":
     outcomes = pd.DataFrame.from_dict(outcomes)
     experiments.to_csv(f"{output_directory}experiments_exploration.csv")
     outcomes.to_csv(f"{output_directory}outcomes_exploration.csv")
-    

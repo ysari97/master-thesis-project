@@ -57,7 +57,7 @@ if __name__ == "__main__":
         ),
     ]
 
-    nfe = 50000
+    nfe = 30000
     epsilon_list = [1e2, 1e1, 1e-2, 1e2, 1e1, 1e3]
 
     before = datetime.now()
