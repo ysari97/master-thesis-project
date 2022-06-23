@@ -152,11 +152,17 @@ class Reservoir:
         fh = os.path.join(data_directory, f"min_max_release_{name}.txt")
         self.rating_curve = np.loadtxt(fh)
 
+        fh = os.path.join(data_directory, f"sto_min_max_release_{name}.txt")
+        self.storage_rating_curve = np.loadtxt(fh)
+
         fh = os.path.join(data_directory, f"lsto_rel_{name}.txt")
         self.level_to_storage_rel = np.loadtxt(fh)
 
         fh = os.path.join(data_directory, f"lsur_rel_{name}.txt")
         self.level_to_surface_rel = np.loadtxt(fh)
+
+        fh = os.path.join(data_directory, f"stosur_rel_{name}.txt")
+        self.storage_to_surface_rel = np.loadtxt(fh)
 
         self.average_cross_section = None  # To be set in the model main file
         self.target_hydropower_production = None  # To be set if obj exists
@@ -215,6 +221,11 @@ class Reservoir:
                 h, self.level_to_surface_rel[0], self.level_to_surface_rel[1]
             )
 
+    def storage_to_surface(self, s):
+        return np.interp(
+                s, self.storage_to_surface_rel[0], self.storage_to_surface_rel[1]
+            )
+
     # def level_to_minmax(self, h):
     #     rounded_h = round(h, 2)
     #     if rounded_h not in self.level_to_minmax_memo:
@@ -229,6 +240,12 @@ class Reservoir:
         return (
                 np.interp(h, self.rating_curve[0], self.rating_curve[1]),
                 np.interp(h, self.rating_curve[0], self.rating_curve[2]),
+            )
+
+    def storage_to_minmax(self, s):
+        return (
+                np.interp(s, self.storage_rating_curve[0], self.storage_rating_curve[1]),
+                np.interp(s, self.storage_rating_curve[0], self.storage_rating_curve[2]),
             )
 
     def integration(

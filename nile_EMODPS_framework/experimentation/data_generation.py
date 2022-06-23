@@ -31,7 +31,7 @@ def generate_input_data(
     np.random.seed(myseed)
     set_number = np.random.randint(1, 101)
     numbered_catchments = wh_data[set_number]
-    numbered_catchments = numbered_catchments.iloc[49 : (49 + sim_horizon * 12)]
+    numbered_catchments = numbered_catchments.iloc[49: (49 + sim_horizon * 12)]
 
     # Focus on the major inflows (3 gaging stations)
     atbara_dist = pd.read_csv(f"{data_directory}atbara_distribution.csv")

@@ -7,7 +7,9 @@ import pandas as pd
 # Importing classes to generate the model
 from .model_classes import Reservoir, Catchment, IrrigationDistrict, HydropowerPlant
 from .smash import Policy
-
+# import sys
+# sys.path.append("..")
+# from experimentation.data_generation import generate_input_data
 
 class ModelNile:
     """
@@ -424,6 +426,8 @@ class ModelNile:
             attributes = ["received_flow", "deficit"]
             for var in attributes:
                 setattr(irr_district, var, np.empty(0))
+
+        # self = generate_input_data(self)
 
     def read_settings_file(self, filepath):
 

@@ -207,6 +207,8 @@ class ncRBF(abstract_approximator):
 
     def set_parameters(self, pTheta):
 
+        self.clear_parameters()
+
         count = 0
         self.lin_param = pTheta[: self.n_outputs]
         count += self.n_outputs
