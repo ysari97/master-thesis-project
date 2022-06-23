@@ -9,10 +9,8 @@ import sys
 from datetime import datetime
 
 
-from ema_workbench import RealParameter, ScalarOutcome, Constant, Model, Policy
+from ema_workbench import RealParameter, ScalarOutcome, Model, Policy
 from ema_workbench import MultiprocessingEvaluator, ema_logging
-
-from data_generation import generate_input_data
 
 module_path = os.path.abspath(os.path.join('..'))
 if module_path not in sys.path:
@@ -30,10 +28,10 @@ if __name__ == "__main__":
 
     em_model = Model("NileProblem", function=nile_model)
     em_model.uncertainties = [
-        RealParameter("yearly_demand_growth_rate", 0, 0.4),
-        RealParameter("blue_nile_mean_coef", 0.8, 1.2),
-        RealParameter("white_nile_mean_coef", 0.8, 1.2),
-        RealParameter("atbara_mean_coef", 0.8, 1.2),
+        RealParameter("yearly_demand_growth_rate", 0.1, 0.3),
+        RealParameter("blue_nile_mean_coef", 0.75, 1.25),
+        RealParameter("white_nile_mean_coef", 0.75, 1.25),
+        RealParameter("atbara_mean_coef", 0.75, 1.25),
         RealParameter("blue_nile_dev_coef", 0.5, 1.5),
         RealParameter("white_nile_dev_coef", 0.5, 1.5),
         RealParameter("atbara_dev_coef", 0.5, 1.5)
@@ -52,8 +50,8 @@ if __name__ == "__main__":
         ScalarOutcome("ethiopia_hydro", ScalarOutcome.MAXIMIZE),
     ]
 
-    n_scenarios = 20
-    policy_df = pd.read_csv("../outputs/policies_exploration.csv")
+    n_scenarios = 4000
+    policy_df = pd.read_csv(f"{output_directory}policies_exploration.csv")
     my_policies = [
         Policy(
             policy_df.loc[i, "name"],
@@ -78,3 +76,4 @@ if __name__ == "__main__":
     outcomes = pd.DataFrame.from_dict(outcomes)
     experiments.to_csv(f"{output_directory}experiments_exploration.csv")
     outcomes.to_csv(f"{output_directory}outcomes_exploration.csv")
+    
