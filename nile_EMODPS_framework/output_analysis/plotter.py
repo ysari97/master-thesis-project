@@ -105,6 +105,19 @@ class HydroModelPlotter:
             "Water Flow (m3/s)",
         )
 
+    def plot_received_vs_demand_for_district_raw(self, irr_name):
+        self.plot_two_lines_together(
+            self.hydro_model.irr_districts[irr_name].received_flow_raw,
+            "Received",
+            self.hydro_model.irr_districts[irr_name].demand,
+            "Demand",
+            f"{irr_name} demanded versus received water flow",
+            "Months",
+            "Water Flow (m3/s)",
+        )
+
+
+        
     def plot_level_with_limits(self, dam_name):
         self.line_graph_with_limits(
             self.hydro_model.reservoirs[dam_name].level_vector,

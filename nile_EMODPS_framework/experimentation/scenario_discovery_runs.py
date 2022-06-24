@@ -15,14 +15,14 @@ from ema_workbench import MultiprocessingEvaluator, ema_logging
 module_path = os.path.abspath(os.path.join('..'))
 if module_path not in sys.path:
     sys.path.append(module_path)
-from model.model_nile import ModelNile
+from model.model_nile_scenario import ModelNileScenario
 
 
 if __name__ == "__main__":
     ema_logging.log_to_stderr(ema_logging.INFO)
 
     output_directory = "../outputs/"
-    nile_model = ModelNile()
+    nile_model = ModelNileScenario()
 
     lever_count = nile_model.overarching_policy.get_total_parameter_count()
 
