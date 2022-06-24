@@ -57,7 +57,7 @@ if __name__ == "__main__":
         ),
     ]
 
-    nfe = 30000
+    nfe = 25000
     epsilon_list = [1e2, 1e1, 1e-2, 1e2, 1e1, 1e3]
 
     before = datetime.now()
@@ -80,3 +80,4 @@ if __name__ == "__main__":
 
     results.to_csv(f"{output_directory}baseline_results.csv")
     convergence.to_csv(f"{output_directory}baseline_convergence.csv")
+    

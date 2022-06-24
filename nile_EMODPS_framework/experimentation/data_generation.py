@@ -78,7 +78,7 @@ def generate_input_data(
             b.append(
                 np.random.uniform(
                     blue_nile_mean_coef * bluenile_dist.loc[i, "0"] * (1-bluenile_disperse),
-                    blue_nile_mean_coef * bluenile_dist.loc[i, "0"] * (1-bluenile_disperse)
+                    blue_nile_mean_coef * bluenile_dist.loc[i, "0"] * (1+bluenile_disperse)
                 )
             )
         atbara = np.append(atbara, a)

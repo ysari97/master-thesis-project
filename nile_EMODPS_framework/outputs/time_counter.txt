@@ -1,1 +1,1 @@
-It took 7:57:06.823833 time to do 30000 NFEs with epsilons: [100.0, 10.0, 0.01, 100.0, 10.0, 1000.0]
+It took 0:12:06.496362 time to do 100 NFEs with epsilons: [100.0, 10.0, 0.01, 100.0, 10.0, 1000.0]

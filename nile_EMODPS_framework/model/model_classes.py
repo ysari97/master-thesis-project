@@ -174,6 +174,7 @@ class Reservoir:
         self.actual_hydropower_production = np.empty(0)
         self.hydropower_deficit = np.empty(0)
         self.filling_schedule = None
+        # self.total_evap = np.empty(0)
         # Basic memorization implementation
         # self.level_to_surface_memo = dict()
         # self.storage_to_level_memo = dict()
@@ -294,6 +295,8 @@ class Reservoir:
         else:
             releasable_excess = 1e12  # Big M
 
+        # monthly_evap_total = 0
+
         for _ in np.arange(0, total_seconds, integ_step):
             level = self.storage_to_level(current_storage)
             surface = self.level_to_surface(level)
@@ -302,6 +305,7 @@ class Reservoir:
                 self.evap_rates[current_month - 1]
                 / (100 * (total_seconds / integ_step))
             )
+            # monthly_evap_total += evaporation
 
             min_possible_release, max_possible_release = self.level_to_minmax(level)
 
@@ -322,6 +326,8 @@ class Reservoir:
 
         avg_monthly_release = np.mean(in_month_releases)
         self.release_vector = np.append(self.release_vector, avg_monthly_release)
+
+        # self.total_evap = np.append(self.total_evap, monthly_evap_total)
 
         # Record level  based on storage for time t:
         self.level_vector = np.append(
