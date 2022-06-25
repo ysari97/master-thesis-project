@@ -102,7 +102,8 @@ class ModelNileScenario:
             "atbara_mean_coef": kwargs["atbara_mean_coef"],
             "blue_nile_dev_coef": kwargs["blue_nile_dev_coef"],
             "white_nile_dev_coef": kwargs["white_nile_dev_coef"],
-            "atbara_dev_coef": kwargs["atbara_dev_coef"]
+            "atbara_dev_coef": kwargs["atbara_dev_coef"],
+            "uniform_flag": kwargs["uniform_flag"]
         }
         (
             egypt_irr,
@@ -155,9 +156,9 @@ class ModelNileScenario:
             sudan_agg_def_vector, 90, interpolation="closest_observation"
         )
 
-        ethiopia_agg_hydro = np.sum(
+        ethiopia_agg_hydro = (np.sum(
             self.reservoirs["GERD"].actual_hydropower_production
-        )
+        )) / (20 * 1e6)
 
         return (
             egypt_agg_def,

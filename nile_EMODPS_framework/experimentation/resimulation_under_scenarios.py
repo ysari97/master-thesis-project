@@ -34,7 +34,8 @@ if __name__ == "__main__":
         RealParameter("atbara_mean_coef", 0.75, 1.25),
         RealParameter("blue_nile_dev_coef", 0.5, 1.5),
         RealParameter("white_nile_dev_coef", 0.5, 1.5),
-        RealParameter("atbara_dev_coef", 0.5, 1.5)
+        RealParameter("atbara_dev_coef", 0.5, 1.5),
+        RealParameter("uniform_flag", -1, 1)
     ]
     em_model.levers = [
         RealParameter("v" + str(i), 0, 1) for i in range(lever_count)
@@ -50,24 +51,29 @@ if __name__ == "__main__":
         ScalarOutcome("ethiopia_hydro", ScalarOutcome.MAXIMIZE),
     ]
 
-    fixed_uncertainties = {"white_nile_mean_coef": 1, "atbara_mean_coef": 1,
+    fixed_uncertainties = {"atbara_mean_coef": 1,
                            "blue_nile_dev_coef": 1, "white_nile_dev_coef": 1,
                            "atbara_dev_coef": 1}
     my_scenarios = [
         Scenario("Baseline", yearly_demand_growth_rate=0.02,
-                 blue_nile_mean_coef=1, **fixed_uncertainties
+                 blue_nile_mean_coef=1, white_nile_mean_coef=1,
+                 uniform_flag=1, **fixed_uncertainties
                  ),
-        Scenario("HighD_HighB", yearly_demand_growth_rate=0.03,
-                 blue_nile_mean_coef=1.25, **fixed_uncertainties
+        Scenario("OptimScen", yearly_demand_growth_rate=0.02,
+                 blue_nile_mean_coef=1, white_nile_mean_coef=1,
+                 uniform_flag=-1, **fixed_uncertainties
                  ),
         Scenario("HighD_LowB", yearly_demand_growth_rate=0.03,
-                 blue_nile_mean_coef=0.75, **fixed_uncertainties
+                 blue_nile_mean_coef=0.75, white_nile_mean_coef=1,
+                 uniform_flag=1, **fixed_uncertainties
                  ),
-        Scenario("LowD_HighB", yearly_demand_growth_rate=0.01,
-                 blue_nile_mean_coef=1.25, **fixed_uncertainties
+        Scenario("HighD_LowWh", yearly_demand_growth_rate=0.03,
+                 blue_nile_mean_coef=1, white_nile_mean_coef=0.75,
+                 uniform_flag=1, **fixed_uncertainties
                  ),
-        Scenario("LowD_LowB", yearly_demand_growth_rate=0.01,
-                 blue_nile_mean_coef=0.75, **fixed_uncertainties
+        Scenario("HighB", yearly_demand_growth_rate=0.02,
+                 blue_nile_mean_coef=1.25, white_nile_mean_coef=1,
+                 uniform_flag=1, **fixed_uncertainties
                  ),
     ]
     policy_df = pd.read_csv(f"{output_directory}baseline_results.csv")

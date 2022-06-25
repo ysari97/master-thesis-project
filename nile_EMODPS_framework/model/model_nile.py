@@ -155,9 +155,9 @@ class ModelNile:
             sudan_agg_def_vector, 90, interpolation="closest_observation"
         )
 
-        ethiopia_agg_hydro = np.sum(
+        ethiopia_agg_hydro = (np.sum(
             self.reservoirs["GERD"].actual_hydropower_production
-        )
+        )) / (20 * 1e6)
 
         return (
             egypt_agg_def,

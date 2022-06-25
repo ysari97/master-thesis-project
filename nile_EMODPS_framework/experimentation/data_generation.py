@@ -13,7 +13,8 @@ def generate_input_data(
     atbara_mean_coef=1,
     blue_nile_dev_coef=1,
     white_nile_dev_coef=1,
-    atbara_dev_coef=1
+    atbara_dev_coef=1,
+    uniform_flag=1
 ):
     # streamflow + demand
     data_directory = "../stochastic_data_generation_inputs/"
@@ -78,7 +79,7 @@ def generate_input_data(
             b.append(
                 np.random.uniform(
                     blue_nile_mean_coef * bluenile_dist.loc[i, "0"] * (1-bluenile_disperse),
-                    blue_nile_mean_coef * bluenile_dist.loc[i, "0"] * (1+bluenile_disperse)
+                    blue_nile_mean_coef * bluenile_dist.loc[i, "0"] * (1+(uniform_flag*bluenile_disperse))
                 )
             )
         atbara = np.append(atbara, a)
