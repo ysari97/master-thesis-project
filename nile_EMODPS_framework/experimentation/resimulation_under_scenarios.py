@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     em_model = Model("NileProblem", function=nile_model)
     em_model.uncertainties = [
-        RealParameter("yearly_demand_growth_rate", 0.1, 0.3),
+        RealParameter("yearly_demand_growth_rate", 0.01, 0.03),
         RealParameter("blue_nile_mean_coef", 0.75, 1.25),
         RealParameter("white_nile_mean_coef", 0.75, 1.25),
         RealParameter("atbara_mean_coef", 0.75, 1.25),
@@ -54,19 +54,19 @@ if __name__ == "__main__":
                            "blue_nile_dev_coef": 1, "white_nile_dev_coef": 1,
                            "atbara_dev_coef": 1}
     my_scenarios = [
-        Scenario("Baseline", yearly_demand_growth_rate=0.2,
+        Scenario("Baseline", yearly_demand_growth_rate=0.02,
                  blue_nile_mean_coef=1, **fixed_uncertainties
                  ),
-        Scenario("HighD_HighB", yearly_demand_growth_rate=0.3,
+        Scenario("HighD_HighB", yearly_demand_growth_rate=0.03,
                  blue_nile_mean_coef=1.25, **fixed_uncertainties
                  ),
-        Scenario("HighD_LowB", yearly_demand_growth_rate=0.3,
+        Scenario("HighD_LowB", yearly_demand_growth_rate=0.03,
                  blue_nile_mean_coef=0.75, **fixed_uncertainties
                  ),
-        Scenario("LowD_HighB", yearly_demand_growth_rate=0.1,
+        Scenario("LowD_HighB", yearly_demand_growth_rate=0.01,
                  blue_nile_mean_coef=1.25, **fixed_uncertainties
                  ),
-        Scenario("LowD_LowB", yearly_demand_growth_rate=0.1,
+        Scenario("LowD_LowB", yearly_demand_growth_rate=0.01,
                  blue_nile_mean_coef=0.75, **fixed_uncertainties
                  ),
     ]

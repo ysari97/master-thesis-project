@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     em_model = Model("NileProblem", function=nile_model)
     em_model.uncertainties = [
-        RealParameter("yearly_demand_growth_rate", 0.1, 0.3),
+        RealParameter("yearly_demand_growth_rate", 0.01, 0.03),
         RealParameter("blue_nile_mean_coef", 0.75, 1.25),
         RealParameter("white_nile_mean_coef", 0.75, 1.25),
         RealParameter("atbara_mean_coef", 0.75, 1.25),
@@ -50,7 +50,7 @@ if __name__ == "__main__":
         ScalarOutcome("ethiopia_hydro", ScalarOutcome.MAXIMIZE),
     ]
 
-    n_scenarios = 4000
+    n_scenarios = 3000
     policy_df = pd.read_csv(f"{output_directory}policies_exploration.csv")
     my_policies = [
         Policy(
