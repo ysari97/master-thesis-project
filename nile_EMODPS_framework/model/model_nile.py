@@ -7,6 +7,8 @@ import pandas as pd
 # Importing classes to generate the model
 from .model_classes import Reservoir, Catchment, IrrigationDistrict, HydropowerPlant
 from .smash import Policy
+
+
 # import sys
 # sys.path.append("..")
 # from experimentation.data_generation import generate_input_data
@@ -111,10 +113,10 @@ class ModelNile:
             sudan_irr,
             sudan_90,
             ethiopia_hydro,
-        ) = self.evaluate(np.array(input_parameters)) # , uncertainty_parameters
+        ) = self.evaluate(np.array(input_parameters))  # , uncertainty_parameters
         return egypt_irr, egypt_90, egypt_low_had, sudan_irr, sudan_90, ethiopia_hydro
 
-    def evaluate(self, parameter_vector): # , uncertainty_dict
+    def evaluate(self, parameter_vector):  # , uncertainty_dict
         """ Evaluate the KPI values based on the given input
         data and policy parameter configuration.
 
@@ -136,9 +138,14 @@ class ModelNile:
         self.overarching_policy.assign_free_parameters(parameter_vector)
         self.simulate()
 
-        egypt_agg_def = np.sum(self.irr_districts["Egypt"].deficit)
+        bcm_def_egypt = [
+            month * 3600 * 24 * self.nu_of_days_per_month[i % 12] * 1e-9
+            for i, month in enumerate(self.irr_districts["Egypt"].deficit)
+        ]
+
+        egypt_agg_def = np.sum(bcm_def_egypt) / 20
         egypt_90_perc_worst = np.percentile(
-            self.irr_districts["Egypt"].deficit, 90, interpolation="closest_observation"
+            bcm_def_egypt, 90, interpolation="closest_observation"
         )
         egypt_freq_low_HAD = np.sum(self.reservoirs["HAD"].level_vector < 147) / len(
             self.reservoirs["HAD"].level_vector
@@ -150,9 +157,13 @@ class ModelNile:
         sudan_agg_def_vector = np.repeat(0.0, self.simulation_horizon)
         for district in sudan_irr_districts:
             sudan_agg_def_vector += district.deficit
-        sudan_agg_def = np.sum(sudan_agg_def_vector)
+        bcm_def_sudan = [
+            month * 3600 * 24 * self.nu_of_days_per_month[i % 12] * 1e-9
+            for i, month in enumerate(sudan_agg_def_vector)
+        ]
+        sudan_agg_def = np.sum(bcm_def_sudan) / 20
         sudan_90_perc_worst = np.percentile(
-            sudan_agg_def_vector, 90, interpolation="closest_observation"
+            bcm_def_sudan, 90, interpolation="closest_observation"
         )
 
         ethiopia_agg_hydro = (np.sum(
@@ -227,8 +238,8 @@ class ModelNile:
             )
 
             USSennar_input = (
-                self.reservoirs["Roseires"].release_vector[-1]
-                + self.catchments["RoseiresToAbuNaama"].inflow[t]
+                    self.reservoirs["Roseires"].release_vector[-1]
+                    + self.catchments["RoseiresToAbuNaama"].inflow[t]
             )
 
             self.irr_districts["USSennar"].received_flow_raw = np.append(
@@ -270,9 +281,9 @@ class ModelNile:
             )
 
             DSSennar_input = (
-                Gezira_leftover
-                + self.catchments["Dinder"].inflow[t]
-                + self.catchments["Rahad"].inflow[t]
+                    Gezira_leftover
+                    + self.catchments["Dinder"].inflow[t]
+                    + self.catchments["Rahad"].inflow[t]
             )
 
             self.irr_districts["DSSennar"].received_flow_raw = np.append(
@@ -313,7 +324,7 @@ class ModelNile:
                 Hassanab_input = 1500
             else:
                 Hassanab_input = (
-                    Taminiat_leftover[0] + self.catchments["Atbara"].inflow[t - 1]
+                        Taminiat_leftover[0] + self.catchments["Atbara"].inflow[t - 1]
                 )
 
             self.irr_districts["Hassanab"].received_flow_raw = np.append(
@@ -416,8 +427,8 @@ class ModelNile:
         secondly_diff = difference / (duration * 365 * 24 * 3600)
         weights = self.catchments["BlueNile"].inflow[:12]
         self.reservoirs["GERD"].filling_schedule = (
-            weights * 12 * secondly_diff
-        ) / weights.sum()
+                                                           weights * 12 * secondly_diff
+                                                   ) / weights.sum()
 
     def reset_parameters(self):
 
@@ -439,8 +450,6 @@ class ModelNile:
             attributes = ["received_flow", "deficit"]
             for var in attributes:
                 setattr(irr_district, var, np.empty(0))
-
-
 
     def read_settings_file(self, filepath):
 

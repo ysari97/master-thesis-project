@@ -3,6 +3,9 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+from pandas.plotting import parallel_coordinates
+from matplotlib.lines import Line2D
+import pandas as pd
 
 color_list = [
     "#2d3da3",
@@ -31,6 +34,159 @@ month_list = [
     "Dec",
 ]
 
+theme_colors = {
+    "darkblue": "#2d3da3",
+    "blue": "#0195fb", "turquise": "#00bf8d",
+    "lightyellow": "#edfb95", "beige": "#cbc98f",
+    "brown": "#765956", "purple": "#6C0C86",
+    "red": "red", "pink": "#c51b7d", "gray": '#bdbdbd',
+    "green": '#41ab5d', "yellow": "#fdaa09"
+}
+
+def normalize_objs(df, directions):
+    desirability_couples = list()
+    working_df = df.copy()
+    for i, col in enumerate(df.columns):
+        if directions[i] == "min": best, worst = df[col].min(), df[col].max()
+        elif directions[i] == "max": best, worst = df[col].max(), df[col].min()
+        desirability_couples.append((worst, best))
+        working_df[col] = (df[col] - worst) / (best - worst)
+        
+    return working_df, desirability_couples
+
+def parallel_plots_many_policies(
+    obj_df, solution_indices = [], solution_names = [], directions=["min", "min", "min", "min", "max"]
+):
+    file_name='Best_objectives'
+
+    names= list(obj_df.columns)
+    
+    names_display = ['Egypt Irr. Deficit','Egypt 90$^{th}$ Irr. Deficit','Egypt Low HAD','Sudan Irr. Deficit','Ethiopia Hydropower']
+    units=['BCM/year','m3/s','%','BCM/year','TWh/year']
+    
+    
+    objectives_df = obj_df.copy()
+    #objectives_df.egypt_irr = m3s_to_bcm_per_year(objectives_df.egypt_irr)
+    #objectives_df.sudan_irr = m3s_to_bcm_per_year(objectives_df.sudan_irr)
+    objectives_df.egypt_low_had = 100*(objectives_df.egypt_low_had)
+    
+    norm_df, desirability_couples = normalize_objs(objectives_df, directions)
+    
+    
+    
+    uds=[] #undesired
+    ds=[] #desired
+    for i in desirability_couples:
+        uds.append(str(round(i[0], 1)))
+        ds.append(str(round(i[1], 1)))
+    
+    norm_df['Name'] = "All Solutions"
+    for i, solution_index in enumerate(solution_indices):
+        norm_df.loc[solution_index, "Name"] = solution_names[i]
+        norm_df = norm_df.append(norm_df.loc[solution_index,:].copy())
+    
+    fig = plt.figure()
+
+    ax1 = fig.add_subplot(111)
+
+    parallel_coordinates(norm_df,'Name', color= [theme_colors["gray"],
+                                                 theme_colors["pink"],
+                                                 theme_colors["yellow"],
+                                                 theme_colors["blue"],
+                                                 theme_colors["purple"],
+                                                 theme_colors["green"],
+                                                 #theme_colors["brown"],
+                                                 "red"], linewidth=7, alpha=.8)
+    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
+           ncol=4, mode="expand", borderaxespad=1.5, fontsize=22)
+    
+    ax1.set_xticks(np.arange(len(names)))
+    
+    ax1.set_xticklabels([uds[i]+'\n'+'\n'+names_display[i]+'\n['+units[i] + "]" for i in range(len(names))],
+                        fontsize=22)
+    ax2 = ax1.twiny()
+    ax2.set_xticks(np.arange(len(names)))
+    ax2.set_xticklabels([ds[i] for i in range(len(names))], 
+                        fontsize=22)
+    
+    ax1.get_yaxis().set_visible([])
+    plt.text(1.02, 0.5, 'Direction of Preference $\\rightarrow$', {'color': '#636363', 'fontsize': 26},
+             horizontalalignment='left',
+             verticalalignment='center',
+             rotation=90,
+             clip_on=False,
+             transform=plt.gca().transAxes)
+
+    fig.set_size_inches(25, 12)
+    plt.show()
+    
+def parallel_plots_few_policies(
+    obj_df, directions=["min", "min", "min", "min", "min"], solution_names = []
+):
+    file_name='Best_objectives'
+
+    names= list(obj_df.columns)
+    
+    names_display = ['Egypt Irr. Deficit','Egypt 90$^{th}$ Irr. Deficit','Egypt Low HAD','Sudan Irr. Deficit','Ethiopia Hydropower']
+    units=['BCM/year','m3/s','%','BCM/year','TWh/year']
+    
+    
+    objectives_df = obj_df.copy()
+    #objectives_df.egypt_irr = m3s_to_bcm_per_year(objectives_df.egypt_irr)
+    #objectives_df.sudan_irr = m3s_to_bcm_per_year(objectives_df.sudan_irr)
+    objectives_df.egypt_low_had = 100*(objectives_df.egypt_low_had)
+    
+    norm_df, desirability_couples = normalize_objs(objectives_df, directions)
+    
+    uds=[] #undesired
+    ds=[] #desired
+    for i in desirability_couples:
+        uds.append(str(round(i[0], 1)))
+        ds.append(str(round(i[1], 1)))
+    
+    if solution_names == []: norm_df['Name'] = obj_df.index
+    else:
+        norm_df['Name'] = solution_names
+        print(norm_df['Name'])
+#     for i, solution_index in enumerate(solution_indices):
+#         norm_df.loc[solution_index, "Name"] = solution_names[i]
+#         norm_df = norm_df.append(norm_df.loc[solution_index,:].copy())
+    
+    fig = plt.figure()
+
+    ax1 = fig.add_subplot(111)
+
+    parallel_coordinates(norm_df,'Name', color= [#theme_colors["gray"],
+                                                 theme_colors["pink"],
+                                                 theme_colors["yellow"],
+                                                 theme_colors["blue"],
+                                                 theme_colors["purple"],
+                                                 theme_colors["green"],
+                                                 #theme_colors["brown"],
+                                                 "red"], linewidth=7, alpha=.8)
+    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
+           ncol=4, mode="expand", borderaxespad=1.5, fontsize=22)
+    
+    ax1.set_xticks(np.arange(len(names)))
+    
+    ax1.set_xticklabels([uds[i]+'\n'+'\n'+names_display[i]+'\n['+units[i] + "]" for i in range(len(names))],
+                        fontsize=22)
+    ax2 = ax1.twiny()
+    ax2.set_xticks(np.arange(len(names)))
+    ax2.set_xticklabels([ds[i] for i in range(len(names))], 
+                        fontsize=22)
+    
+    ax1.get_yaxis().set_visible([])
+    plt.text(1.02, 0.5, 'Direction of Preference $\\rightarrow$', {'color': '#636363', 'fontsize': 26},
+             horizontalalignment='left',
+             verticalalignment='center',
+             rotation=90,
+             clip_on=False,
+             transform=plt.gca().transAxes)
+
+    fig.set_size_inches(25, 12)
+    plt.show()
+
 
 class HydroModelPlotter:
     def __init__(
@@ -41,7 +197,7 @@ class HydroModelPlotter:
         n_months=12,
         months=month_list,
         figsize=(12, 8),
-        landscape_figsize = (18, 8)
+        landscape_figsize = (24, 8)
     ):
         self.hydro_model = hydro_model
         self.n_months = n_months
@@ -59,7 +215,27 @@ class HydroModelPlotter:
 
         # naming conventions for the plots
         self.level_title = "Level (masl)"
+        
+    def plot_line(
+        self, vector1, label1, title="", x_title="", y_title="", ax=None, color=None
+    ):
+        if ax is None:
+            fig, ax = plt.subplots(figsize=self.figsize)
+            ax.set_xlabel(x_title)
+            ax.set_ylabel(y_title)
 
+        if color is None:
+            color = self.colors[0]
+        
+        ax.plot(vector1, label=label1, color=color, linewidth=self.linewidth)        
+        ax.legend()
+
+
+        plt.title(title)
+        plt.show()
+        
+        return ax
+        
     def plot_two_lines_together(
         self, vector1, label1, vector2, label2, title, x_title="", y_title=""
     ):
@@ -73,14 +249,44 @@ class HydroModelPlotter:
         plt.title(title)
         plt.show()
 
-    def line_graph_with_limits(
-        self, vector1, label1, lb, ub, title, x_title="", y_title=""
+        
+    def plot_multiple_lines_together(
+        self, vector_list, label_list, title, x_title="", y_title="", colors=color_list
     ):
-        fig, ax = plt.subplots(figsize=self.figsize)
+        fig, ax = plt.subplots(figsize=self.landscape_figsize)
+        
+        for i, vector in enumerate(vector_list):
+            ax.plot(vector, label=label_list[i], color=colors[i], linewidth=self.linewidth)
+
+        ax.legend()
+        ax.set_xlabel(x_title)
+        ax.set_ylabel(y_title)
+
+        plt.title(title)
+        plt.show()
+
+
+        
+    def line_graph_with_limits(
+        self, vector1, label1, lb, ub, threshold, title, x_title="", y_title="", ax=None
+    ):
+        if ax is None:
+            fig, ax = plt.subplots(figsize=self.figsize)
+            
         ax.plot(vector1, label=label1, color=self.colors[5], linewidth=self.linewidth)
         ax.legend()
         ax.set_xlabel(x_title)
         ax.set_ylabel(y_title)
+        
+        if threshold != 0:
+            ax.hlines(
+                y=[threshold],
+                linewidth=self.linewidth,
+                xmin=0,
+                xmax=240,
+                color="red",
+                linestyle=self.limit_linestyle,
+            )
 
         ax.hlines(
             y=[lb, ub],
@@ -93,6 +299,8 @@ class HydroModelPlotter:
 
         plt.title(title)
         plt.show()
+        
+        return ax
 
     def plot_received_vs_demand_for_district(self, irr_name):
         self.plot_two_lines_together(
@@ -119,16 +327,58 @@ class HydroModelPlotter:
 
         
     def plot_level_with_limits(self, dam_name):
+        if dam_name == "HAD": threshold = 147
+        else: threshold = 0
+        
         self.line_graph_with_limits(
             self.hydro_model.reservoirs[dam_name].level_vector,
             f"{dam_name} Level",
             self.hydro_model.reservoirs[dam_name].rating_curve[0, 0],
             self.hydro_model.reservoirs[dam_name].rating_curve[0, -1],
+            threshold,
             f"{dam_name} elevation overtime",
             "Months",
             "Level (masl)",
         )
+    
+    def plot_release(self, dam_name, label="", ax=None,color=None):
+        if label == "":
+            label = f"{dam_name} Release"
+        
+        return self.plot_line(
+            self.hydro_model.reservoirs[dam_name].release_vector,
+            label,
+            x_title="Months",
+            y_title="Release ($m^{3}$/s)",
+            ax=ax,
+            color=color
+        )
 
+    def plot_inflow(self, dam_name, label="", ax=None,color=None):
+        if label == "":
+            label = f"{dam_name} Inflow"
+        
+        return self.plot_line(
+            self.hydro_model.reservoirs[dam_name].inflow_vector,
+            label,
+            x_title="Months",
+            y_title="Inflow ($m^{3}$/s)",
+            ax=ax,
+            color=color
+        )
+
+    def plot_release_vs_inflow(self, dam_name):
+        self.plot_two_lines_together(
+            self.hydro_model.reservoirs[dam_name].inflow_vector,
+            "Inflow",
+            self.hydro_model.reservoirs[dam_name].release_vector,
+            "Release",
+            f"Inflow to versus release water flow from {dam_name}",
+            "Months",
+            "Water Flow (m3/s)",
+        )
+    
+        
     # def plot_levels_condensed(self, dam_name):
     #     dam_level = self.hydro_model.reservoirs[dam_name].level_vector
     #     dam_level = np.reshape(dam_level, (self.n_years, self.n_months))
@@ -186,8 +436,10 @@ class HydroModelPlotter:
     #     plt.show()
 
     def plot_condensed_figure(
-            self, vector, y_name, title,
-            hor_line_positions=[], text_on_horiz=[]
+            self, vector, y_name, title, label="",
+            hor_line_positions=[], text_on_horiz=[],
+            additional_vectors=[], vector_labels=[],
+            colors=color_list
     ):
         vector = np.reshape(vector, (self.n_years, self.n_months))
         avg = np.mean(vector, 0)
@@ -214,18 +466,25 @@ class HydroModelPlotter:
                     color="white",
                     fontsize=8,
                 )
-
+                
+        for i, additional_vector in enumerate(additional_vectors):
+            additional_vector = np.reshape(additional_vector, (self.n_years, self.n_months))
+            additional_vector_avg = np.mean(additional_vector, 0)
+            ax.plot(additional_vector_avg, color=colors[i], linewidth=5, label=vector_labels[i])
+                
         # plotting min and max observations
         ax.fill_between(
             range(self.n_months), maxi, mini, alpha=0.5, color=self.colors[7]
         )
         # plotting the average
-        ax.plot(avg, color=self.colors[8], linewidth=5)
+        ax.plot(avg, color=self.colors[8], linewidth=5, label=label)
 
         # setting up x and y axes, title
         ax.set_xticks(np.arange(self.n_months))  # , self.months, rotation=30)
+        ax.set_xticklabels(self.months)
         ax.set_ylabel(y_name)
-
+        ax.legend(loc='right')
+        
         plt.title(title)
         plt.show()
 
@@ -322,10 +581,33 @@ class HydroModelPlotter:
             self.hydro_model.reservoirs[dam_name].release_vector,
             "Release [m3/sec]",
             f"Average release from {dam_name} with {policy_name} policy",
-            hor_line_positions,
-            text_on_horiz
+            hor_line_positions=hor_line_positions,
+            text_on_horiz=text_on_horiz
         )
 
+    def plot_condensed_release_versus_inflow(self, dam_name, policy_name):
+        hor_line_positions = [
+            self.hydro_model.reservoirs[dam_name].hydropower_plants[0].max_turbine_flow
+        ]
+        text_on_horiz = ["Max Turbine Release"]
+        
+        additional_vectors = [
+            self.hydro_model.reservoirs[dam_name].inflow_vector
+        ]
+        vector_labels = ["Blue Nile Inflow"]
+        
+        self.plot_condensed_figure(
+            self.hydro_model.reservoirs[dam_name].release_vector,
+            "Flow [m3/sec]",
+            f"Inflow to versus Release from {dam_name}",
+            label=f"{dam_name} Release",
+            hor_line_positions=hor_line_positions,
+            text_on_horiz=text_on_horiz,
+            additional_vectors=additional_vectors,
+            vector_labels=vector_labels
+        )
+        
+        
     def plot_condensed_release_separated(self, dam_name, policy_name):
         hor_line_positions = [
             self.hydro_model.reservoirs[dam_name].hydropower_plants[0].max_turbine_flow
@@ -350,8 +632,8 @@ class HydroModelPlotter:
             self.hydro_model.reservoirs[dam_name].level_vector,
             "Level [masl]",
             f"Average level of {dam_name} under {policy_name} policy",
-            hor_line_positions,
-            text_on_horiz
+            hor_line_positions=hor_line_positions,
+            text_on_horiz=text_on_horiz
         )
 
     def plot_condensed_level_separated(self, dam_name, policy_name):

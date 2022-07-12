@@ -137,9 +137,14 @@ class ModelNileScenario:
         self.overarching_policy.assign_free_parameters(parameter_vector)
         self.simulate()
 
-        egypt_agg_def = np.sum(self.irr_districts["Egypt"].deficit)
+        bcm_def_egypt = [
+            month * 3600 * 24 * self.nu_of_days_per_month[i % 12] * 1e-9
+            for i, month in enumerate(self.irr_districts["Egypt"].deficit)
+        ]
+
+        egypt_agg_def = np.sum(bcm_def_egypt) / 20
         egypt_90_perc_worst = np.percentile(
-            self.irr_districts["Egypt"].deficit, 90, interpolation="closest_observation"
+            bcm_def_egypt, 90, interpolation="closest_observation"
         )
         egypt_freq_low_HAD = np.sum(self.reservoirs["HAD"].level_vector < 147) / len(
             self.reservoirs["HAD"].level_vector
@@ -151,9 +156,13 @@ class ModelNileScenario:
         sudan_agg_def_vector = np.repeat(0.0, self.simulation_horizon)
         for district in sudan_irr_districts:
             sudan_agg_def_vector += district.deficit
-        sudan_agg_def = np.sum(sudan_agg_def_vector)
+        bcm_def_sudan = [
+            month * 3600 * 24 * self.nu_of_days_per_month[i % 12] * 1e-9
+            for i, month in enumerate(sudan_agg_def_vector)
+        ]
+        sudan_agg_def = np.sum(bcm_def_sudan) / 20
         sudan_90_perc_worst = np.percentile(
-            sudan_agg_def_vector, 90, interpolation="closest_observation"
+            bcm_def_sudan, 90, interpolation="closest_observation"
         )
 
         ethiopia_agg_hydro = (np.sum(
