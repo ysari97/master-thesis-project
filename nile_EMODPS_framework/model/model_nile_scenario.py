@@ -320,7 +320,7 @@ class ModelNileScenario:
 
             # Delayed reach of water to Hassanab:
             if t == 0:
-                Hassanab_input = 1500
+                Hassanab_input = 934.2  # Last 5 years from GRDC Dongola data set
             else:
                 Hassanab_input = (
                     Taminiat_leftover[0] + self.catchments["Atbara"].inflow[t - 1]

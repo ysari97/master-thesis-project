@@ -5,22 +5,22 @@ import numpy as np
 import os
 import pandas as pd
 import sys
+import random
 
 from datetime import datetime
 
 
 from ema_workbench import RealParameter, ScalarOutcome, Constant, Model
-from ema_workbench import MultiprocessingEvaluator, ema_logging
+from ema_workbench import MultiprocessingEvaluator, SequentialEvaluator, ema_logging
 from ema_workbench.em_framework.optimization import (
     EpsilonProgress,
     ArchiveLogger,
 )
 
 from data_generation import generate_input_data
-
 module_path = os.path.abspath(os.path.join('..'))
 if module_path not in sys.path:
-    sys.path.append(module_path)
+   sys.path.append(module_path)
 from model.model_nile import ModelNile
 
 
@@ -68,9 +68,10 @@ if __name__ == "__main__":
         ),
     ]
 
-    nfe = 25000
+    nfe = 50000
     epsilon_list = [1e-2, 1e-2, 1e-2, 1e-1, 1e-1, 1e-2]
 
+    random.seed(123)
     before = datetime.now()
 
     with MultiprocessingEvaluator(em_model) as evaluator:

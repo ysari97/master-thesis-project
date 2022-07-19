@@ -8,7 +8,7 @@ def generate_input_data(
     sim_horizon=20,
     yearly_demand_growth_rate=0.02,
     GERD_filling=5,
-    blue_nile_mean_coef=1,
+    blue_nile_mean_coef=0.75,
     white_nile_mean_coef=1,
     atbara_mean_coef=1,
     blue_nile_dev_coef=1,
