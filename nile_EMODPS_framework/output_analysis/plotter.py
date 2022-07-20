@@ -6,6 +6,7 @@ import numpy as np
 from pandas.plotting import parallel_coordinates
 from matplotlib.lines import Line2D
 import pandas as pd
+import itertools
 
 color_list = [
     "#2d3da3",
@@ -40,7 +41,8 @@ theme_colors = {
     "lightyellow": "#edfb95", "beige": "#cbc98f",
     "brown": "#765956", "purple": "#6C0C86",
     "red": "red", "pink": "#c51b7d", "gray": '#bdbdbd',
-    "green": '#41ab5d', "yellow": "#fdaa09"
+    "green": '#41ab5d', "yellow": "#fdaa09", "maroon": "#800000",
+    "indianred": "indianred", "chocolate": "chocolate"
 }
 
 def normalize_objs(df, directions):
@@ -55,15 +57,15 @@ def normalize_objs(df, directions):
     return working_df, desirability_couples
 
 def parallel_plots_many_policies(
-    obj_df, solution_indices = [], solution_names = [], directions=["min", "min", "min", "min", "max"]
+    obj_df, solution_indices = [], solution_names = [],
+    names_display = ['Egypt Irr. Deficit','Egypt 90$^{th}$ Irr. Deficit','Egypt Low HAD','Ethiopia Hydropower'],
+    units = ['BCM/year','BCM/month','%','TWh/year'],
+    directions=["min", "min", "min", "max"],
+    saved=False
 ):
     file_name='Best_objectives'
 
     names= list(obj_df.columns)
-    
-    names_display = ['Egypt Irr. Deficit','Egypt 90$^{th}$ Irr. Deficit','Egypt Low HAD','Sudan Irr. Deficit','Ethiopia Hydropower']
-    units=['BCM/year','m3/s','%','BCM/year','TWh/year']
-    
     
     objectives_df = obj_df.copy()
     #objectives_df.egypt_irr = m3s_to_bcm_per_year(objectives_df.egypt_irr)
@@ -91,13 +93,24 @@ def parallel_plots_many_policies(
 
     parallel_coordinates(norm_df,'Name', color= [theme_colors["gray"],
                                                  theme_colors["pink"],
-                                                 theme_colors["yellow"],
+                                                 theme_colors["chocolate"],
                                                  theme_colors["blue"],
                                                  theme_colors["purple"],
                                                  theme_colors["green"],
-                                                 #theme_colors["brown"],
+                                                 theme_colors["yellow"],
                                                  "red"], linewidth=7, alpha=.8)
-    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
+    handles, labels = plt.gca().get_legend_handles_labels()
+    handles_dict = dict(zip(labels, handles))
+    labels = ["All Solutions"] + solution_names
+
+
+    def flip(items, ncol):
+        return itertools.chain(*[items[i::ncol] for i in range(ncol)])
+    
+    
+    plt.legend(flip([handles_dict[label] for label in labels], 4),
+               flip(labels,4),
+               bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
            ncol=4, mode="expand", borderaxespad=1.5, fontsize=22)
     
     ax1.set_xticks(np.arange(len(names)))
@@ -118,6 +131,7 @@ def parallel_plots_many_policies(
              transform=plt.gca().transAxes)
 
     fig.set_size_inches(25, 12)
+    if saved: plt.savefig("parallel_plots.svg")
     plt.show()
     
 def parallel_plots_few_policies(
