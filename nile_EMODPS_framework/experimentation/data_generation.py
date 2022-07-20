@@ -6,15 +6,15 @@ def generate_input_data(
     myseed=123,
     wh_set="Baseline",
     sim_horizon=20,
-    yearly_demand_growth_rate=0.02,
+    demand_data_carry_over=6,
+    yearly_demand_growth_rate=0.0212,
     GERD_filling=5,
     blue_nile_mean_coef=1,
     white_nile_mean_coef=1,
     atbara_mean_coef=1,
     blue_nile_dev_coef=1,
     white_nile_dev_coef=1,
-    atbara_dev_coef=1,
-    uniform_flag=1
+    atbara_dev_coef=1
 ):
     # streamflow + demand
     data_directory = "../stochastic_data_generation_inputs/"
@@ -23,12 +23,12 @@ def generate_input_data(
     for district in nile_model.irr_districts.values():
         one_year = np.loadtxt(f"{data_directory}IrrDemand{district.name}.txt")
         demand_vector = np.empty(0)
-        loop_counter = sim_horizon
+        loop_counter = sim_horizon + demand_data_carry_over
         while loop_counter > 0:
             demand_vector = np.append(demand_vector, one_year)
             one_year *= 1 + yearly_demand_growth_rate
             loop_counter -= 1
-        district.demand = demand_vector
+        district.demand = demand_vector[demand_data_carry_over*12:]
 
     # time for streamflow, start by getting the appropriate Wheeler (2018) set:
     wheeler_large = pd.read_csv(f"{data_directory}{wh_set}_wheeler.csv")
@@ -79,7 +79,7 @@ def generate_input_data(
             b.append(
                 np.random.uniform(
                     blue_nile_mean_coef * bluenile_dist.loc[i, "0"] * (1-bluenile_disperse),
-                    blue_nile_mean_coef * bluenile_dist.loc[i, "0"] * (1+(uniform_flag*bluenile_disperse))
+                    blue_nile_mean_coef * bluenile_dist.loc[i, "0"] * (1+bluenile_disperse)
                 )
             )
         atbara = np.append(atbara, a)
