@@ -102,8 +102,7 @@ class ModelNileScenario:
             "atbara_mean_coef": kwargs["atbara_mean_coef"],
             "blue_nile_dev_coef": kwargs["blue_nile_dev_coef"],
             "white_nile_dev_coef": kwargs["white_nile_dev_coef"],
-            "atbara_dev_coef": kwargs["atbara_dev_coef"],
-            "uniform_flag": kwargs["uniform_flag"]
+            "atbara_dev_coef": kwargs["atbara_dev_coef"]
         }
         (
             egypt_irr,
