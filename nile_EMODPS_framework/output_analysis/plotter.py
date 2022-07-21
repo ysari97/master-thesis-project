@@ -40,7 +40,7 @@ theme_colors = {
     "blue": "#0195fb", "turquise": "#00bf8d",
     "lightyellow": "#edfb95", "beige": "#cbc98f",
     "brown": "#765956", "purple": "#6C0C86",
-    "red": "red", "pink": "#c51b7d", "gray": '#bdbdbd',
+    "red": "red", "pink": "#c51b7d","plum": "orchid", "gray": '#bdbdbd',
     "green": '#41ab5d', "yellow": "#fdaa09", "maroon": "#800000",
     "indianred": "indianred", "chocolate": "chocolate"
 }
@@ -58,9 +58,9 @@ def normalize_objs(df, directions):
 
 def parallel_plots_many_policies(
     obj_df, solution_indices = [], solution_names = [],
-    names_display = ['Egypt Irr. Deficit','Egypt 90$^{th}$ Irr. Deficit','Egypt Low HAD','Ethiopia Hydropower'],
-    units = ['BCM/year','BCM/month','%','TWh/year'],
-    directions=["min", "min", "min", "max"],
+    names_display = ['Egypt Irr. Deficit','Egypt 90$^{th}$ Irr. Deficit','Egypt Low HAD', 'Sudan Irr. Deficit', 'Ethiopia Hydropower'],
+    units = ['BCM/year','BCM/month','%','BCM/year','TWh/year'],
+    directions=["min", "min", "min", "min", "max"],
     saved=False
 ):
     file_name='Best_objectives'
@@ -91,12 +91,12 @@ def parallel_plots_many_policies(
 
     ax1 = fig.add_subplot(111)
 
-    parallel_coordinates(norm_df,'Name', color= [theme_colors["gray"],
-                                                 theme_colors["pink"],
-                                                 theme_colors["chocolate"],
-                                                 theme_colors["blue"],
-                                                 theme_colors["purple"],
+    parallel_coordinates(norm_df,'Name', color= [theme_colors["blue"],
+                                                 theme_colors["gray"],
                                                  theme_colors["green"],
+                                                 theme_colors["purple"],
+                                                 theme_colors["plum"],
+                                                 theme_colors["chocolate"],
                                                  theme_colors["yellow"],
                                                  "red"], linewidth=7, alpha=.8)
     handles, labels = plt.gca().get_legend_handles_labels()
