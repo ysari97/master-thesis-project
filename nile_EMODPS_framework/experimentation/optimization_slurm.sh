@@ -9,7 +9,6 @@
 #SBATCH --mem-per-cpu=1G
 #SBATCH --account=education-tpm-msc
 
-module load openmpi
 module load 2022r2
 module load python/3.8.12
 
