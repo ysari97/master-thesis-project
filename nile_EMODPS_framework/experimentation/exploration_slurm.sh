@@ -2,7 +2,7 @@
 #
 #SBATCH --job-name="python_scenario_discovery"
 #SBATCH --partition=compute
-#SBATCH --time=16:00:00
+#SBATCH --time=08:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=48
