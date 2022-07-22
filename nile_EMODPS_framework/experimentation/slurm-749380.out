@@ -1,0 +1,18 @@
+/home/ysari/.local/lib/python3.8/site-packages/ema_workbench/em_framework/evaluators.py:21: UserWarning: ipyparallel not installed - IpyparalleEvaluator not available
+  warnings.warn(
+[MainProcess/INFO] pool started
+[MainProcess/INFO] performing 5000 scenarios * 6 policies * 1 model(s) = 30000 experiments
+/home/ysari/.local/lib/python3.8/site-packages/ema_workbench/em_framework/callbacks.py:192: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead.  To get a de-fragmented frame, use `newframe = frame.copy()`
+  df[name] = pd.Series(dtype=dtype)
+[MainProcess/INFO] 3000 cases completed
+[MainProcess/INFO] 6000 cases completed
+[MainProcess/INFO] 9000 cases completed
+[MainProcess/INFO] 12000 cases completed
+[MainProcess/INFO] 15000 cases completed
+[MainProcess/INFO] 18000 cases completed
+[MainProcess/INFO] 21000 cases completed
+[MainProcess/INFO] 24000 cases completed
+[MainProcess/INFO] 27000 cases completed
+[MainProcess/INFO] 30000 cases completed
+[MainProcess/INFO] experiments finished
+[MainProcess/INFO] terminating pool

@@ -1,1 +1,1 @@
-It took 6:20:14.137049 time to run 5000 scenarios 6 policies
+It took 6:22:36.365192 time to run 5000 scenarios 6 policies
