@@ -450,10 +450,10 @@ class HydroModelPlotter:
     #     plt.show()
 
     def plot_condensed_figure(
-            self, vector, y_name, title, label="",
+            self, vector, y_name, title="", label="",
             hor_line_positions=[], text_on_horiz=[],
-            additional_vectors=[], vector_labels=[],
-            colors=color_list
+            additional_vectors=[], additional_range=False,
+            vector_labels=[], colors=color_list
     ):
         vector = np.reshape(vector, (self.n_years, self.n_months))
         avg = np.mean(vector, 0)
@@ -473,12 +473,12 @@ class HydroModelPlotter:
             )
             if text_on_horiz[i] is not None:
                 ax.text(
-                    10,
+                    9.5,
                     h,
                     text_on_horiz[i],
                     bbox=dict(facecolor="gray", alpha=1),
                     color="white",
-                    fontsize=8,
+                    fontsize=11,
                 )
                 
         for i, additional_vector in enumerate(additional_vectors):
@@ -496,7 +496,8 @@ class HydroModelPlotter:
         # setting up x and y axes, title
         ax.set_xticks(np.arange(self.n_months))  # , self.months, rotation=30)
         ax.set_xticklabels(self.months)
-        ax.set_ylabel(y_name)
+        ax.set_ylabel(y_name, fontsize=15)
+        ax.set_xlabel("Month", fontsize=15)
         ax.legend(loc='right')
         
         plt.title(title)
@@ -611,9 +612,8 @@ class HydroModelPlotter:
         vector_labels = ["Blue Nile Inflow"]
         
         self.plot_condensed_figure(
-            self.hydro_model.reservoirs[dam_name].release_vector,
-            "Flow [m3/sec]",
-            f"Inflow to versus Release from {dam_name}",
+            vector=self.hydro_model.reservoirs[dam_name].release_vector,
+            y_name="Flow [m3/sec]",
             label=f"{dam_name} Release",
             hor_line_positions=hor_line_positions,
             text_on_horiz=text_on_horiz,
