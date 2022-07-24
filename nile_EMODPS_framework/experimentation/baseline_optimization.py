@@ -18,9 +18,10 @@ from ema_workbench.em_framework.optimization import (
 )
 
 from data_generation import generate_input_data
-module_path = os.path.abspath(os.path.join('..'))
+
+module_path = os.path.abspath(os.path.join(".."))
 if module_path not in sys.path:
-   sys.path.append(module_path)
+    sys.path.append(module_path)
 from model.model_nile import ModelNile
 
 
@@ -42,7 +43,11 @@ if __name__ == "__main__":
     lever_list = list()
     for i in range(parameter_count):
         modulus = (i - n_outputs) % p_per_RBF
-        if (i >= n_outputs) and (modulus < (p_per_RBF - n_outputs)) and (modulus % 2 == 0):  # centers:
+        if (
+            (i >= n_outputs)
+            and (modulus < (p_per_RBF - n_outputs))
+            and (modulus % 2 == 0)
+        ):  # centers:
             lever_list.append(RealParameter(f"v{i}", -1, 1))
         else:  # linear parameters for each release, radii and weights of RBFs:
             lever_list.append(RealParameter(f"v{i}", 0, 1))
@@ -92,4 +97,3 @@ if __name__ == "__main__":
 
     results.to_csv(f"{output_directory}baseline_results.csv")
     convergence.to_csv(f"{output_directory}baseline_convergence.csv")
-    

@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 
+
 def generate_input_data(
     nile_model,
     myseed=123,
@@ -14,7 +15,7 @@ def generate_input_data(
     atbara_mean_coef=1,
     blue_nile_dev_coef=1,
     white_nile_dev_coef=1,
-    atbara_dev_coef=1
+    atbara_dev_coef=1,
 ):
     # streamflow + demand
     data_directory = "../stochastic_data_generation_inputs/"
@@ -28,7 +29,7 @@ def generate_input_data(
             demand_vector = np.append(demand_vector, one_year)
             one_year *= 1 + yearly_demand_growth_rate
             loop_counter -= 1
-        district.demand = demand_vector[demand_data_carry_over*12:]
+        district.demand = demand_vector[demand_data_carry_over * 12 :]
 
     # time for streamflow, start by getting the appropriate Wheeler (2018) set:
     wheeler_large = pd.read_csv(f"{data_directory}{wh_set}_wheeler.csv")
@@ -38,7 +39,7 @@ def generate_input_data(
     np.random.seed(myseed)
     set_number = np.random.randint(1, 101)
     numbered_catchments = wh_data[set_number]
-    numbered_catchments = numbered_catchments.iloc[49: (49 + sim_horizon * 12)]
+    numbered_catchments = numbered_catchments.iloc[49 : (49 + sim_horizon * 12)]
 
     # Focus on the major inflows (3 gaging stations)
     atbara_dist = pd.read_csv(f"{data_directory}atbara_distribution.csv")
@@ -60,13 +61,15 @@ def generate_input_data(
                     0,
                     np.random.normal(
                         atbara_mean_coef * atbara_dist.loc[i, "mean"],
-                        atbara_dev_coef * atbara_dist.loc[i, "std"]
+                        atbara_dev_coef * atbara_dist.loc[i, "std"],
                     ),
                 )
             )
             mogren_mean = white_nile_mean_coef * mogren_dist.loc[i, "MeanQ"]
             mogren_min = white_nile_mean_coef * mogren_dist.loc[i, "MinQ"]
-            mogren_min = max(mogren_mean - (mogren_mean - mogren_min) * white_nile_dev_coef, 0)
+            mogren_min = max(
+                mogren_mean - (mogren_mean - mogren_min) * white_nile_dev_coef, 0
+            )
             mogren_max = white_nile_mean_coef * mogren_dist.loc[i, "MaxQ"]
             mogren_max = mogren_mean + (mogren_max - mogren_mean) * white_nile_dev_coef
             m.append(
@@ -78,8 +81,12 @@ def generate_input_data(
             )
             b.append(
                 np.random.uniform(
-                    blue_nile_mean_coef * bluenile_dist.loc[i, "0"] * (1-bluenile_disperse),
-                    blue_nile_mean_coef * bluenile_dist.loc[i, "0"] * (1+bluenile_disperse)
+                    blue_nile_mean_coef
+                    * bluenile_dist.loc[i, "0"]
+                    * (1 - bluenile_disperse),
+                    blue_nile_mean_coef
+                    * bluenile_dist.loc[i, "0"]
+                    * (1 + bluenile_disperse),
                 )
             )
         atbara = np.append(atbara, a)

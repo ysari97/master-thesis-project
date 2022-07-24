@@ -12,7 +12,7 @@ from datetime import datetime
 from ema_workbench import RealParameter, ScalarOutcome, Model, Policy
 from ema_workbench import MultiprocessingEvaluator, ema_logging
 
-module_path = os.path.abspath(os.path.join('..'))
+module_path = os.path.abspath(os.path.join(".."))
 if module_path not in sys.path:
     sys.path.append(module_path)
 from model.model_nile_scenario import ModelNileScenario
@@ -32,7 +32,7 @@ if __name__ == "__main__":
         RealParameter("atbara_mean_coef", 0.75, 1.25),
         RealParameter("blue_nile_dev_coef", 0.5, 1.5),
         RealParameter("white_nile_dev_coef", 0.5, 1.5),
-        RealParameter("atbara_dev_coef", 0.5, 1.5)
+        RealParameter("atbara_dev_coef", 0.5, 1.5),
     ]
 
     parameter_count = nile_model.overarching_policy.get_total_parameter_count()
@@ -44,7 +44,11 @@ if __name__ == "__main__":
     lever_list = list()
     for i in range(parameter_count):
         modulus = (i - n_outputs) % p_per_RBF
-        if (i >= n_outputs) and (modulus < (p_per_RBF - n_outputs)) and (modulus % 2 == 0):  # centers:
+        if (
+            (i >= n_outputs)
+            and (modulus < (p_per_RBF - n_outputs))
+            and (modulus % 2 == 0)
+        ):  # centers:
             lever_list.append(RealParameter(f"v{i}", -1, 1))
         else:  # linear parameters for each release, radii and weights of RBFs:
             lever_list.append(RealParameter(f"v{i}", 0, 1))
@@ -64,20 +68,15 @@ if __name__ == "__main__":
     n_scenarios = 5000
     policy_df = pd.read_csv(f"{output_directory}policies_exploration.csv")
     my_policies = [
-        Policy(
-            policy_df.loc[i, "name"],
-            **(policy_df.iloc[i, :-1].to_dict())
-        ) for i in policy_df.index
+        Policy(policy_df.loc[i, "name"], **(policy_df.iloc[i, :-1].to_dict()))
+        for i in policy_df.index
     ]
 
     random.seed(123)
     before = datetime.now()
 
     with MultiprocessingEvaluator(em_model) as evaluator:
-        experiments, outcomes = evaluator.perform_experiments(
-            n_scenarios,
-            my_policies
-        )
+        experiments, outcomes = evaluator.perform_experiments(n_scenarios, my_policies)
 
     after = datetime.now()
 

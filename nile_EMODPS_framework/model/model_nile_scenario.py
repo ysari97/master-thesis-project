@@ -8,8 +8,10 @@ import pandas as pd
 from .model_classes import Reservoir, Catchment, IrrigationDistrict, HydropowerPlant
 from .smash import Policy
 import sys
+
 sys.path.append("..")
 from experimentation.data_generation import generate_input_data
+
 
 class ModelNileScenario:
     """
@@ -92,9 +94,7 @@ class ModelNileScenario:
 
     def __call__(self, *args, **kwargs):
         lever_count = self.overarching_policy.get_total_parameter_count()
-        input_parameters = [
-            kwargs["v" + str(i)] for i in range(lever_count)
-        ]
+        input_parameters = [kwargs["v" + str(i)] for i in range(lever_count)]
         uncertainty_parameters = {
             "yearly_demand_growth_rate": kwargs["yearly_demand_growth_rate"],
             "blue_nile_mean_coef": kwargs["blue_nile_mean_coef"],
@@ -102,7 +102,7 @@ class ModelNileScenario:
             "atbara_mean_coef": kwargs["atbara_mean_coef"],
             "blue_nile_dev_coef": kwargs["blue_nile_dev_coef"],
             "white_nile_dev_coef": kwargs["white_nile_dev_coef"],
-            "atbara_dev_coef": kwargs["atbara_dev_coef"]
+            "atbara_dev_coef": kwargs["atbara_dev_coef"],
         }
         (
             egypt_irr,
@@ -115,7 +115,7 @@ class ModelNileScenario:
         return egypt_irr, egypt_90, egypt_low_had, sudan_irr, sudan_90, ethiopia_hydro
 
     def evaluate(self, parameter_vector, uncertainty_dict):
-        """ Evaluate the KPI values based on the given input
+        """Evaluate the KPI values based on the given input
         data and policy parameter configuration.
 
         Parameters
@@ -164,9 +164,9 @@ class ModelNileScenario:
             bcm_def_sudan, 90, interpolation="closest_observation"
         )
 
-        ethiopia_agg_hydro = (np.sum(
-            self.reservoirs["GERD"].actual_hydropower_production
-        )) / (20 * 1e6)
+        ethiopia_agg_hydro = (
+            np.sum(self.reservoirs["GERD"].actual_hydropower_production)
+        ) / (20 * 1e6)
 
         return (
             egypt_agg_def,
@@ -178,7 +178,7 @@ class ModelNileScenario:
         )
 
     def simulate(self):
-        """ Mathematical simulation over the specified simulation
+        """Mathematical simulation over the specified simulation
         duration within a main for loop based on the mass-balance
         equations
 
@@ -241,8 +241,7 @@ class ModelNileScenario:
             )
 
             self.irr_districts["USSennar"].received_flow_raw = np.append(
-                self.irr_districts["USSennar"].received_flow_raw,
-                USSennar_input
+                self.irr_districts["USSennar"].received_flow_raw, USSennar_input
             )
 
             self.irr_districts["USSennar"].received_flow = np.append(
@@ -265,8 +264,7 @@ class ModelNileScenario:
             Gezira_input = self.reservoirs["Sennar"].release_vector[-1]
 
             self.irr_districts["Gezira"].received_flow_raw = np.append(
-                self.irr_districts["Gezira"].received_flow_raw,
-                Gezira_input
+                self.irr_districts["Gezira"].received_flow_raw, Gezira_input
             )
 
             self.irr_districts["Gezira"].received_flow = np.append(
@@ -285,8 +283,7 @@ class ModelNileScenario:
             )
 
             self.irr_districts["DSSennar"].received_flow_raw = np.append(
-                self.irr_districts["DSSennar"].received_flow_raw,
-                DSSennar_input
+                self.irr_districts["DSSennar"].received_flow_raw, DSSennar_input
             )
 
             self.irr_districts["DSSennar"].received_flow = np.append(
@@ -301,8 +298,7 @@ class ModelNileScenario:
             Taminiat_input = DSSennar_leftover + self.catchments["WhiteNile"].inflow[t]
 
             self.irr_districts["Taminiat"].received_flow_raw = np.append(
-                self.irr_districts["Taminiat"].received_flow_raw,
-                Taminiat_input
+                self.irr_districts["Taminiat"].received_flow_raw, Taminiat_input
             )
 
             self.irr_districts["Taminiat"].received_flow = np.append(
@@ -326,8 +322,7 @@ class ModelNileScenario:
                 )
 
             self.irr_districts["Hassanab"].received_flow_raw = np.append(
-                self.irr_districts["Hassanab"].received_flow_raw,
-                Hassanab_input
+                self.irr_districts["Hassanab"].received_flow_raw, Hassanab_input
             )
 
             self.irr_districts["Hassanab"].received_flow = np.append(
@@ -449,8 +444,6 @@ class ModelNileScenario:
             for var in attributes:
                 setattr(irr_district, var, np.empty(0))
 
-
-
     def read_settings_file(self, filepath):
 
         model_parameters = pd.read_excel(filepath, sheet_name="ModelParameters")
@@ -473,9 +466,9 @@ class ModelNileScenario:
         splitpoints = list(full_df.loc[full_df["Parameter Name"] == "Name"].index)
         for i in range(len(splitpoints)):
             try:
-                one_policy = full_df.iloc[splitpoints[i]: splitpoints[i + 1], :]
+                one_policy = full_df.iloc[splitpoints[i] : splitpoints[i + 1], :]
             except IndexError:
-                one_policy = full_df.iloc[splitpoints[i]:, :]
+                one_policy = full_df.iloc[splitpoints[i] :, :]
             input_dict = dict()
 
             for _, row in one_policy.iterrows():

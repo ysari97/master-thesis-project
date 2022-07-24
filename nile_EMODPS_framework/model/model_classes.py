@@ -1,4 +1,3 @@
-
 import numpy as np
 import os
 from scipy.constants import g
@@ -195,9 +194,7 @@ class Reservoir:
     #     return self.storage_to_level_memo[rounded_s]
 
     def storage_to_level(self, s):
-        return np.interp(
-                s, self.level_to_storage_rel[1], self.level_to_storage_rel[0]
-            )
+        return np.interp(s, self.level_to_storage_rel[1], self.level_to_storage_rel[0])
 
     def level_to_storage(self, h):
         # interpolation when lsto_rel exists
@@ -218,14 +215,12 @@ class Reservoir:
     #     return self.level_to_surface_memo[rounded_h]
 
     def level_to_surface(self, h):
-        return np.interp(
-                h, self.level_to_surface_rel[0], self.level_to_surface_rel[1]
-            )
+        return np.interp(h, self.level_to_surface_rel[0], self.level_to_surface_rel[1])
 
     def storage_to_surface(self, s):
         return np.interp(
-                s, self.storage_to_surface_rel[0], self.storage_to_surface_rel[1]
-            )
+            s, self.storage_to_surface_rel[0], self.storage_to_surface_rel[1]
+        )
 
     # def level_to_minmax(self, h):
     #     rounded_h = round(h, 2)
@@ -239,15 +234,15 @@ class Reservoir:
 
     def level_to_minmax(self, h):
         return (
-                np.interp(h, self.rating_curve[0], self.rating_curve[1]),
-                np.interp(h, self.rating_curve[0], self.rating_curve[2]),
-            )
+            np.interp(h, self.rating_curve[0], self.rating_curve[1]),
+            np.interp(h, self.rating_curve[0], self.rating_curve[2]),
+        )
 
     def storage_to_minmax(self, s):
         return (
-                np.interp(s, self.storage_rating_curve[0], self.storage_rating_curve[1]),
-                np.interp(s, self.storage_rating_curve[0], self.storage_rating_curve[2]),
-            )
+            np.interp(s, self.storage_rating_curve[0], self.storage_rating_curve[1]),
+            np.interp(s, self.storage_rating_curve[0], self.storage_rating_curve[2]),
+        )
 
     def integration(
         self,
@@ -281,10 +276,7 @@ class Reservoir:
         }
         integ_step = integration_step_possibilities[integration_interval]
 
-        self.inflow_vector = np.append(
-            self.inflow_vector,
-            net_secondly_inflow
-        )
+        self.inflow_vector = np.append(self.inflow_vector, net_secondly_inflow)
         current_storage = self.storage_vector[-1]
         in_month_releases = np.empty(0)
 

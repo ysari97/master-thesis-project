@@ -97,7 +97,7 @@ class abstract_approximator:  # formerly abstract_approximator
         Returns
         -------
         Y : np.array
-            Normalized vector output 
+            Normalized vector output
         """
 
         Y = np.empty(0)
@@ -124,7 +124,7 @@ class abstract_approximator:  # formerly abstract_approximator
         Returns
         -------
         Y : np.array
-            deNormalized vector output 
+            deNormalized vector output
         """
 
         Y = np.empty(0)
@@ -151,7 +151,7 @@ class abstract_approximator:  # formerly abstract_approximator
         Returns
         -------
         Y : np.array
-            Standardized vector output 
+            Standardized vector output
         """
 
         Y = np.empty(0)
@@ -178,7 +178,7 @@ class abstract_approximator:  # formerly abstract_approximator
         Returns
         -------
         Y : np.array
-            deStandardized vector output 
+            deStandardized vector output
         """
         Y = np.empty(0)
         for i in range(X.size):
