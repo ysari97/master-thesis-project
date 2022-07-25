@@ -178,6 +178,7 @@ class Reservoir:
         # self.level_to_surface_memo = dict()
         # self.storage_to_level_memo = dict()
         # self.level_to_minmax_memo = dict()
+        self.constraint_check = list()
 
     def read_hydropower_target(self):
 
@@ -306,6 +307,12 @@ class Reservoir:
             secondly_release = min(
                 max_possible_release, max(min_possible_release, policy_release_decision)
             )
+            if secondly_release == min_possible_release:
+                self.constraint_check.append(("Hit LB", secondly_release, level))
+            elif secondly_release == max_possible_release:
+                self.constraint_check.append(("Hit UB", secondly_release, level))
+            else:
+                self.constraint_check.append("Smooth release")
             in_month_releases = np.append(in_month_releases, secondly_release)
 
             total_addition = net_secondly_inflow * integ_step

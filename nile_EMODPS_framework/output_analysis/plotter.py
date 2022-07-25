@@ -7,6 +7,7 @@ from pandas.plotting import parallel_coordinates
 from matplotlib.lines import Line2D
 import pandas as pd
 import itertools
+from collections import defaultdict
 
 color_list = [
     "#2d3da3",
@@ -20,6 +21,7 @@ color_list = [
     "#947567",
     "#765956",
 ]
+
 month_list = [
     "Jan",
     "Feb",
@@ -35,7 +37,8 @@ month_list = [
     "Dec",
 ]
 
-theme_colors = {
+theme_colors = defaultdict(lambda x: "black")
+theme_colors.update({
     "darkblue": "#2d3da3",
     "blue": "#0195fb",
     "turquise": "#00bf8d",
@@ -52,8 +55,29 @@ theme_colors = {
     "maroon": "#800000",
     "indianred": "indianred",
     "chocolate": "chocolate",
+})
+
+country_color = defaultdict(lambda x: "black")
+country_color.update({
+    "Ethiopia":theme_colors["green"],
+    "Sudan":theme_colors["purple"],
+    "Sudan-2":theme_colors["chocolate"],
+    "Egypt":theme_colors["chocolate"]
+})
+
+dam_color = defaultdict(lambda x: "black")
+dam_color = {
+    "GERD": country_color["Ethiopia"],
+    "Roseires": country_color["Sudan"],
+    "Sennar": country_color["Sudan-2"],
+    "HAD": country_color["Egypt"]
 }
 
+irr_color = defaultdict(lambda x: "black")
+irr_color = {
+    "Gezira": country_color["Sudan"],
+    "Egypt": country_color["Egypt"]
+}
 
 def normalize_objs(df, directions):
     desirability_couples = list()
@@ -420,14 +444,14 @@ class HydroModelPlotter:
         self.line_graph_with_limits(
             vectors=[self.hydro_model.reservoirs[dam_name].level_vector],
             vector_labels=[f"{dam_name} Level"],
-            vector_colors=["green"],
+            vector_colors=[dam_color[dam_name]],
             horizontal_lines=[
                 self.hydro_model.reservoirs[dam_name].rating_curve[0, 0],
                 self.hydro_model.reservoirs[dam_name].rating_curve[0, -1],
                 threshold
             ],
             horline_labels=["Min/Max Level", "", "Minimum Operational Level"],
-            horline_colors=["grey", "grey", "red"],
+            horline_colors=["silver", "silver", "black"],
             x_label="Months",
             y_label="Level (masl)",
         )
@@ -479,7 +503,9 @@ class HydroModelPlotter:
         colors=color_list,
         range_alphas=[0.5],
         hor_line_positions=[],
+        hor_line_colors=["grey", "grey", "grey"],
         text_on_horiz=[],
+        bbox_to_anchor=(1,1)
     ):
         
         fig, ax = plt.subplots(figsize=self.figsize)
@@ -499,22 +525,15 @@ class HydroModelPlotter:
 
         # setting up horizontal lines
         for i, h in enumerate(hor_line_positions):
-            ax.hlines(
-                y=h,
-                xmin=0,
-                xmax=self.n_months - 1,
-                linewidth=self.horizontal_line_width,
-                color=self.colors[-1],
-                linestyle=self.limit_linestyle,
-            )
-            if text_on_horiz[i] is not None:
-                ax.text(
-                    9.5,
-                    h,
-                    text_on_horiz[i],
-                    bbox=dict(facecolor="gray", alpha=1),
-                    color="white",
-                    fontsize=11,
+            if h is not None:
+                ax.hlines(
+                    y=h,
+                    xmin=0,
+                    xmax=self.n_months - 1,
+                    linewidth=self.horizontal_line_width,
+                    color=hor_line_colors[i],
+                    linestyle=self.limit_linestyle,
+                    label=text_on_horiz[i]
                 )
 
         # setting up x and y axes, title
@@ -522,28 +541,26 @@ class HydroModelPlotter:
         ax.set_xticklabels(self.months)
         ax.set_ylabel(y_name, fontsize=16)
         ax.set_xlabel("Month", fontsize=16)
-        ax.legend(loc="upper right")
+        ax.legend(loc="upper right", bbox_to_anchor=bbox_to_anchor)
         plt.title(title)
         plt.show()
 
-    def plot_condensed_demand(self, irr_district, policy_name):
+        
+    def plot_condensed_demand(self, irr_district):
         self.plot_condensed_figure(
             [self.hydro_model.irr_districts[irr_district].demand],
-            "Demand [m3/sec]",
-            f"Average demand in {irr_district} with {policy_name} policy",
+            "Demand [m3/sec]"
         )
 
-    def plot_condensed_inflow(self, dam_name, policy_name):
+    def plot_condensed_inflow(self, dam_name, ):
         self.plot_condensed_figure(
             [self.hydro_model.reservoirs[dam_name].inflow_vector],
-            "Inflow [m3/sec]",
-            f"Average inflows to {dam_name} with {policy_name} policy",
+            "Inflow [m3/sec]"
         )
-
+        
     def plot_condensed_release(
         self,
-        dam_name,
-        policy_name,
+        dam_name
     ):
         hor_line_positions = [
             self.hydro_model.reservoirs[dam_name].hydropower_plants[0].max_turbine_flow
@@ -552,12 +569,11 @@ class HydroModelPlotter:
         self.plot_condensed_figure(
             [self.hydro_model.reservoirs[dam_name].release_vector],
             "Release [m3/sec]",
-            f"Average release from {dam_name} with {policy_name} policy",
             hor_line_positions=hor_line_positions,
             text_on_horiz=text_on_horiz,
         )
 
-    def plot_condensed_release_versus_inflow(self, dam_name, policy_name):
+    def plot_condensed_release_versus_inflow(self, dam_name):
         hor_line_positions = [
             self.hydro_model.reservoirs[dam_name].hydropower_plants[0].max_turbine_flow
         ]
@@ -575,7 +591,7 @@ class HydroModelPlotter:
             ],
             range_exists=[True, True],
             range_alphas=[0.5,0.3],
-            colors=[theme_colors["green"], color_list[1]],
+            colors=[dam_color[dam_name], color_list[1]],
             hor_line_positions=hor_line_positions,
             text_on_horiz=text_on_horiz,
         )
@@ -583,22 +599,33 @@ class HydroModelPlotter:
     def plot_condensed_level(
         self,
         dam_name,
-        policy_name,
     ):
+        
+        if dam_name == "HAD":
+            threshold = 147
+            bbox_to_anchor=(0.32,0.22)
+        else:
+            threshold = None
+            bbox_to_anchor=(1,0.93)
+
         hor_line_positions = [
             self.hydro_model.reservoirs[dam_name].rating_curve[0, 0],
-            self.hydro_model.reservoirs[dam_name].hydropower_plants[0].head_start_level,
             self.hydro_model.reservoirs[dam_name].rating_curve[0, -1],
+            threshold
         ]
-        text_on_horiz = ["Minimum Level", "Turbine Level", "Maximum Level"]
+        text_on_horiz = ["Min/Max Level", "", "Minimum Operational Level"]
         self.plot_condensed_figure(
-            [self.hydro_model.reservoirs[dam_name].level_vector],
-            "Level [masl]",
-            f"Average level of {dam_name} under {policy_name} policy",
+            vectors=[self.hydro_model.reservoirs[dam_name].level_vector],
+            y_name="Level [masl]",
+            labels=[f"{dam_name} Level"],
+            colors=[dam_color[dam_name]],
             hor_line_positions=hor_line_positions,
             text_on_horiz=text_on_horiz,
+            hor_line_colors=["silver", "silver", "black"],
+            bbox_to_anchor=bbox_to_anchor
         )
-
+        
+        
     # WE USE THIS!!!!!!!
     def plot_received_vs_demand_for_district_raw_condensed(self, irr_name):
         
@@ -614,5 +641,6 @@ class HydroModelPlotter:
             ],
             range_exists=[True, True],
             range_alphas=[0.3,0.3],
-            colors=[theme_colors["purple"], color_list[1]]
+            colors=[irr_color[irr_name], color_list[1]]
         )
+
