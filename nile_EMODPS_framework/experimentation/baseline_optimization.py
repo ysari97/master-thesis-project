@@ -74,7 +74,7 @@ if __name__ == "__main__":
     ]
 
     nfe = 50000
-    epsilon_list = [1e-2, 1e-2, 1e-2, 1e-1, 1e-1, 1e-2]
+    epsilon_list = [1e-1, 1e-2, 1e-2, 1e-1, 1e-2, 1e-1]
 
     random.seed(123)
     before = datetime.now()

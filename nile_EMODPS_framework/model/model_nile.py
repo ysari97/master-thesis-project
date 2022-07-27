@@ -148,7 +148,7 @@ class ModelNile:
         egypt_90_perc_worst = np.percentile(
             bcm_def_egypt, 90, interpolation="closest_observation"
         )
-        egypt_freq_low_HAD = np.sum(self.reservoirs["HAD"].level_vector < 147) / len(
+        egypt_freq_low_HAD = np.sum(self.reservoirs["HAD"].level_vector < 159) / len(
             self.reservoirs["HAD"].level_vector
         )
 
