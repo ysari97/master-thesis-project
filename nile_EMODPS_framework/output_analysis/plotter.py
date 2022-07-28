@@ -106,10 +106,11 @@ def parallel_plots_many_policies(
         "Egypt 90$^{th}$ Irr. Deficit",
         "Egypt Low HAD",
         "Sudan Irr. Deficit",
+        "Sudan 90$^{th}$ Irr. Deficit",
         "Ethiopia Hydropower",
     ],
-    units=["BCM/year", "BCM/month", "%", "BCM/year", "TWh/year"],
-    directions=["min", "min", "min", "min", "max"],
+    units=["BCM/year", "BCM/month", "%", "BCM/year", "BCM/month", "TWh/year"],
+    directions=["min", "min", "min", "min", "min", "max"],
     saved=False,
 ):
 
@@ -139,13 +140,13 @@ def parallel_plots_many_policies(
         norm_df,
         "Name",
         color=[
-            theme_colors["blue"],
             theme_colors["gray"],
             theme_colors["green"],
+            theme_colors["blue"],
             theme_colors["purple"],
             theme_colors["plum"],
-            theme_colors["chocolate"],
             theme_colors["yellow"],
+            theme_colors["chocolate"],
             "red",
         ],
         linewidth=7,
@@ -437,7 +438,7 @@ class HydroModelPlotter:
 
     def plot_level_with_limits(self, dam_name):
         if dam_name == "HAD":
-            threshold = 147
+            threshold = 159
         else:
             threshold = None
 
@@ -446,7 +447,7 @@ class HydroModelPlotter:
             vector_labels=[f"{dam_name} Level"],
             vector_colors=[dam_color[dam_name]],
             horizontal_lines=[
-                self.hydro_model.reservoirs[dam_name].rating_curve[0, 0],
+                self.hydro_model.reservoirs[dam_name].rating_curve[0, 1],
                 self.hydro_model.reservoirs[dam_name].rating_curve[0, -1],
                 threshold
             ],
@@ -602,14 +603,14 @@ class HydroModelPlotter:
     ):
         
         if dam_name == "HAD":
-            threshold = 147
+            threshold = 159
             bbox_to_anchor=(0.32,0.22)
         else:
             threshold = None
             bbox_to_anchor=(1,0.93)
 
         hor_line_positions = [
-            self.hydro_model.reservoirs[dam_name].rating_curve[0, 0],
+            self.hydro_model.reservoirs[dam_name].rating_curve[0, 1],
             self.hydro_model.reservoirs[dam_name].rating_curve[0, -1],
             threshold
         ]
