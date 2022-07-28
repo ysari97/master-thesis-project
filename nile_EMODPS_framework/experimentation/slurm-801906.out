@@ -1,0 +1,38 @@
+/home/ysari/.local/lib/python3.8/site-packages/ema_workbench/em_framework/evaluators.py:21: UserWarning: ipyparallel not installed - IpyparalleEvaluator not available
+  warnings.warn(
+[MainProcess/INFO] pool started
+[MainProcess/INFO] generation 0: 0/50000 nfe
+/home/ysari/.local/lib/python3.8/site-packages/ema_workbench/em_framework/callbacks.py:192: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead.  To get a de-fragmented frame, use `newframe = frame.copy()`
+  df[name] = pd.Series(dtype=dtype)
+[MainProcess/INFO] generation 5: 500/50000 nfe
+[MainProcess/INFO] generation 10: 1000/50000 nfe
+[MainProcess/INFO] generation 15: 1500/50000 nfe
+[MainProcess/INFO] generation 20: 2000/50000 nfe
+[MainProcess/INFO] generation 25: 2500/50000 nfe
+[MainProcess/INFO] generation 30: 3000/50000 nfe
+[MainProcess/INFO] generation 35: 3500/50000 nfe
+[MainProcess/INFO] generation 40: 4000/50000 nfe
+[MainProcess/INFO] generation 45: 4500/50000 nfe
+[MainProcess/INFO] generation 50: 5000/50000 nfe
+[MainProcess/INFO] generation 55: 5500/50000 nfe
+[MainProcess/INFO] generation 60: 6000/50000 nfe
+[MainProcess/INFO] generation 65: 6500/50000 nfe
+[MainProcess/INFO] generation 70: 7000/50000 nfe
+[MainProcess/INFO] generation 75: 7500/50000 nfe
+[MainProcess/INFO] generation 80: 8000/50000 nfe
+[MainProcess/INFO] generation 85: 8500/50000 nfe
+[MainProcess/INFO] generation 90: 9000/50000 nfe
+[MainProcess/INFO] generation 95: 9500/50000 nfe
+[MainProcess/INFO] generation 100: 10000/50000 nfe
+[MainProcess/INFO] generation 105: 13572/50000 nfe
+[MainProcess/INFO] generation 110: 17332/50000 nfe
+[MainProcess/INFO] generation 115: 21092/50000 nfe
+[MainProcess/INFO] generation 120: 24852/50000 nfe
+[MainProcess/INFO] generation 125: 28612/50000 nfe
+[MainProcess/INFO] generation 130: 32372/50000 nfe
+[MainProcess/INFO] generation 135: 36132/50000 nfe
+[MainProcess/INFO] generation 140: 39892/50000 nfe
+[MainProcess/INFO] generation 145: 43652/50000 nfe
+[MainProcess/INFO] generation 150: 47412/50000 nfe
+[MainProcess/INFO] optimization completed, found 340 solutions
+[MainProcess/INFO] terminating pool
