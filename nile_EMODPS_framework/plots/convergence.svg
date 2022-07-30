@@ -1,0 +1,1360 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg height="288pt" version="1.1" viewBox="0 0 648 288" width="648pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <metadata>
+  <rdf:RDF xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2022-07-29T15:21:09.522805</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.4.3, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linecap:butt;stroke-linejoin:round;}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 288 
+L 648 288 
+L 648 0 
+L 0 0 
+z
+" style="fill:#ffffff;"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 62.12 237.0625 
+L 319.690936 237.0625 
+L 319.690936 14.7241 
+L 62.12 14.7241 
+z
+" style="fill:#ffffff;"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path d="M 0 0 
+L 0 3.5 
+" id="mc4e633abb3" style="stroke:#000000;stroke-width:0.8;"/>
+      </defs>
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="73.82777" xlink:href="#mc4e633abb3" y="237.0625"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <!-- 0 -->
+      <g transform="translate(70.94777 252.606875)scale(0.12 -0.12)">
+       <defs>
+        <path d="M 1536 4064 
+C 576 4064 224 2925 224 1990 
+C 224 979 570 -77 1536 -77 
+C 2496 -77 2835 1062 2835 1997 
+C 2835 2982 2496 4064 1542 4064 
+L 1536 4064 
+z
+M 1530 3853 
+C 2106 3853 2266 2906 2266 1997 
+C 2266 1101 2112 141 1536 141 
+C 979 141 794 1107 794 2003 
+C 794 2893 947 3853 1523 3853 
+L 1530 3853 
+z
+" id="MinionPro-Regular-30" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="120.268745" xlink:href="#mc4e633abb3" y="237.0625"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <!-- 10000 -->
+      <g transform="translate(105.868745 252.606875)scale(0.12 -0.12)">
+       <defs>
+        <path d="M 2458 0 
+L 2458 173 
+C 1875 218 1837 269 1837 730 
+L 1837 4064 
+C 1485 3923 1107 3802 698 3731 
+L 698 3584 
+L 1005 3571 
+C 1286 3558 1312 3526 1312 3194 
+L 1312 730 
+C 1312 269 1280 218 698 173 
+L 698 0 
+L 2458 0 
+z
+" id="MinionPro-Regular-31" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#MinionPro-Regular-31"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-30"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-30"/>
+       <use x="143.999954" xlink:href="#MinionPro-Regular-30"/>
+       <use x="191.999939" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="166.70972" xlink:href="#mc4e633abb3" y="237.0625"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <!-- 20000 -->
+      <g transform="translate(152.30972 252.606875)scale(0.12 -0.12)">
+       <defs>
+        <path d="M 2637 896 
+C 2445 493 2362 467 2016 467 
+L 819 467 
+L 1728 1421 
+C 2317 2048 2573 2426 2573 2982 
+C 2573 3654 2061 4064 1498 4064 
+C 1126 4064 826 3898 634 3686 
+L 269 3168 
+L 410 3040 
+C 576 3290 845 3635 1280 3635 
+C 1754 3635 2035 3322 2035 2784 
+C 2035 2234 1632 1709 1235 1235 
+C 915 864 557 499 198 147 
+L 198 0 
+L 2592 0 
+C 2669 288 2733 570 2816 838 
+L 2637 896 
+z
+" id="MinionPro-Regular-32" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#MinionPro-Regular-32"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-30"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-30"/>
+       <use x="143.999954" xlink:href="#MinionPro-Regular-30"/>
+       <use x="191.999939" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="213.150695" xlink:href="#mc4e633abb3" y="237.0625"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <!-- 30000 -->
+      <g transform="translate(198.750695 252.606875)scale(0.12 -0.12)">
+       <defs>
+        <path d="M 1824 2419 
+C 2010 2547 2163 2662 2259 2765 
+C 2381 2886 2458 3034 2458 3219 
+C 2458 3706 2080 4064 1504 4064 
+L 1498 4064 
+C 1165 4064 870 3904 691 3706 
+L 410 3302 
+L 544 3174 
+C 704 3411 960 3680 1312 3680 
+C 1651 3680 1920 3475 1920 3078 
+C 1920 2605 1485 2355 896 2170 
+L 941 1984 
+C 1043 2016 1197 2054 1350 2054 
+C 1715 2054 2163 1818 2163 1229 
+C 2163 595 1843 256 1389 256 
+C 1024 256 762 435 595 582 
+C 544 627 493 621 442 582 
+C 384 538 301 454 294 371 
+C 282 294 307 224 397 141 
+C 480 64 742 -77 1037 -77 
+C 1498 -77 2714 397 2714 1434 
+C 2714 1901 2387 2298 1824 2406 
+L 1824 2419 
+z
+" id="MinionPro-Regular-33" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#MinionPro-Regular-33"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-30"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-30"/>
+       <use x="143.999954" xlink:href="#MinionPro-Regular-30"/>
+       <use x="191.999939" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="259.59167" xlink:href="#mc4e633abb3" y="237.0625"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <!-- 40000 -->
+      <g transform="translate(245.19167 252.606875)scale(0.12 -0.12)">
+       <defs>
+        <path d="M 2918 1139 
+L 2918 1440 
+L 2304 1440 
+L 2304 4045 
+L 2048 4045 
+C 1389 3174 736 2227 128 1318 
+L 128 1139 
+L 1792 1139 
+L 1792 678 
+C 1792 256 1766 218 1210 173 
+L 1210 0 
+L 2848 0 
+L 2848 173 
+C 2330 218 2304 250 2304 678 
+L 2304 1139 
+L 2918 1139 
+z
+M 1792 1440 
+L 531 1440 
+C 954 2150 1370 2758 1779 3334 
+L 1792 3334 
+L 1792 1440 
+z
+" id="MinionPro-Regular-34" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#MinionPro-Regular-34"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-30"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-30"/>
+       <use x="143.999954" xlink:href="#MinionPro-Regular-30"/>
+       <use x="191.999939" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="306.032645" xlink:href="#mc4e633abb3" y="237.0625"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <!-- 50000 -->
+      <g transform="translate(291.632645 252.606875)scale(0.12 -0.12)">
+       <defs>
+        <path d="M 973 3520 
+L 2464 3520 
+L 2630 3936 
+L 2592 3987 
+L 768 3987 
+L 518 2035 
+C 666 2093 909 2163 1178 2163 
+C 1875 2163 2221 1760 2221 1197 
+C 2221 717 1952 250 1408 250 
+C 1018 250 755 454 621 576 
+C 557 627 506 621 448 576 
+C 378 512 320 429 314 365 
+C 301 288 333 237 416 147 
+C 512 58 781 -77 1075 -77 
+C 1414 -70 1843 96 2189 378 
+C 2579 698 2758 1062 2758 1446 
+C 2758 1971 2342 2528 1523 2528 
+C 1350 2528 1050 2426 806 2336 
+L 973 3520 
+z
+" id="MinionPro-Regular-35" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#MinionPro-Regular-35"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-30"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-30"/>
+       <use x="143.999954" xlink:href="#MinionPro-Regular-30"/>
+       <use x="191.999939" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="text_7">
+     <!-- NFEs -->
+     <g transform="translate(174.352734 270.167344)scale(0.15 -0.15)">
+      <defs>
+       <path d="M 4602 4160 
+L 3091 4160 
+L 3091 3981 
+C 3533 3955 3686 3872 3718 3584 
+C 3738 3405 3763 3110 3763 2522 
+L 3763 947 
+L 3744 947 
+L 1075 4160 
+L 128 4160 
+L 128 3981 
+C 429 3955 570 3904 698 3744 
+C 813 3590 826 3565 826 3098 
+L 826 1690 
+C 826 1101 806 794 787 595 
+C 755 282 595 198 224 179 
+L 224 0 
+L 1741 0 
+L 1741 179 
+C 1306 205 1158 282 1126 608 
+C 1107 794 1088 1101 1088 1690 
+L 1088 3296 
+L 1101 3296 
+L 3827 -58 
+L 4026 -58 
+L 4026 2522 
+C 4026 3117 4038 3405 4064 3597 
+C 4090 3878 4243 3962 4602 3981 
+L 4602 4160 
+z
+" id="MinionPro-Regular-4e" transform="scale(0.015625)"/>
+       <path d="M 3155 3219 
+C 3123 3520 3091 3930 3091 4160 
+L 275 4160 
+L 275 3981 
+C 768 3942 819 3910 819 3354 
+L 819 806 
+C 819 256 768 218 256 179 
+L 256 0 
+L 1997 0 
+L 1997 179 
+C 1414 218 1363 256 1363 806 
+L 1363 1965 
+L 2022 1965 
+C 2605 1965 2630 1888 2714 1453 
+L 2893 1453 
+L 2893 2682 
+L 2714 2682 
+C 2630 2272 2605 2214 2022 2214 
+L 1363 2214 
+L 1363 3738 
+C 1363 3923 1382 3936 1568 3936 
+L 2054 3936 
+C 2541 3936 2682 3885 2784 3706 
+C 2874 3571 2912 3450 2963 3194 
+L 3155 3219 
+z
+" id="MinionPro-Regular-46" transform="scale(0.015625)"/>
+       <path d="M 3302 1037 
+C 3219 781 3098 563 2989 435 
+C 2848 269 2669 218 2182 218 
+C 1862 218 1638 224 1517 301 
+C 1402 384 1363 518 1363 819 
+L 1363 2029 
+L 1971 2029 
+C 2528 2029 2573 1990 2656 1530 
+L 2842 1530 
+L 2842 2758 
+L 2656 2758 
+C 2573 2330 2541 2278 1965 2278 
+L 1363 2278 
+L 1363 3731 
+C 1363 3923 1376 3936 1574 3936 
+L 2061 3936 
+C 2522 3936 2694 3891 2784 3757 
+C 2867 3616 2931 3475 2989 3206 
+L 3174 3238 
+C 3155 3565 3123 4000 3123 4160 
+L 269 4160 
+L 269 3981 
+C 768 3936 819 3917 819 3341 
+L 819 794 
+C 819 275 768 224 186 179 
+L 186 0 
+L 3270 0 
+C 3328 198 3456 800 3494 1011 
+L 3302 1037 
+z
+" id="MinionPro-Regular-45" transform="scale(0.015625)"/>
+       <path d="M 2048 2080 
+C 2029 2240 1958 2618 1907 2765 
+C 1773 2816 1600 2880 1338 2874 
+C 749 2874 365 2496 365 2048 
+C 365 1555 781 1344 1165 1165 
+C 1485 1018 1670 864 1670 582 
+C 1670 314 1453 134 1216 134 
+C 832 134 544 506 429 928 
+L 262 896 
+C 262 666 320 230 365 141 
+C 480 45 774 -77 1101 -77 
+C 1613 -77 2157 224 2157 806 
+C 2157 1248 1830 1478 1350 1677 
+C 1062 1798 806 1952 806 2234 
+C 806 2483 979 2675 1222 2675 
+C 1536 2675 1760 2419 1882 2042 
+L 2048 2080 
+z
+" id="MinionPro-Regular-73" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#MinionPro-Regular-4e"/>
+      <use x="74.299988" xlink:href="#MinionPro-Regular-46"/>
+      <use x="127.199982" xlink:href="#MinionPro-Regular-45"/>
+      <use x="183.999969" xlink:href="#MinionPro-Regular-73"/>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_7">
+      <defs>
+       <path d="M 0 0 
+L -3.5 0 
+" id="m0cb5b676b3" style="stroke:#000000;stroke-width:0.8;"/>
+      </defs>
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="62.12" xlink:href="#m0cb5b676b3" y="226.956209"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <!-- 0 -->
+      <g transform="translate(49.36 231.228397)scale(0.12 -0.12)">
+       <use xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_8">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="62.12" xlink:href="#m0cb5b676b3" y="201.965381"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <!-- 250 -->
+      <g transform="translate(37.84 206.237568)scale(0.12 -0.12)">
+       <use xlink:href="#MinionPro-Regular-32"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-35"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_9">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="62.12" xlink:href="#m0cb5b676b3" y="176.974553"/>
+      </g>
+     </g>
+     <g id="text_10">
+      <!-- 500 -->
+      <g transform="translate(37.84 181.24674)scale(0.12 -0.12)">
+       <use xlink:href="#MinionPro-Regular-35"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-30"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_10">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="62.12" xlink:href="#m0cb5b676b3" y="151.983724"/>
+      </g>
+     </g>
+     <g id="text_11">
+      <!-- 750 -->
+      <g transform="translate(37.84 156.255912)scale(0.12 -0.12)">
+       <defs>
+        <path d="M 2861 3987 
+L 416 3987 
+C 390 3712 358 3392 301 3040 
+L 486 3040 
+C 640 3462 678 3520 1101 3520 
+L 2483 3520 
+C 1978 2406 1254 1088 582 -6 
+L 627 -77 
+L 1101 -13 
+C 1715 1306 2310 2611 2912 3910 
+L 2861 3987 
+z
+" id="MinionPro-Regular-37" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#MinionPro-Regular-37"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-35"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_11">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="62.12" xlink:href="#m0cb5b676b3" y="126.992896"/>
+      </g>
+     </g>
+     <g id="text_12">
+      <!-- 1000 -->
+      <g transform="translate(32.08 131.265084)scale(0.12 -0.12)">
+       <use xlink:href="#MinionPro-Regular-31"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-30"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-30"/>
+       <use x="143.999954" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_12">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="62.12" xlink:href="#m0cb5b676b3" y="102.002068"/>
+      </g>
+     </g>
+     <g id="text_13">
+      <!-- 1250 -->
+      <g transform="translate(32.08 106.274256)scale(0.12 -0.12)">
+       <use xlink:href="#MinionPro-Regular-31"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-32"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-35"/>
+       <use x="143.999954" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_13">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="62.12" xlink:href="#m0cb5b676b3" y="77.01124"/>
+      </g>
+     </g>
+     <g id="text_14">
+      <!-- 1500 -->
+      <g transform="translate(32.08 81.283427)scale(0.12 -0.12)">
+       <use xlink:href="#MinionPro-Regular-31"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-35"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-30"/>
+       <use x="143.999954" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_14">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="62.12" xlink:href="#m0cb5b676b3" y="52.020412"/>
+      </g>
+     </g>
+     <g id="text_15">
+      <!-- 1750 -->
+      <g transform="translate(32.08 56.292599)scale(0.12 -0.12)">
+       <use xlink:href="#MinionPro-Regular-31"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-37"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-35"/>
+       <use x="143.999954" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_9">
+     <g id="line2d_15">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="62.12" xlink:href="#m0cb5b676b3" y="27.029584"/>
+      </g>
+     </g>
+     <g id="text_16">
+      <!-- 2000 -->
+      <g transform="translate(32.08 31.301771)scale(0.12 -0.12)">
+       <use xlink:href="#MinionPro-Regular-32"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-30"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-30"/>
+       <use x="143.999954" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="text_17">
+     <!-- $\epsilon$-progress -->
+     <g transform="translate(24.18 158.1433)rotate(-90)scale(0.15 -0.15)">
+      <defs>
+       <path d="M 1263 1888 
+Q 925 1963 778 2166 
+Q 669 2309 669 2503 
+Q 669 3034 1175 3344 
+Q 1575 3588 2188 3588 
+Q 2425 3588 2684 3550 
+Q 2944 3513 3234 3438 
+L 3134 2916 
+Q 2847 3006 2606 3047 
+Q 2359 3088 2138 3088 
+Q 1766 3088 1522 2944 
+Q 1228 2772 1228 2522 
+Q 1228 2356 1381 2241 
+Q 1563 2103 1925 2103 
+L 2409 2103 
+L 2319 1628 
+L 1856 1628 
+Q 1425 1628 1172 1469 
+Q 828 1253 828 916 
+Q 828 703 1013 563 
+Q 1244 388 1716 388 
+Q 2006 388 2284 444 
+Q 2563 503 2806 619 
+L 2700 84 
+Q 2403 -3 2131 -47 
+Q 1859 -91 1609 -91 
+Q 866 -91 516 194 
+Q 250 413 250 781 
+Q 250 1278 600 1584 
+Q 859 1813 1263 1888 
+z
+" id="DejaVuSans-Oblique-3b5" transform="scale(0.015625)"/>
+       <path d="M 1920 1619 
+L 454 1619 
+L 365 1267 
+L 1824 1267 
+L 1920 1619 
+z
+" id="MinionPro-Regular-2d" transform="scale(0.015625)"/>
+       <path d="M 1082 2432 
+L 1082 2938 
+C 781 2816 422 2707 154 2662 
+L 154 2509 
+C 550 2458 576 2445 576 2029 
+L 576 -864 
+C 576 -1286 518 -1325 109 -1363 
+L 109 -1536 
+L 1626 -1536 
+L 1626 -1363 
+C 1126 -1318 1082 -1286 1082 -800 
+L 1082 38 
+C 1165 -6 1338 -70 1523 -77 
+C 2355 77 3117 698 3117 1664 
+C 3117 2298 2694 2874 1984 2874 
+C 1907 2874 1786 2842 1670 2778 
+L 1082 2432 
+z
+M 1082 2221 
+C 1254 2349 1517 2490 1722 2490 
+C 2189 2490 2579 2106 2579 1421 
+C 2579 698 2221 237 1683 237 
+C 1466 237 1222 339 1082 486 
+L 1082 2221 
+z
+" id="MinionPro-Regular-70" transform="scale(0.015625)"/>
+       <path d="M 1158 2195 
+L 1158 2893 
+C 851 2758 570 2682 256 2630 
+L 256 2490 
+C 621 2438 653 2413 653 1990 
+L 653 666 
+C 653 243 608 205 211 166 
+L 211 0 
+L 1683 0 
+L 1683 166 
+C 1190 205 1158 243 1158 666 
+L 1158 1837 
+C 1299 2195 1504 2387 1670 2387 
+C 1773 2387 1850 2349 1939 2253 
+C 1978 2214 2035 2208 2112 2240 
+C 2234 2298 2317 2426 2317 2554 
+C 2317 2707 2163 2874 1946 2874 
+C 1638 2874 1363 2515 1171 2195 
+L 1158 2195 
+z
+" id="MinionPro-Regular-72" transform="scale(0.015625)"/>
+       <path d="M 1638 2874 
+C 1056 2874 237 2394 237 1338 
+C 237 627 762 -77 1638 -77 
+C 2272 -77 3027 416 3027 1446 
+C 3027 2240 2432 2874 1645 2874 
+L 1638 2874 
+z
+M 1574 2662 
+C 2131 2662 2432 2054 2432 1306 
+C 2432 429 2106 134 1709 134 
+C 1184 134 832 736 832 1542 
+C 832 2266 1178 2662 1568 2662 
+L 1574 2662 
+z
+" id="MinionPro-Regular-6f" transform="scale(0.015625)"/>
+       <path d="M 2957 2803 
+C 2726 2765 2400 2726 2086 2714 
+C 1901 2816 1690 2874 1472 2874 
+L 1466 2874 
+C 979 2874 326 2541 326 1811 
+C 326 1376 602 1075 890 954 
+C 787 826 582 659 326 563 
+C 320 499 339 390 397 294 
+C 480 160 640 13 870 -58 
+C 717 -173 467 -378 339 -506 
+C 243 -602 186 -723 186 -864 
+C 192 -1229 582 -1645 1293 -1645 
+C 2144 -1645 2893 -1024 2893 -378 
+C 2893 250 2368 378 1971 378 
+C 1760 378 1530 371 1299 371 
+C 1011 371 896 493 896 621 
+C 896 710 998 826 1088 883 
+C 1190 870 1306 851 1414 851 
+C 1958 851 2534 1184 2534 1875 
+C 2534 2106 2464 2304 2342 2445 
+L 2707 2426 
+C 2810 2477 2938 2650 2995 2752 
+L 2957 2803 
+z
+M 1408 2682 
+C 1773 2682 2010 2323 2010 1818 
+C 2010 1312 1760 1062 1478 1056 
+C 1120 1056 877 1414 877 1914 
+C 877 2413 1126 2682 1402 2682 
+L 1408 2682 
+z
+M 1549 -70 
+C 1818 -70 2003 -90 2163 -154 
+C 2349 -230 2458 -390 2458 -608 
+C 2458 -1005 2144 -1318 1536 -1318 
+C 1062 -1318 691 -1056 691 -710 
+C 691 -525 819 -346 986 -211 
+C 1101 -109 1242 -70 1542 -70 
+L 1549 -70 
+z
+" id="MinionPro-Regular-67" transform="scale(0.015625)"/>
+       <path d="M 2426 678 
+C 2195 461 1952 358 1696 358 
+C 1248 358 749 717 742 1587 
+C 1504 1613 2304 1677 2413 1696 
+C 2528 1722 2560 1773 2560 1901 
+C 2560 2400 2131 2874 1600 2874 
+L 1594 2874 
+C 1267 2874 922 2701 659 2406 
+C 397 2118 237 1728 237 1286 
+C 237 563 698 -77 1485 -77 
+C 1683 -77 2125 38 2528 544 
+L 2426 678 
+z
+M 1446 2637 
+C 1798 2637 2016 2330 2010 1997 
+C 2010 1907 1971 1869 1856 1869 
+C 1485 1856 1133 1850 774 1850 
+C 870 2368 1152 2637 1440 2637 
+L 1446 2637 
+z
+" id="MinionPro-Regular-65" transform="scale(0.015625)"/>
+      </defs>
+      <use transform="translate(0 0.9375)" xlink:href="#DejaVuSans-Oblique-3b5"/>
+      <use transform="translate(54.052734 0.9375)" xlink:href="#MinionPro-Regular-2d"/>
+      <use transform="translate(89.652725 0.9375)" xlink:href="#MinionPro-Regular-70"/>
+      <use transform="translate(142.052719 0.9375)" xlink:href="#MinionPro-Regular-72"/>
+      <use transform="translate(179.15271 0.9375)" xlink:href="#MinionPro-Regular-6f"/>
+      <use transform="translate(230.152695 0.9375)" xlink:href="#MinionPro-Regular-67"/>
+      <use transform="translate(276.952682 0.9375)" xlink:href="#MinionPro-Regular-72"/>
+      <use transform="translate(314.052673 0.9375)" xlink:href="#MinionPro-Regular-65"/>
+      <use transform="translate(356.552658 0.9375)" xlink:href="#MinionPro-Regular-73"/>
+      <use transform="translate(393.252655 0.9375)" xlink:href="#MinionPro-Regular-73"/>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_16">
+    <path clip-path="url(#p5c3b24891b)" d="M 73.82777 226.956209 
+L 74.29218 224.956943 
+L 76.614228 219.458961 
+L 78.936277 210.462262 
+L 81.258326 204.66439 
+L 83.580375 199.666225 
+L 85.902423 195.967582 
+L 88.224472 193.568463 
+L 90.546521 190.76949 
+L 92.86857 187.570664 
+L 95.190618 184.871654 
+L 97.512667 181.472902 
+L 99.834716 178.474002 
+L 102.156765 176.474736 
+L 104.478813 174.275543 
+L 106.800862 172.07635 
+L 109.122911 170.177047 
+L 111.44496 168.477671 
+L 113.767008 166.678331 
+L 116.089057 164.379175 
+L 118.411106 162.379909 
+L 122.888016 161.080386 
+L 126.380377 157.88156 
+L 129.872739 153.483174 
+L 133.3651 147.685302 
+L 136.857461 142.18732 
+L 140.349823 136.789301 
+L 143.842184 131.491245 
+L 147.334545 127.09286 
+L 150.826906 122.794437 
+L 154.319268 118.096161 
+L 157.811629 114.397519 
+L 161.30399 111.198693 
+L 164.796352 108.39972 
+L 168.288713 105.000967 
+L 171.781074 102.501885 
+L 175.273436 99.103132 
+L 178.765797 96.504086 
+L 182.258158 93.90504 
+L 185.75052 92.005737 
+L 189.242881 88.806911 
+L 192.735242 86.107901 
+L 196.227604 82.909075 
+L 199.719965 80.709882 
+L 203.212326 78.710616 
+L 206.704688 76.211533 
+L 210.197049 74.91201 
+L 213.68941 72.512891 
+L 217.181772 70.113771 
+L 220.674133 67.614688 
+L 224.166494 65.115606 
+L 227.658856 63.216303 
+L 231.151217 61.01711 
+L 234.643578 59.51766 
+L 238.13594 57.118541 
+L 241.628301 55.519128 
+L 245.120662 52.820118 
+L 248.613024 50.820852 
+L 252.105385 48.921549 
+L 255.597746 47.322136 
+L 259.090108 45.222906 
+L 262.582469 43.023714 
+L 266.07483 41.324337 
+L 269.567192 40.124777 
+L 273.059553 38.225475 
+L 276.551914 36.825988 
+L 280.044276 35.226575 
+L 283.536637 33.827089 
+L 287.028998 32.227676 
+L 290.521359 30.928153 
+L 294.013721 29.92852 
+L 297.506082 28.229143 
+L 300.998443 26.62973 
+L 304.490805 24.830391 
+" style="fill:none;stroke:#1f77b4;stroke-linecap:square;stroke-width:1.5;"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 62.12 237.0625 
+L 62.12 14.7241 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 319.690936 237.0625 
+L 319.690936 14.7241 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 62.12 237.0625 
+L 319.690936 237.0625 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 62.12 14.7241 
+L 319.690936 14.7241 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"/>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g id="patch_7">
+    <path d="M 375.17375 237.0625 
+L 632.744686 237.0625 
+L 632.744686 14.7241 
+L 375.17375 14.7241 
+z
+" style="fill:#ffffff;"/>
+   </g>
+   <g id="matplotlib.axis_3">
+    <g id="xtick_7">
+     <g id="line2d_17">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="386.88152" xlink:href="#mc4e633abb3" y="237.0625"/>
+      </g>
+     </g>
+     <g id="text_18">
+      <!-- 0 -->
+      <g transform="translate(384.00152 252.606875)scale(0.12 -0.12)">
+       <use xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_18">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="433.322495" xlink:href="#mc4e633abb3" y="237.0625"/>
+      </g>
+     </g>
+     <g id="text_19">
+      <!-- 10000 -->
+      <g transform="translate(418.922495 252.606875)scale(0.12 -0.12)">
+       <use xlink:href="#MinionPro-Regular-31"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-30"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-30"/>
+       <use x="143.999954" xlink:href="#MinionPro-Regular-30"/>
+       <use x="191.999939" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_9">
+     <g id="line2d_19">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="479.76347" xlink:href="#mc4e633abb3" y="237.0625"/>
+      </g>
+     </g>
+     <g id="text_20">
+      <!-- 20000 -->
+      <g transform="translate(465.36347 252.606875)scale(0.12 -0.12)">
+       <use xlink:href="#MinionPro-Regular-32"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-30"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-30"/>
+       <use x="143.999954" xlink:href="#MinionPro-Regular-30"/>
+       <use x="191.999939" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_10">
+     <g id="line2d_20">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="526.204445" xlink:href="#mc4e633abb3" y="237.0625"/>
+      </g>
+     </g>
+     <g id="text_21">
+      <!-- 30000 -->
+      <g transform="translate(511.804445 252.606875)scale(0.12 -0.12)">
+       <use xlink:href="#MinionPro-Regular-33"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-30"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-30"/>
+       <use x="143.999954" xlink:href="#MinionPro-Regular-30"/>
+       <use x="191.999939" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_11">
+     <g id="line2d_21">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="572.64542" xlink:href="#mc4e633abb3" y="237.0625"/>
+      </g>
+     </g>
+     <g id="text_22">
+      <!-- 40000 -->
+      <g transform="translate(558.24542 252.606875)scale(0.12 -0.12)">
+       <use xlink:href="#MinionPro-Regular-34"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-30"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-30"/>
+       <use x="143.999954" xlink:href="#MinionPro-Regular-30"/>
+       <use x="191.999939" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_12">
+     <g id="line2d_22">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="619.086395" xlink:href="#mc4e633abb3" y="237.0625"/>
+      </g>
+     </g>
+     <g id="text_23">
+      <!-- 50000 -->
+      <g transform="translate(604.686395 252.606875)scale(0.12 -0.12)">
+       <use xlink:href="#MinionPro-Regular-35"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-30"/>
+       <use x="95.999969" xlink:href="#MinionPro-Regular-30"/>
+       <use x="143.999954" xlink:href="#MinionPro-Regular-30"/>
+       <use x="191.999939" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="text_24">
+     <!-- NFEs -->
+     <g transform="translate(487.406484 270.167344)scale(0.15 -0.15)">
+      <use xlink:href="#MinionPro-Regular-4e"/>
+      <use x="74.299988" xlink:href="#MinionPro-Regular-46"/>
+      <use x="127.199982" xlink:href="#MinionPro-Regular-45"/>
+      <use x="183.999969" xlink:href="#MinionPro-Regular-73"/>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_4">
+    <g id="ytick_10">
+     <g id="line2d_23">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="375.17375" xlink:href="#m0cb5b676b3" y="214.636654"/>
+      </g>
+     </g>
+     <g id="text_25">
+      <!-- 2.0 -->
+      <g transform="translate(353.918125 218.908842)scale(0.12 -0.12)">
+       <defs>
+        <path d="M 730 -77 
+C 934 -77 1088 70 1088 294 
+C 1088 499 934 659 730 659 
+C 525 659 371 499 371 294 
+C 371 70 525 -77 723 -77 
+L 730 -77 
+z
+" id="MinionPro-Regular-2e" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#MinionPro-Regular-32"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-2e"/>
+       <use x="70.799973" xlink:href="#MinionPro-Regular-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_11">
+     <g id="line2d_24">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="375.17375" xlink:href="#m0cb5b676b3" y="165.358374"/>
+      </g>
+     </g>
+     <g id="text_26">
+      <!-- 2.2 -->
+      <g transform="translate(353.918125 169.630561)scale(0.12 -0.12)">
+       <use xlink:href="#MinionPro-Regular-32"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-2e"/>
+       <use x="70.799973" xlink:href="#MinionPro-Regular-32"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_12">
+     <g id="line2d_25">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="375.17375" xlink:href="#m0cb5b676b3" y="116.080093"/>
+      </g>
+     </g>
+     <g id="text_27">
+      <!-- 2.4 -->
+      <g transform="translate(353.918125 120.352281)scale(0.12 -0.12)">
+       <use xlink:href="#MinionPro-Regular-32"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-2e"/>
+       <use x="70.799973" xlink:href="#MinionPro-Regular-34"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_13">
+     <g id="line2d_26">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="375.17375" xlink:href="#m0cb5b676b3" y="66.801813"/>
+      </g>
+     </g>
+     <g id="text_28">
+      <!-- 2.6 -->
+      <g transform="translate(353.918125 71.074)scale(0.12 -0.12)">
+       <defs>
+        <path d="M 877 2195 
+C 1069 3085 1664 3488 2054 3674 
+C 2291 3782 2541 3859 2752 3898 
+L 2707 4102 
+C 2451 4058 2144 3987 1888 3898 
+C 1210 3648 237 2925 237 1523 
+C 237 538 800 -77 1549 -77 
+C 2317 -77 2861 570 2861 1331 
+C 2861 1990 2394 2515 1709 2515 
+C 1581 2515 1446 2470 1306 2406 
+L 877 2195 
+z
+M 1459 2157 
+C 2042 2157 2310 1632 2310 1101 
+C 2310 678 2157 141 1658 141 
+C 1133 141 806 768 806 1536 
+C 806 1702 813 1856 845 1978 
+C 998 2061 1216 2157 1453 2157 
+L 1459 2157 
+z
+" id="MinionPro-Regular-36" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#MinionPro-Regular-32"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-2e"/>
+       <use x="70.799973" xlink:href="#MinionPro-Regular-36"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_14">
+     <g id="line2d_27">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="375.17375" xlink:href="#m0cb5b676b3" y="17.523533"/>
+      </g>
+     </g>
+     <g id="text_29">
+      <!-- 2.8 -->
+      <g transform="translate(353.918125 21.79572)scale(0.12 -0.12)">
+       <defs>
+        <path d="M 1587 4064 
+C 902 4064 448 3552 448 3014 
+C 448 2566 723 2259 1139 2022 
+C 922 1882 678 1709 576 1613 
+C 435 1478 288 1299 288 1005 
+C 288 320 832 -77 1517 -77 
+C 2061 -77 2784 333 2784 1082 
+C 2784 1638 2381 1946 1939 2195 
+C 2227 2394 2400 2547 2445 2605 
+C 2566 2746 2630 2931 2630 3117 
+C 2630 3635 2195 4064 1594 4064 
+L 1587 4064 
+z
+M 1523 3859 
+C 1818 3859 2150 3622 2150 3085 
+C 2150 2701 1978 2464 1760 2291 
+C 1306 2515 928 2726 928 3200 
+C 928 3526 1146 3859 1517 3859 
+L 1523 3859 
+z
+M 1581 128 
+C 1178 128 800 454 800 1043 
+C 800 1395 1018 1715 1325 1920 
+C 1818 1670 2272 1395 2272 915 
+C 2272 422 1971 128 1587 128 
+L 1581 128 
+z
+" id="MinionPro-Regular-38" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#MinionPro-Regular-32"/>
+       <use x="47.999985" xlink:href="#MinionPro-Regular-2e"/>
+       <use x="70.799973" xlink:href="#MinionPro-Regular-38"/>
+      </g>
+     </g>
+    </g>
+    <g id="text_30">
+     <!-- hypervolume -->
+     <g transform="translate(346.062656 165.748769)rotate(-90)scale(0.15 -0.15)">
+      <defs>
+       <path d="M 3283 0 
+L 3283 166 
+C 2906 198 2861 237 2861 659 
+L 2861 1779 
+C 2861 2547 2496 2880 1978 2874 
+C 1632 2874 1286 2637 1062 2406 
+L 1062 4557 
+C 813 4480 429 4378 122 4333 
+L 122 4186 
+C 544 4147 557 4115 557 3712 
+L 557 659 
+C 557 237 506 198 122 166 
+L 115 0 
+L 1472 0 
+L 1472 166 
+C 1094 205 1062 250 1062 659 
+L 1062 2182 
+C 1242 2387 1485 2509 1728 2509 
+C 2157 2509 2355 2246 2355 1722 
+L 2355 659 
+C 2355 243 2304 205 1933 166 
+L 1933 0 
+L 3283 0 
+z
+" id="MinionPro-Regular-68" transform="scale(0.015625)"/>
+       <path d="M 3059 2797 
+L 1901 2797 
+L 1901 2637 
+C 2266 2586 2310 2515 2234 2272 
+C 2099 1869 1824 1114 1645 678 
+L 1062 2285 
+C 979 2522 1011 2586 1306 2637 
+L 1306 2797 
+L 6 2797 
+L 6 2637 
+C 358 2586 422 2502 557 2150 
+C 749 1696 1037 922 1293 192 
+C 1331 83 1331 0 1299 -96 
+C 1274 -179 1222 -314 1101 -538 
+C 954 -826 826 -979 627 -1107 
+C 518 -1178 461 -1235 461 -1338 
+C 461 -1491 646 -1645 826 -1645 
+C 915 -1645 992 -1613 1030 -1491 
+C 1120 -1146 1261 -781 1690 243 
+C 2131 1299 2330 1830 2490 2170 
+C 2662 2534 2720 2586 3059 2637 
+L 3059 2797 
+z
+" id="MinionPro-Regular-79" transform="scale(0.015625)"/>
+       <path d="M 3053 2797 
+L 1914 2797 
+L 1914 2637 
+C 2278 2592 2317 2522 2221 2214 
+C 2080 1798 1875 1216 1651 685 
+C 1466 1146 1210 1818 1043 2266 
+C 941 2541 954 2592 1299 2637 
+L 1299 2797 
+L -13 2797 
+L -13 2637 
+C 333 2586 384 2541 531 2170 
+C 832 1427 1126 698 1414 -70 
+L 1587 -70 
+C 1939 883 2278 1670 2490 2150 
+C 2662 2534 2720 2592 3053 2637 
+L 3053 2797 
+z
+" id="MinionPro-Regular-76" transform="scale(0.015625)"/>
+       <path d="M 1523 0 
+L 1523 166 
+C 1114 205 1062 243 1062 666 
+L 1062 4557 
+C 845 4480 448 4371 115 4333 
+L 115 4179 
+C 518 4147 557 4128 557 3693 
+L 557 666 
+C 557 243 499 205 96 166 
+L 96 0 
+L 1523 0 
+z
+" id="MinionPro-Regular-6c" transform="scale(0.015625)"/>
+       <path d="M 3315 314 
+L 3136 326 
+C 2893 339 2842 384 2842 704 
+L 2842 2842 
+C 2746 2822 2592 2797 2413 2778 
+C 2227 2752 2010 2733 1837 2726 
+L 1837 2579 
+L 2067 2541 
+C 2278 2509 2336 2470 2336 2125 
+L 2336 634 
+C 2118 422 1875 326 1645 326 
+C 1357 326 1082 480 1082 1043 
+L 1082 1907 
+C 1082 2342 1082 2643 1101 2842 
+C 992 2822 819 2797 646 2771 
+C 474 2752 320 2733 186 2726 
+L 186 2579 
+L 365 2541 
+C 525 2502 576 2470 576 2131 
+L 576 877 
+C 576 186 941 -77 1370 -77 
+C 1542 -77 1677 -26 1862 83 
+C 2042 192 2189 307 2336 416 
+L 2336 -38 
+L 2374 -77 
+C 2496 -45 2656 6 2822 51 
+C 2995 96 3174 134 3315 154 
+L 3315 314 
+z
+" id="MinionPro-Regular-75" transform="scale(0.015625)"/>
+       <path d="M 5094 0 
+L 5094 166 
+C 4730 205 4678 230 4678 659 
+L 4678 1894 
+C 4678 2522 4365 2874 3866 2874 
+C 3686 2874 3520 2797 3386 2707 
+C 3226 2611 3040 2490 2854 2349 
+C 2726 2682 2451 2874 2144 2874 
+C 1939 2874 1786 2803 1619 2701 
+C 1427 2579 1286 2464 1152 2374 
+L 1152 2893 
+C 870 2765 544 2682 262 2630 
+L 262 2483 
+C 634 2426 653 2394 653 1984 
+L 653 659 
+C 653 243 595 205 173 166 
+L 173 0 
+L 1523 0 
+L 1523 166 
+C 1210 205 1158 243 1158 659 
+L 1158 2163 
+C 1350 2323 1600 2496 1856 2496 
+C 2246 2496 2413 2234 2413 1760 
+L 2413 659 
+C 2413 237 2355 205 1958 166 
+L 1958 0 
+L 3328 0 
+L 3328 166 
+C 2976 205 2918 243 2918 646 
+L 2918 1894 
+C 2918 2016 2912 2086 2899 2163 
+C 3142 2368 3386 2496 3616 2496 
+C 4019 2496 4179 2208 4179 1754 
+L 4179 685 
+C 4179 230 4109 205 3731 166 
+L 3731 0 
+L 5094 0 
+z
+" id="MinionPro-Regular-6d" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#MinionPro-Regular-68"/>
+      <use x="53.399994" xlink:href="#MinionPro-Regular-79"/>
+      <use x="99.299988" xlink:href="#MinionPro-Regular-70"/>
+      <use x="151.699982" xlink:href="#MinionPro-Regular-65"/>
+      <use x="194.199966" xlink:href="#MinionPro-Regular-72"/>
+      <use x="231.299957" xlink:href="#MinionPro-Regular-76"/>
+      <use x="277.599945" xlink:href="#MinionPro-Regular-6f"/>
+      <use x="328.59993" xlink:href="#MinionPro-Regular-6c"/>
+      <use x="353.899918" xlink:href="#MinionPro-Regular-75"/>
+      <use x="406.999908" xlink:href="#MinionPro-Regular-6d"/>
+      <use x="488.899902" xlink:href="#MinionPro-Regular-65"/>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_28">
+    <path clip-path="url(#pcb7df9fb40)" d="M 396.169715 226.956209 
+L 398.491764 213.131172 
+L 400.813812 192.806359 
+L 403.135861 170.973069 
+L 405.45791 154.47527 
+L 407.779959 146.482094 
+L 410.102007 126.952348 
+L 412.424056 120.168041 
+L 414.746105 112.764676 
+L 417.068154 103.628844 
+L 419.390202 101.844571 
+L 421.712251 98.635797 
+L 424.0343 94.926575 
+L 426.356349 92.381935 
+L 428.678397 85.964121 
+L 431.000446 84.102307 
+L 433.322495 82.865605 
+L 436.640238 78.134639 
+L 439.957981 77.654113 
+L 443.275725 76.216812 
+L 446.593468 74.967481 
+L 449.911211 71.633045 
+L 453.403573 69.257259 
+L 456.895934 68.014568 
+L 460.388295 67.122887 
+L 463.880656 65.169532 
+L 467.373018 63.832387 
+L 470.865379 62.648131 
+L 474.35774 61.211782 
+L 477.850102 60.042847 
+L 481.342463 59.689352 
+L 484.834824 58.625776 
+L 488.327186 57.380656 
+L 491.819547 51.857617 
+L 495.311908 51.38974 
+L 498.80427 50.077724 
+L 502.296631 49.774625 
+L 505.788992 49.201834 
+L 509.281354 48.350031 
+L 512.773715 44.995976 
+L 516.266076 44.438113 
+L 519.758438 43.989619 
+L 523.250799 43.833615 
+L 526.74316 42.422808 
+L 530.235522 40.273357 
+L 533.727883 39.369278 
+L 537.220244 38.925904 
+L 540.712606 38.364467 
+L 544.204967 38.021283 
+L 547.697328 36.679344 
+L 551.18969 36.153052 
+L 554.682051 35.136104 
+L 558.174412 34.954323 
+L 561.666774 34.303839 
+L 565.159135 34.08099 
+L 568.651496 33.879929 
+L 572.143858 34.293549 
+L 575.636219 34.044911 
+L 579.12858 32.124353 
+L 582.620942 31.843469 
+L 586.113303 31.159289 
+L 589.605664 30.478519 
+L 593.098026 29.819383 
+L 596.590387 29.693198 
+L 600.082748 29.524907 
+L 603.575109 27.825042 
+L 607.067471 26.911766 
+L 610.559832 25.324681 
+L 614.052193 25.172978 
+L 617.544555 25.133516 
+L 621.036916 24.830391 
+" style="fill:none;stroke:#1f77b4;stroke-linecap:square;stroke-width:1.5;"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 375.17375 237.0625 
+L 375.17375 14.7241 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 632.744686 237.0625 
+L 632.744686 14.7241 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 375.17375 237.0625 
+L 632.744686 237.0625 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 375.17375 14.7241 
+L 632.744686 14.7241 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"/>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p5c3b24891b">
+   <rect height="222.3384" width="257.570936" x="62.12" y="14.7241"/>
+  </clipPath>
+  <clipPath id="pcb7df9fb40">
+   <rect height="222.3384" width="257.570936" x="375.17375" y="14.7241"/>
+  </clipPath>
+ </defs>
+</svg>

@@ -24,8 +24,6 @@ if __name__ == "__main__":
     output_directory = "../outputs/"
     nile_model = ModelNileScenario()
 
-    lever_count = nile_model.overarching_policy.get_total_parameter_count()
-
     em_model = Model("NileProblem", function=nile_model)
     em_model.uncertainties = [
         RealParameter("yearly_demand_growth_rate", 0.01, 0.03),
@@ -35,9 +33,27 @@ if __name__ == "__main__":
         RealParameter("blue_nile_dev_coef", 0.5, 1.5),
         RealParameter("white_nile_dev_coef", 0.5, 1.5),
         RealParameter("atbara_dev_coef", 0.5, 1.5),
-        RealParameter("uniform_flag", -1, 1),
     ]
-    em_model.levers = [RealParameter("v" + str(i), 0, 1) for i in range(lever_count)]
+
+    parameter_count = nile_model.overarching_policy.get_total_parameter_count()
+    n_inputs = nile_model.overarching_policy.functions["release"].n_inputs
+    n_outputs = nile_model.overarching_policy.functions["release"].n_outputs
+    RBF_count = nile_model.overarching_policy.functions["release"].RBF_count
+    p_per_RBF = 2 * n_inputs + n_outputs
+
+    lever_list = list()
+    for i in range(parameter_count):
+        modulus = (i - n_outputs) % p_per_RBF
+        if (
+                (i >= n_outputs)
+                and (modulus < (p_per_RBF - n_outputs))
+                and (modulus % 2 == 0)
+        ):  # centers:
+            lever_list.append(RealParameter(f"v{i}", -1, 1))
+        else:  # linear parameters for each release, radii and weights of RBFs:
+            lever_list.append(RealParameter(f"v{i}", 0, 1))
+
+    em_model.levers = lever_list
 
     # specify outcomes
     em_model.outcomes = [

@@ -61,7 +61,7 @@ country_color = defaultdict(lambda x: "black")
 country_color.update({
     "Ethiopia":theme_colors["green"],
     "Sudan":theme_colors["purple"],
-    "Sudan-2":theme_colors["chocolate"],
+    "Sudan-2":theme_colors["plum"],
     "Egypt":theme_colors["chocolate"]
 })
 
@@ -111,7 +111,6 @@ def parallel_plots_many_policies(
     ],
     units=["BCM/year", "BCM/month", "%", "BCM/year", "BCM/month", "TWh/year"],
     directions=["min", "min", "min", "min", "min", "max"],
-    saved=False,
 ):
 
     names = list(obj_df.columns)
@@ -142,11 +141,11 @@ def parallel_plots_many_policies(
         color=[
             theme_colors["gray"],
             theme_colors["green"],
-            theme_colors["blue"],
-            theme_colors["purple"],
             theme_colors["plum"],
-            theme_colors["yellow"],
+            theme_colors["purple"],
             theme_colors["chocolate"],
+            theme_colors["yellow"],
+            theme_colors["blue"],
             "red",
         ],
         linewidth=7,
@@ -194,13 +193,10 @@ def parallel_plots_many_policies(
     )
 
     fig.set_size_inches(25, 12)
-    if saved:
-        plt.savefig("parallel_plots.svg")
-    plt.show()
 
 
 def parallel_plots_few_policies(
-    obj_df, directions=["min", "min", "min", "min", "min","min"], solution_names=[]
+    obj_df, directions=["min", "min", "min", "min", "min"], solution_names=[]
 ):
 
     names = list(obj_df.columns)
@@ -210,10 +206,9 @@ def parallel_plots_few_policies(
         "Egypt 90$^{th}$ Irr. Deficit",
         "Egypt Low HAD",
         "Sudan Irr. Deficit",
-        "Sudan 90$^{th}$ Irr. Deficit",
         "Ethiopia Hydropower",
     ]
-    units = ["BCM/year", "BCM/month", "%", "BCM/year", "BCM/month", "TWh/year"]
+    units = ["BCM/year", "BCM/month", "%", "BCM/year", "TWh/year"]
 
     objectives_df = obj_df.copy()
     objectives_df.egypt_low_had = 100 * (objectives_df.egypt_low_had)
@@ -404,13 +399,13 @@ class HydroModelPlotter:
         ax.legend()
         ax.set_xlabel(x_label, fontsize=16)
         ax.set_ylabel(y_label, fontsize=16)
-        ax.set_xticks(np.arange(0,self.n_years * self.n_months,x_tick_frequency * self.n_months))
+        ax.set_xticks(np.arange(0,self.n_years * self.n_months + 1,x_tick_frequency * self.n_months))
         ax.set_xticklabels(
-            [f"Jan-{2022+i*x_tick_frequency}" for i in range(int(self.n_years/x_tick_frequency))],
+            [f"Jan-{2022+i*x_tick_frequency}" for i in range(int(self.n_years/x_tick_frequency) + 1)],
             fontsize=14
         )
         plt.title(title)
-        plt.show()
+        # plt.show()
 
         return ax
 
@@ -544,7 +539,7 @@ class HydroModelPlotter:
         ax.set_xlabel("Month", fontsize=16)
         ax.legend(loc="upper right", bbox_to_anchor=bbox_to_anchor)
         plt.title(title)
-        plt.show()
+        # plt.show()
 
         
     def plot_condensed_demand(self, irr_district):
@@ -580,15 +575,19 @@ class HydroModelPlotter:
         ]
         text_on_horiz = ["Max Turbine Release"]
 
+        if dam_name == "GERD": inflow_label = "Blue Nile Inflow"
+        else: inflow_label = f"Inflow"
+        
         self.plot_condensed_figure(
             vectors=[
                 self.hydro_model.reservoirs[dam_name].release_vector,
                 self.hydro_model.reservoirs[dam_name].inflow_vector
             ],
             y_name="Flow [m3/sec]",
+            
             labels=[
                 f"{dam_name} Release",
-                "Blue Nile Inflow"
+                inflow_label
             ],
             range_exists=[True, True],
             range_alphas=[0.5,0.3],

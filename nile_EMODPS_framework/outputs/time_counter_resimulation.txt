@@ -1,1 +1,1 @@
-It took 1:00:49.097940 time to run re-simulation 5 scenarios 850 policies
+It took 0:21:30.712999 time to run re-simulation 5 scenarios 340 policies
