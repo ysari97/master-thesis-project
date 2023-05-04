@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 
-
 def generate_input_data(
     nile_model,
     myseed=123,
@@ -18,7 +17,7 @@ def generate_input_data(
     atbara_dev_coef=1,
 ):
     # streamflow + demand
-    data_directory = "../stochastic_data_generation_inputs/"
+    data_directory = "stochastic_data_generation_inputs/"
 
     # start with the demand
     for district in nile_model.irr_districts.values():

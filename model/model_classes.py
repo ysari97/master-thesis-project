@@ -1,9 +1,8 @@
-import numpy as np
 import os
+import numpy as np
 from scipy.constants import g
 
-dir_path = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
-data_directory = os.path.join(dir_path, "../data/")
+data_directory = "data/"
 
 
 class Catchment:
@@ -74,8 +73,7 @@ class IrrigationDistrict:
     def __init__(self, name):
         # Explanation placeholder
         self.name = name
-        fh = os.path.join(data_directory, f"IrrDemand{name}.txt")
-        self.demand = np.loadtxt(fh)
+        self.demand = np.loadtxt(f"{data_directory}IrrDemand{name}.txt")
         self.received_flow = np.empty(0)
         self.received_flow_raw = np.empty(0)
         self.deficit = np.empty(0)

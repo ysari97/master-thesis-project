@@ -1,20 +1,19 @@
 """
 Script for baseline optimization
 """
+import random
+from datetime import datetime
 
-for path in sys.path:
-    print(path)
-
-from ema_workbench import ema_logging
-
-
+from ema_workbench import ema_logging, Model, RealParameter, ScalarOutcome, MultiprocessingEvaluator
+from ema_workbench.em_framework.optimization import EpsilonProgress, ArchiveLogger
 from experimentation.data_generation import generate_input_data
 from model.model_nile import ModelNile
+
 
 def run():
     ema_logging.log_to_stderr(ema_logging.INFO)
 
-    output_directory = "../outputs/"
+    output_directory = "outputs/"
     nile_model = ModelNile()
     nile_model = generate_input_data(nile_model, sim_horizon=20)
 
@@ -59,7 +58,8 @@ def run():
         ),
     ]
 
-    nfe = 50000
+    # real nfe = 50000
+    nfe = 2
     epsilon_list = [1e-1, 1e-2, 1e-2, 1e-1, 1e-2, 1e-1]
 
     random.seed(123)
@@ -70,7 +70,8 @@ def run():
             nfe=nfe,
             searchover="levers",
             epsilons=epsilon_list,
-            convergence_freq=500,
+            convergence_freq=1,
+            # real convergence_freq=500,
             convergence=convergence_metrics,
         )
 

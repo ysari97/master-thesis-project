@@ -1,18 +1,14 @@
-# Model class
+"""
+Creates model class
+"""
 
 # Importing libraries for functionality
 import numpy as np
 import pandas as pd
 
 # Importing classes to generate the model
-from .model_classes import Reservoir, Catchment, IrrigationDistrict, HydropowerPlant
-from .smash import Policy
-
-
-# import sys
-# sys.path.append("..")
-# from experimentation.data_generation import generate_input_data
-
+from model.model_classes import Reservoir, Catchment, IrrigationDistrict, HydropowerPlant
+from model.smash import Policy
 
 class ModelNile:
     """
@@ -34,7 +30,7 @@ class ModelNile:
         as well as policy function hyper-parameters.
         """
 
-        self.read_settings_file("../settings/settings_file_Nile.xlsx")
+        self.read_settings_file("settings/settings_file_Nile.xlsx")
 
         # Generating catchment and irrigation district objects
         self.catchments = dict()
