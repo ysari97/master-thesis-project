@@ -59,8 +59,8 @@ def run():
     ]
 
     # real nfe = 50000
-    nfe = 1000000
-    epsilon_list = [1e-1, 1e-2, 1e-2, 1e-1, 1e-2, 1e-1]
+    nfe = 100000
+    epsilon_list = [1e-2, 1e-3, 1e-3, 1e-2, 1e-3, 1e-2]
 
     random.seed(123)
     before = datetime.now()
@@ -70,7 +70,7 @@ def run():
             nfe=nfe,
             searchover="levers",
             epsilons=epsilon_list,
-            convergence_freq=50000,
+            convergence_freq=5000,
             # real convergence_freq=500,
             convergence=convergence_metrics,
         )
