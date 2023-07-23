@@ -132,6 +132,8 @@ def parallel_plots_many_policies(
     for i, solution_index in enumerate(solution_indices):
         norm_df.loc[solution_index, "Name"] = solution_names[i]
         norm_df = norm_df.append(norm_df.loc[solution_index, :].copy())
+    
+    norm_df
 
     fig = plt.figure()
 
