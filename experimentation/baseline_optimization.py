@@ -2,6 +2,7 @@
 Script for baseline optimization
 """
 import random
+import os
 from datetime import datetime
 
 from ema_workbench import ema_logging, Model, RealParameter, ScalarOutcome, MultiprocessingEvaluator
@@ -49,7 +50,8 @@ def run(nfe:int, epsilon_list:list, convergence_freq:int, description:str):
     ema_logging.log_to_stderr(ema_logging.INFO)
 
     output_directory = f"outputs/nfe{nfe}_{description}/"
- 
+    os.makedirs(output_directory, exist_ok=True)
+
     nile_model = ModelNile()
     nile_model = generate_input_data(nile_model, sim_horizon=20)
 
