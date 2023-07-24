@@ -3,6 +3,7 @@
 outputs/
 plots/
 readme_images/
+outputs/archive_logs/archives.tar.gz
 
 #################
 ## Eclipse
