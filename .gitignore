@@ -1,3 +1,9 @@
+# project output folders
+
+outputs/
+plots/
+readme_images/
+
 #################
 ## Eclipse
 #################
