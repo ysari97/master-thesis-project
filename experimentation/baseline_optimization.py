@@ -10,7 +10,7 @@ from experimentation.data_generation import generate_input_data
 from model.model_nile import ModelNile
 
 
-def run(nfe, epsilon_list, convergence_freq, experiment):
+def run(nfe:int, epsilon_list:list, convergence_freq:int, description:str):
     """
     Perform baseline optimization using the EMA Workbench.
 
@@ -18,7 +18,7 @@ def run(nfe, epsilon_list, convergence_freq, experiment):
     nfe (int): Number of function evaluations for the optimization.
     epsilon_list (list): List of epsilon values for the optimization.
     convergence_freq (int): Frequency of convergence logging during optimization.
-    experiment (str): A string identifier for the experiment, used to label the output files.
+    description (str): A string identifier for the experiment, used to label the output files.
 
     Returns:
     None
@@ -29,7 +29,7 @@ def run(nfe, epsilon_list, convergence_freq, experiment):
     of epsilon values), and `convergence_freq` (convergence logging frequency) to
     optimize the model. The results and convergence data are saved to CSV files.
 
-    The `experiment` parameter is used as a string identifier to label the output files
+    The `description` parameter is used as a string identifier to label the output files
     to make them easily identifiable and distinguishable for different experiments.
 
     The function sets up the model, levers, outcomes, convergence metrics, and other
@@ -38,8 +38,8 @@ def run(nfe, epsilon_list, convergence_freq, experiment):
 
     The results of the optimization are saved in CSV files with filenames that include
     the experiment identifier to distinguish between different experiments. The filenames
-    will have the format "baseline_results_experiment.csv" for the results and
-    "baseline_convergence_experiment.csv" for the convergence data.
+    will have the format "baseline_results_description.csv" for the results and
+    "baseline_convergence_description.csv" for the convergence data.
 
     Note:
     - Ensure that the ModelNile class, generate_input_data function, and the necessary
@@ -48,7 +48,8 @@ def run(nfe, epsilon_list, convergence_freq, experiment):
     """
     ema_logging.log_to_stderr(ema_logging.INFO)
 
-    output_directory = "outputs/"
+    output_directory = f"outputs/nfe{nfe}_{description}/"
+ 
     nile_model = ModelNile()
     nile_model = generate_input_data(nile_model, sim_horizon=20)
 
@@ -57,7 +58,7 @@ def run(nfe, epsilon_list, convergence_freq, experiment):
     parameter_count = nile_model.overarching_policy.get_total_parameter_count()
     n_inputs = nile_model.overarching_policy.functions["release"].n_inputs
     n_outputs = nile_model.overarching_policy.functions["release"].n_outputs
-    RBF_count = nile_model.overarching_policy.functions["release"].RBF_count
+    # RBF_count = nile_model.overarching_policy.functions["release"].RBF_count
     p_per_RBF = 2 * n_inputs + n_outputs
 
     lever_list = list()
@@ -108,14 +109,15 @@ def run(nfe, epsilon_list, convergence_freq, experiment):
 
     after = datetime.now()
 
-    with open(f"{output_directory}time_counter_{experiment}.txt", "w") as f:
+
+    with open(f"{output_directory}time_counter_{description}.txt", "w") as f:
         f.write(
-            f"Experiment {experiment} took {after-before} time to do {nfe} NFEs with a convergence frequency of {convergence_freq} and epsilons: {epsilon_list}"
+            f"experiment {description} took {after-before} time to do {nfe} NFEs with a convergence frequency of {convergence_freq} and epsilons: {epsilon_list}"
         )
 
-    # Use experiment in the filename for the CSV files
-    results_filename = f"{output_directory}baseline_results_{experiment}.csv"
-    convergence_filename = f"{output_directory}baseline_convergence_{experiment}.csv"
+    # Use description in the filename for the CSV files
+    results_filename = f"{output_directory}baseline_results_nfe{nfe}_{description}.csv"
+    convergence_filename = f"{output_directory}baseline_convergence_nfe{nfe}_{description}.csv"
 
     results.to_csv(results_filename)
     convergence.to_csv(convergence_filename)
