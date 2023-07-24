@@ -10,7 +10,42 @@ from experimentation.data_generation import generate_input_data
 from model.model_nile import ModelNile
 
 
-def run():
+def run(nfe, epsilon_list, convergence_freq, experiment):
+    """
+    Perform baseline optimization using the EMA Workbench.
+
+    Parameters:
+    nfe (int): Number of function evaluations for the optimization.
+    epsilon_list (list): List of epsilon values for the optimization.
+    convergence_freq (int): Frequency of convergence logging during optimization.
+    experiment (str): A string identifier for the experiment, used to label the output files.
+
+    Returns:
+    None
+
+    Description:
+    This function performs baseline optimization using the EMA Workbench framework.
+    It uses the provided `nfe` (Number of Function Evaluations), `epsilon_list` (list
+    of epsilon values), and `convergence_freq` (convergence logging frequency) to
+    optimize the model. The results and convergence data are saved to CSV files.
+
+    The `experiment` parameter is used as a string identifier to label the output files
+    to make them easily identifiable and distinguishable for different experiments.
+
+    The function sets up the model, levers, outcomes, convergence metrics, and other
+    necessary configurations for the optimization process. It uses the `MultiprocessingEvaluator`
+    for parallel evaluation and logs the optimization progress.
+
+    The results of the optimization are saved in CSV files with filenames that include
+    the experiment identifier to distinguish between different experiments. The filenames
+    will have the format "baseline_results_experiment.csv" for the results and
+    "baseline_convergence_experiment.csv" for the convergence data.
+
+    Note:
+    - Ensure that the ModelNile class, generate_input_data function, and the necessary
+      EMA Workbench modules are properly imported before calling this function.
+    - The output files will be saved in the "outputs/" directory relative to the script's location.
+    """
     ema_logging.log_to_stderr(ema_logging.INFO)
 
     output_directory = "outputs/"
@@ -58,10 +93,6 @@ def run():
         ),
     ]
 
-    # real nfe = 50000
-    nfe = 100000
-    epsilon_list = [1e-2, 1e-3, 1e-3, 1e-2, 1e-3, 1e-2]
-
     random.seed(123)
     before = datetime.now()
 
@@ -70,17 +101,21 @@ def run():
             nfe=nfe,
             searchover="levers",
             epsilons=epsilon_list,
-            convergence_freq=5000,
+            convergence_freq=convergence_freq,
             # real convergence_freq=500,
             convergence=convergence_metrics,
         )
 
     after = datetime.now()
 
-    with open(f"{output_directory}time_counter.txt", "w") as f:
+    with open(f"{output_directory}time_counter_{experiment}.txt", "w") as f:
         f.write(
-            f"It took {after-before} time to do {nfe} NFEs with epsilons: {epsilon_list}"
+            f"Experiment {experiment} took {after-before} time to do {nfe} NFEs with a convergence frequency of {convergence_freq} and epsilons: {epsilon_list}"
         )
 
-    results.to_csv(f"{output_directory}baseline_results.csv")
-    convergence.to_csv(f"{output_directory}baseline_convergence.csv")
+    # Use experiment in the filename for the CSV files
+    results_filename = f"{output_directory}baseline_results_{experiment}.csv"
+    convergence_filename = f"{output_directory}baseline_convergence_{experiment}.csv"
+
+    results.to_csv(results_filename)
+    convergence.to_csv(convergence_filename)
