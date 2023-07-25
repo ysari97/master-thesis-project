@@ -21,7 +21,7 @@ class ModelNile:
     calculations iteratively.
     """
 
-    def __init__(self):
+    def __init__(self, principle: str):
         """
         Creating the static objects of the model including the
         reservoirs, catchments, irrigation districts and policy
@@ -29,6 +29,8 @@ class ModelNile:
         model run configuration from settings, input data
         as well as policy function hyper-parameters.
         """
+
+        self.principle = principle
 
         self.read_settings_file("settings/settings_file_Nile.xlsx")
 
@@ -110,11 +112,11 @@ class ModelNile:
             ethiopia_hydro,
             principle_result
         ) = self.evaluate(
-            np.array(input_parameters, principle)
+            np.array(input_parameters), self.principle
         )  # , uncertainty_parameters
         return egypt_irr, egypt_90, egypt_low_had, sudan_irr, sudan_90, ethiopia_hydro, principle_result
 
-    def evaluate(self, parameter_vector, principle):  # , uncertainty_dict
+    def evaluate(self, parameter_vector):  # , uncertainty_dict
         """Evaluate the KPI values based on the given input
         data and policy parameter configuration.
 
@@ -172,15 +174,19 @@ class ModelNile:
 
         objectives = [egypt_agg_def, egypt_90_perc_worst, egypt_freq_low_HAD, sudan_agg_def, sudan_90_perc_worst, ethiopia_agg_hydro]
 
-        if principle == "uwf":
+        # to be adjusted
+        
+        if not self.principle:
+            principle_result = 0
+        elif self.principle == "uwf":
             principle_result = sum(objectives)
         
-        elif principle == "swf":
+        elif self.principle == "swf":
             threshold_values = [0.5, 100, 0.1, 500, 200, 100]
             swfs = [min(obj / thresh, 1.0) for obj, thresh in zip(objectives, threshold_values)]
             principle_result = sum(swfs)
         
-        elif principle == "pwf":
+        elif self.principle == "pwf":
             origins = [0.5, 100, 0.1, 500, 200, 100]
             gamma = 0.5  # Set the value of gamma as per your requirement
             principle_result = 0
@@ -194,7 +200,7 @@ class ModelNile:
                 else:
                     principle_result += np.log(u_ij - u_0j)
         
-        elif principle == "gini":
+        elif self.principle == "gini":
             n = len(objectives)
             sorted_objectives = np.sort(objectives)
             diffs = np.abs(np.subtract.outer(sorted_objectives, sorted_objectives)).flatten()
