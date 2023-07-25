@@ -9,7 +9,7 @@ if __name__ == '__main__':
 
     DEBUG = True
     if DEBUG:
-        nfe = 4
+        nfe = 2
         epsilon_list = [1e-2, 1e-3, 1e-3, 1e-2, 1e-3, 1e-2]
         convergence_freq = 1
         description = "debug"
