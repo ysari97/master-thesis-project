@@ -49,8 +49,11 @@ def run(nfe:int, epsilon_list:list, convergence_freq:int, description:str):
     """
     ema_logging.log_to_stderr(ema_logging.INFO)
 
+    # creating the experiment folders
     output_directory = f"outputs/nfe{nfe}_{description}/"
+    archive_directory = f"{output_directory}archive_logs"
     os.makedirs(output_directory, exist_ok=True)
+    os.makedirs(archive_directory, exist_ok=True)
 
     nile_model = ModelNile()
     nile_model = generate_input_data(nile_model, sim_horizon=20)
@@ -90,7 +93,7 @@ def run(nfe:int, epsilon_list:list, convergence_freq:int, description:str):
     convergence_metrics = [
         EpsilonProgress(),
         ArchiveLogger(
-            f"{output_directory}archive_logs",
+            archive_directory,
             [lever.name for lever in em_model.levers],
             [outcome.name for outcome in em_model.outcomes],
         ),
