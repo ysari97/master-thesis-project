@@ -9,7 +9,7 @@ if __name__ == '__main__':
 
     DEBUG = True
     if DEBUG:
-        nfe = 2
+        nfe = 20
         epsilon_list = [1e-1, 1e-2, 1e-2, 1e-1, 1e-2, 1e-1]
         convergence_freq = 1
         description = "archive_test"
