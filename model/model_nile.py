@@ -112,7 +112,7 @@ class ModelNile:
             ethiopia_hydro,
             principle_result
         ) = self.evaluate(
-            np.array(input_parameters), self.principle
+            np.array(input_parameters)
         )  # , uncertainty_parameters
         return egypt_irr, egypt_90, egypt_low_had, sudan_irr, sudan_90, ethiopia_hydro, principle_result
 
