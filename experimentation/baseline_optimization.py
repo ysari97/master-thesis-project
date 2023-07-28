@@ -85,6 +85,7 @@ def run(nfe:int, epsilon_list:list, convergence_freq:int, description:str):
         ScalarOutcome("sudan_irr", ScalarOutcome.MINIMIZE),
         ScalarOutcome("sudan_90", ScalarOutcome.MINIMIZE),
         ScalarOutcome("ethiopia_hydro", ScalarOutcome.MAXIMIZE),
+        ScalarOutcome("principle_result", ScalarOutcome.MAXIMIZE),
     ]
 
     convergence_metrics = [
