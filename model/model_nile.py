@@ -204,8 +204,9 @@ class ModelNile:
             n = len(objectives)
             sorted_objectives = np.sort(objectives)
             diffs = np.abs(np.subtract.outer(sorted_objectives, sorted_objectives)).flatten()
-            principle_result = np.sum(diffs) / (2.0 * n * np.sum(sorted_objectives))
-
+            # 1 - ... needed so that all principles have a maximization direction
+            principle_result = 1 - (np.sum(diffs) / (2.0 * n * np.sum(sorted_objectives)))
+            
         else:
             raise ValueError("Invalid principle. Please choose a valid principle.")
     
