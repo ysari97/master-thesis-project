@@ -3,6 +3,8 @@ Script for baseline optimization
 """
 import random
 import os
+# import tarfile
+# import shutil
 from datetime import datetime
 
 from ema_workbench import ema_logging, Model, RealParameter, ScalarOutcome, MultiprocessingEvaluator
@@ -10,6 +12,30 @@ from ema_workbench.em_framework.optimization import EpsilonProgress, ArchiveLogg
 from experimentation.data_generation import generate_input_data
 from model.model_nile import ModelNile
 
+
+
+# def check_for_csv_files(log_directory):
+#     csv_files = [file for file in os.listdir(log_directory) if file.endswith('.csv')]
+#     return len(csv_files) > 0
+
+# def extract_and_save_csv_from_tar_gz(log_directory):
+#     tar_gz_file_path = f"{log_directory}/archives.tar.gz"
+
+#     if not os.path.exists(tar_gz_file_path):
+#         print(f"The file '{tar_gz_file_path}' does not exist.")
+#         return
+
+#     if check_for_csv_files(log_directory):
+#         print("CSV files already exist in the directory.")
+#     else:
+#         with tarfile.open(tar_gz_file_path, "r:gz") as tar:
+#             tar.extractall(path=log_directory)
+
+#         csv_files = [file for file in os.listdir(log_directory) if file.endswith('.csv')]
+#         if not csv_files:
+#             print("No CSV files found in the archive.")
+#         else:
+#             print(f"CSV files saved: {len(csv_files)}")
 
 def run(nfe:int, epsilon_list:list, convergence_freq:int, description:str):
     """
@@ -49,9 +75,18 @@ def run(nfe:int, epsilon_list:list, convergence_freq:int, description:str):
     """
     ema_logging.log_to_stderr(ema_logging.INFO)
 
-    # creating the experiment folders
+    # creating or emptying the experiment folders
     output_directory = f"outputs/nfe{nfe}_{description}/"
     archive_directory = f"{output_directory}archive_logs"
+
+    # if os.path.exists(output_directory):
+    #     shutil.rmtree(output_directory)
+    #     print(f"I emptied {output_directory}")
+
+    # if os.path.exists(archive_directory):
+    #     shutil.rmtree(archive_directory)
+    #     print(f"I emptied {archive_directory}")
+
     os.makedirs(output_directory, exist_ok=True)
     os.makedirs(archive_directory, exist_ok=True)
 
@@ -119,6 +154,9 @@ def run(nfe:int, epsilon_list:list, convergence_freq:int, description:str):
         f.write(
             f"experiment {description} took {after-before} time to do {nfe} NFEs with a convergence frequency of {convergence_freq} and epsilons: {epsilon_list}"
         )
+
+    # # unpack logs
+    # extract_and_save_csv_from_tar_gz(archive_directory)
 
     # Use description in the filename for the CSV files
     results_filename = f"{output_directory}baseline_results_nfe{nfe}_{description}.csv"
