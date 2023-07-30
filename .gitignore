@@ -1,7 +1,10 @@
+# project output folders
+
 outputs/
 plots/
 readme_images/
-
+# batch scripts
+*.sh
 #################
 ## Eclipse
 #################
