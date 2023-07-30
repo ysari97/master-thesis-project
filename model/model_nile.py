@@ -174,47 +174,49 @@ class ModelNile:
 
         objectives = [egypt_agg_def, egypt_90_perc_worst, egypt_freq_low_HAD, sudan_agg_def, sudan_90_perc_worst, ethiopia_agg_hydro]
 
-        # to be adjusted
+        # values at timestep 0 used for normalization
+        t0_egypt_agg_def  = self.irr_districts["Egypt"].deficit[0]
+        t0_egypt_90perc = t0_egypt_agg_def
+        t0_egypt_freq_lowHAD = 0.000001
+        t0_sudan_agg_def = sudan_agg_def_vector[0]
+        t0_sudan_90perc = t0_sudan_agg_def
+        t0_ethio_agg_hydro = self.reservoirs["GERD"].actual_hydropower_production[0]
+
+        origins = [t0_egypt_agg_def, t0_egypt_90perc, t0_egypt_freq_lowHAD, t0_sudan_agg_def, t0_sudan_90perc, t0_ethio_agg_hydro]
+
+        objectives_norm = [((a - b) / b) if b != 0 else a for a, b in zip(objectives, origins)]# gemiddelde procentuele toename ten opzichte van t=0
         
         if not self.principle:
             principle_result = 0
         elif self.principle == "uwf":
-            principle_result = sum(objectives)
+            principle_result = sum(objectives_norm)
         
-        elif self.principle == "swf":
-            threshold_values = [0.5, 100, 0.1, 500, 200, 100]
-            swfs = [min(obj / thresh, 1.0) for obj, thresh in zip(objectives, threshold_values)]
-            principle_result = sum(swfs)
+        # elif self.principle == "swf":
+        #     threshold_values = [0.5, 100, 0.1, 500, 200, 100]
+        #     swfs = [min(obj / thresh, 1.0) for obj, thresh in zip(objectives, threshold_values)]
+        #     principle_result = sum(swfs)
         
         elif self.principle == "pwf":
-            origins = [0.5, 100, 0.1, 500, 200, 100]
             gamma = 0.5  # Set the value of gamma as per your requirement
             principle_result = 0
 
-            for i, obj in enumerate(objectives):
-                u_ij = obj
-                u_0j = origins[i]
+            for obj in objectives_norm:
                 # Calculate the Prioritarian Welfare for the specific objective and add it to the score
                 if gamma != 1:
-                    principle_result += ((u_ij - u_0j) ** gamma - 1) / (1 - gamma)
+                    principle_result += ( obj ** gamma - 1) / (1 - gamma)
                 else:
-                    principle_result += np.log(u_ij - u_0j)
+                    principle_result += np.log(obj)
         
         elif self.principle == "gini":
-            n = len(objectives)
-            sorted_objectives = np.sort(objectives)
+            n = len(objectives_norm)
+            sorted_objectives = np.sort(objectives_norm)
             diffs = np.abs(np.subtract.outer(sorted_objectives, sorted_objectives)).flatten()
             # 1 - ... needed so that all principles have a maximization direction
             principle_result = 1 - (np.sum(diffs) / (2.0 * n * np.sum(sorted_objectives)))
             
         else:
             raise ValueError("Invalid principle. Please choose a valid principle.")
-        sim_n = 0
-        iteration = 0
-        print(f"{sim_n}:", objectives)
-        while True:
-            if iteration % 13 == 0:
-                sim_n += 1
+
         return (
             egypt_agg_def,
             egypt_90_perc_worst,
@@ -241,7 +243,6 @@ class ModelNile:
         Taminiat_leftover = [0.0, 0.0]
 
         for t in np.arange(self.simulation_horizon):
-
             moy = (self.init_month + t - 1) % 12 + 1  # Current month
             nu_of_days = self.nu_of_days_per_month[moy - 1]
 
