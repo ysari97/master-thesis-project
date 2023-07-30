@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./output_analysis"
+    ]
+}
