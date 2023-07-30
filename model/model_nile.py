@@ -209,7 +209,12 @@ class ModelNile:
             
         else:
             raise ValueError("Invalid principle. Please choose a valid principle.")
-    
+        sim_n = 0
+        iteration = 0
+        print(f"{sim_n}:", objectives)
+        while True:
+            if iteration % 13 == 0:
+                sim_n += 1
         return (
             egypt_agg_def,
             egypt_90_perc_worst,
