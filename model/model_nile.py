@@ -21,7 +21,7 @@ class ModelNile:
     calculations iteratively.
     """
 
-    def __init__(self):
+    def __init__(self, principle: str):
         """
         Creating the static objects of the model including the
         reservoirs, catchments, irrigation districts and policy
@@ -29,6 +29,8 @@ class ModelNile:
         model run configuration from settings, input data
         as well as policy function hyper-parameters.
         """
+
+        self.principle = principle
 
         self.read_settings_file("settings/settings_file_Nile.xlsx")
 
@@ -108,10 +110,11 @@ class ModelNile:
             sudan_irr,
             sudan_90,
             ethiopia_hydro,
+            principle_result
         ) = self.evaluate(
             np.array(input_parameters)
         )  # , uncertainty_parameters
-        return egypt_irr, egypt_90, egypt_low_had, sudan_irr, sudan_90, ethiopia_hydro
+        return egypt_irr, egypt_90, egypt_low_had, sudan_irr, sudan_90, ethiopia_hydro, principle_result
 
     def evaluate(self, parameter_vector):  # , uncertainty_dict
         """Evaluate the KPI values based on the given input
@@ -123,6 +126,8 @@ class ModelNile:
         parameter_vector : np.array
             Parameter values for the reservoir control policy
             object (NN, RBF etc.)
+        principle : str
+            The principle on which the principle objective is calculated.
 
         Returns
         -------
@@ -167,6 +172,44 @@ class ModelNile:
             np.sum(self.reservoirs["GERD"].actual_hydropower_production)
         ) / (20 * 1e6)
 
+        objectives = [egypt_agg_def, egypt_90_perc_worst, egypt_freq_low_HAD, sudan_agg_def, sudan_90_perc_worst, ethiopia_agg_hydro]
+
+        # to be adjusted
+        
+        if not self.principle:
+            principle_result = 0
+        elif self.principle == "uwf":
+            principle_result = sum(objectives)
+        
+        elif self.principle == "swf":
+            threshold_values = [0.5, 100, 0.1, 500, 200, 100]
+            swfs = [min(obj / thresh, 1.0) for obj, thresh in zip(objectives, threshold_values)]
+            principle_result = sum(swfs)
+        
+        elif self.principle == "pwf":
+            origins = [0.5, 100, 0.1, 500, 200, 100]
+            gamma = 0.5  # Set the value of gamma as per your requirement
+            principle_result = 0
+
+            for i, obj in enumerate(objectives):
+                u_ij = obj
+                u_0j = origins[i]
+                # Calculate the Prioritarian Welfare for the specific objective and add it to the score
+                if gamma != 1:
+                    principle_result += ((u_ij - u_0j) ** gamma - 1) / (1 - gamma)
+                else:
+                    principle_result += np.log(u_ij - u_0j)
+        
+        elif self.principle == "gini":
+            n = len(objectives)
+            sorted_objectives = np.sort(objectives)
+            diffs = np.abs(np.subtract.outer(sorted_objectives, sorted_objectives)).flatten()
+            # 1 - ... needed so that all principles have a maximization direction
+            principle_result = 1 - (np.sum(diffs) / (2.0 * n * np.sum(sorted_objectives)))
+            
+        else:
+            raise ValueError("Invalid principle. Please choose a valid principle.")
+    
         return (
             egypt_agg_def,
             egypt_90_perc_worst,
@@ -174,6 +217,7 @@ class ModelNile:
             sudan_agg_def,
             sudan_90_perc_worst,
             ethiopia_agg_hydro,
+            principle_result
         )
 
     def simulate(self):

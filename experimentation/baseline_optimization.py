@@ -37,7 +37,7 @@ from model.model_nile import ModelNile
 #         else:
 #             print(f"CSV files saved: {len(csv_files)}")
 
-def run(nfe:int, epsilon_list:list, convergence_freq:int, description:str):
+def run(nfe:int, epsilon_list:list, convergence_freq:int, description:str, principle:str):
     """
     Perform baseline optimization using the EMA Workbench.
 
@@ -90,7 +90,7 @@ def run(nfe:int, epsilon_list:list, convergence_freq:int, description:str):
     os.makedirs(output_directory, exist_ok=True)
     os.makedirs(archive_directory, exist_ok=True)
 
-    nile_model = ModelNile()
+    nile_model = ModelNile(principle=principle)
     nile_model = generate_input_data(nile_model, sim_horizon=20)
 
     em_model = Model("NileProblem", function=nile_model)
@@ -123,6 +123,7 @@ def run(nfe:int, epsilon_list:list, convergence_freq:int, description:str):
         ScalarOutcome("sudan_irr", ScalarOutcome.MINIMIZE),
         ScalarOutcome("sudan_90", ScalarOutcome.MINIMIZE),
         ScalarOutcome("ethiopia_hydro", ScalarOutcome.MAXIMIZE),
+        ScalarOutcome("principle_result", ScalarOutcome.MAXIMIZE),
     ]
 
     convergence_metrics = [
@@ -152,7 +153,8 @@ def run(nfe:int, epsilon_list:list, convergence_freq:int, description:str):
 
     with open(f"{output_directory}time_counter_{description}.txt", "w") as f:
         f.write(
-            f"experiment {description} took {after-before} time to do {nfe} NFEs with a convergence frequency of {convergence_freq} and epsilons: {epsilon_list}"
+            f'''experiment {description} took {after-before} time to do {nfe} NFEs with 
+            a convergence frequency of {convergence_freq} and epsilons: {epsilon_list}, for principle {principle}.'''
         )
 
     # # unpack logs
