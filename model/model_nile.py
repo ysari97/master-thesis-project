@@ -203,9 +203,12 @@ class ModelNile:
             for obj in objectives_norm:
                 # Calculate the Prioritarian Welfare for the specific objective and add it to the score
                 if gamma != 1:
-                    principle_result += ( obj ** gamma - 1) / (1 - gamma)
+                    if obj >= 0:
+                        principle_result += (obj ** gamma - 1) / (1 - gamma)
+                    else:
+                        principle_result += -(abs(obj) ** gamma - 1) / (1 - gamma)
                 else:
-                    principle_result += np.log(obj)
+                    principle_result += np.log(abs(obj))
         
         elif self.principle == "gini":
             n = len(objectives_norm)
